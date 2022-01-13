@@ -1,16 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello MVC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="mystyle.css" />
+    <title>FPTBook</title>
 </head>
+
 <body>
-    <h1>Hello MVC</h1>
-    <ul>
-        <li><a href="/admin">Admin home</a></li>
-        <li><a href="/admin/addUser">Add user in Admin controller</a></li>
-    </ul>
+    <br>
+    <br>
+        <form action="/" method="GET">
+        <input type="text" name="search" id="search">
+        <input type="submit" value="Search">
+        </form>
+    <br>
+    <span style="color: red;">{{errorSearch}}</span>
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+        {{#each books}}
+        <tr>
+            <td>{{_id}}</td>
+            <td>{{name}}</td>
+            <td>{{price}}</td>
+        </tr>
+        {{/each}}
+    </table>
+    </div>
 </body>
+
 </html>

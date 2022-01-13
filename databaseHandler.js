@@ -1,3 +1,4 @@
+const async = require('hbs/lib/async');
 const {MongoClient,ObjectId} = require('mongodb');
 
 const URL = 'mongodb+srv://sonhan14:trinhquocanh011@cluster0.dhmh6.mongodb.net/test';
@@ -13,6 +14,12 @@ async function insertObject(collectionName,objectToInsert){
     const dbo = await getdbo();
     const newObject = await dbo.collection(collectionName).insertOne(objectToInsert);
     console.log("Gia tri id moi duoc insert la: ", newObject.insertedId.toHexString());
+}
+
+async function searchObjectbyName(collectionName,Name) {
+    const dbo = await getdbo();
+    const result = await dbo.collection(collectionName).find({name: Name}).toArray()
+    return result
 }
 
 async function getAll(collectionName){
@@ -37,4 +44,4 @@ async function updateDocument(id,updateValues,collectionName){
     await dbo.collection(collectionName).updateOne({_id:ObjectId(id)},updateValues)
 }
 
-module.exports = {insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument}
+module.exports = {searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument}

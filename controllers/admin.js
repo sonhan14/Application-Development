@@ -12,6 +12,8 @@ router.get('/addUser',(req,res)=>{
     res.render('addUser')
 })
 
+
+
 //Submit add User
 router.post('/addUser',(req,res)=>{
     const name = req.body.txtName
