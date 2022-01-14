@@ -16,15 +16,16 @@ async function insertObject(collectionName,objectToInsert){
     console.log("Gia tri id moi duoc insert la: ", newObject.insertedId.toHexString());
 }
 
-async function searchObjectbyName(collectionName,Name) {
+async function searchObjectbyName(collectionName,name) {
     const dbo = await getdbo();
-    const result = await dbo.collection(collectionName).find({name: Name}).toArray()
+    const result = await dbo.collection(collectionName).find({name: name}).toArray()
     return result
 }
 
-async function searchObjectbyPrice(collectionName,Price) {
-    const dbo = await getdbo()
-    const result = await dbo.collection(collectionName).find({price: Number.parseFloat(Price)}).toArray()
+async function searchObjectbyPrice(collectionName,price) {
+    const dbo = await getdbo();
+    const result = await dbo.collection(collectionName).find({price: price}).toArray()
+    return result
 }
 
 async function getAll(collectionName){
