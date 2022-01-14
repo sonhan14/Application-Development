@@ -4,6 +4,7 @@ const dbHandler = require("./databaseHandler");
 
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
+//hellotest
 app.use(express.static("public"));
 
 const userController = require("./controllers/customer")
