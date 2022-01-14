@@ -15,6 +15,9 @@ const adminController = require("./controllers/admin");
 app.use("/admin", adminController);
 
 //hello 12344
+app.get("/login", (req,res)=>{
+    res.render('login')
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
