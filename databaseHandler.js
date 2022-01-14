@@ -22,6 +22,11 @@ async function searchObjectbyName(collectionName,Name) {
     return result
 }
 
+async function searchObjectbyPrice(collectionName,Price) {
+    const dbo = await getdbo()
+    const result = await dbo.collection(collectionName).find({price: Number.parseFloat(Price)}).toArray()
+}
+
 async function getAll(collectionName){
     const dbo = await getdbo();
     const result = await dbo.collection(collectionName).find({}).toArray()
@@ -44,4 +49,4 @@ async function updateDocument(id,updateValues,collectionName){
     await dbo.collection(collectionName).updateOne({_id:ObjectId(id)},updateValues)
 }
 
-module.exports = {searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument}
+module.exports = {searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument}
