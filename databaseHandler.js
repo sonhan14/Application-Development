@@ -50,4 +50,28 @@ async function updateDocument(id,updateValues,collectionName){
     await dbo.collection(collectionName).updateOne({_id:ObjectId(id)},updateValues)
 }
 
-module.exports = {searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument}
+async function findOne(collectionName, findObject) {
+    const dbo = await getdbo();
+    const result = await dbo.collection(collectionName).findOne(findObject);
+    return result;
+  }
+  
+  async function deleteOne(collectionName, deleteObject) {
+    const dbo = await getdbo();
+    const result = await dbo.collection(collectionName).deleteOne(deleteObject);
+    if (result.deletedCount > 0) {
+      return true;
+    } else {
+      return false;
+    }
+    }
+
+    async function find(collectionName, findObject) {
+        const dbo = await getdbo();
+        // .sort({_id : -1}) mean is sort newest to oldest
+        // .sort({_id : 1}) is the opposite
+        const result = await dbo.collection(collectionName).find(findObject).sort({ time: -1 }).toArray();
+        return result;
+      }
+
+module.exports = {searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, findOne, deleteOne, find}

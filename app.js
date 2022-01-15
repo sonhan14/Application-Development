@@ -14,9 +14,16 @@ app.use("/", userController);
 const adminController = require("./controllers/admin");
 app.use("/admin", adminController);
 
+
 //cac request co chua /admin se di den controller admin
 const loginControler = require('./controllers/login');
 app.use("/login", loginControler)
+
+const manageController= require("./controllers/manageCustomerOrder");
+app.use("/manageCustomerOrder", manageController);
+
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
