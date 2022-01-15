@@ -1,5 +1,5 @@
 const async = require('hbs/lib/async');
-const {MongoClient,ObjectId} = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const URL = 'mongodb+srv://sonhan14:trinhquocanh011@cluster0.dhmh6.mongodb.net/test';
 const DATABASE_NAME = "FPTBook-ApplicationDev-Group2"
@@ -10,28 +10,28 @@ async function getdbo() {
     return dbo;
 }
 
-async function insertObject(collectionName,objectToInsert){
+async function insertObject(collectionName, objectToInsert) {
     const dbo = await getdbo();
     const newObject = await dbo.collection(collectionName).insertOne(objectToInsert);
     console.log("Gia tri id moi duoc insert la: ", newObject.insertedId.toHexString());
 }
 
-async function searchObjectbyName(collectionName,name) {
+async function searchObjectbyName(collectionName, name) {
     const dbo = await getdbo();
-    const result = await dbo.collection(collectionName).find({name: name}).toArray()
+    const result = await dbo.collection(collectionName).find({ name: name }).toArray()
     return result
 }
 
-async function searchObjectbyPrice(collectionName,price) {
+async function searchObjectbyPrice(collectionName, price) {
     const dbo = await getdbo();
-    const result = await dbo.collection(collectionName).find({price: price}).toArray()
+    const result = await dbo.collection(collectionName).find({ price: price }).toArray()
     return result
 }
 
-async function getAll(collectionName){
+async function getAll(collectionName) {
     const dbo = await getdbo();
-    const result = await dbo.collection(collectionName).find({}).toArray()
-    return result
+    const result = await dbo.collection(collectionName).find({ }).sort({time : -1}).toArray()
+    return result 
 }
 
 async function deleteDocumentById(collectionName, id) {
@@ -39,39 +39,40 @@ async function deleteDocumentById(collectionName, id) {
     await dbo.collection(collectionName).deleteOne({ _id: ObjectId(id) })
 }
 
-async function getDocumentById(id,collectionName){
+async function getDocumentById(id, collectionName) {
     const dbo = await getdbo();
-    const result = await dbo.collection(collectionName).findOne({_id:ObjectId(id)})
+    const result = await dbo.collection(collectionName).findOne({ _id: ObjectId(id) })
     return result;
 }
 
-async function updateDocument(id,updateValues,collectionName){
+async function updateDocument(id, updateValues, collectionName) {
     const dbo = await getdbo();
-    await dbo.collection(collectionName).updateOne({_id:ObjectId(id)},updateValues)
+    await dbo.collection(collectionName).updateOne({ _id: ObjectId(id) }, updateValues)
 }
 
 async function findOne(collectionName, findObject) {
     const dbo = await getdbo();
     const result = await dbo.collection(collectionName).findOne(findObject);
     return result;
-  }
-  
-  async function deleteOne(collectionName, deleteObject) {
+}
+
+async function deleteOne(collectionName, deleteObject) {
     const dbo = await getdbo();
     const result = await dbo.collection(collectionName).deleteOne(deleteObject);
     if (result.deletedCount > 0) {
-      return true;
+        return true;
     } else {
-      return false;
+        return false;
     }
-    }
+}
+// chỗ find thì e hiểu là find mới ra được hết order, còn dfindone thì hieernthij được 1 cái thui pk a?
 
-    async function find(collectionName, findObject) {
-        const dbo = await getdbo();
-        // .sort({_id : -1}) mean is sort newest to oldest
-        // .sort({_id : 1}) is the opposite
-        const result = await dbo.collection(collectionName).find(findObject).sort({ time: -1 }).toArray();
-        return result;
-      }
+async function find(collectionName, findObject) {
+    const dbo = await getdbo();
+    // .sort({_id : -1}) mean is sort newest to oldest
+    // .sort({_id : 1}) is the opposite
+    const result = await dbo.collection(collectionName).find(findObject).sort({ time: -1 }).toArray();
+    return result;
+}
 
-module.exports = {searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, findOne, deleteOne, find}
+module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, findOne, deleteOne,find }
