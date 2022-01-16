@@ -65,14 +65,13 @@ async function deleteOne(collectionName, deleteObject) {
         return false;
     }
 }
-// chỗ find thì e hiểu là find mới ra được hết order, còn dfindone thì hieernthij được 1 cái thui pk a?
 
-async function find(collectionName, findObject) {
-    const dbo = await getdbo();
-    // .sort({_id : -1}) mean is sort newest to oldest
-    // .sort({_id : 1}) is the opposite
-    const result = await dbo.collection(collectionName).find(findObject).sort({ time: -1 }).toArray();
-    return result;
-}
+// async function find(collectionName, findObject) {
+//     const dbo = await getdbo();
+//     // .sort({_id : -1}) mean is sort newest to oldest
+//     // .sort({_id : 1}) is the opposite
+//     const result = await dbo.collection(collectionName).find(findObject).sort({ time: -1 }).toArray();
+//     return result;
+// }
 
-module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, findOne, deleteOne,find }
+module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, findOne, deleteOne}
