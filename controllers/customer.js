@@ -20,14 +20,14 @@ module.exports = router;
 async function SearchObject(searchInput, res, result, dbFunction, collectionName, searchInput, mess) {
     const resultSearch = await dbFunction(collectionName, searchInput)
     if (searchInput == null) {
-        res.render('index', { books: result })
+        res.render('home', { books: result })
     }
     else {
         if (resultSearch.length != 0) {
-            res.render('index', { books: resultSearch })
+            res.render('home', { books: resultSearch })
         } else {
             const message = ("Not found " + searchInput + mess)
-            res.render('index', { books: result, errorSearch: message })
+            res.render('home', { books: result, errorSearch: message })
         }
     }
 }
