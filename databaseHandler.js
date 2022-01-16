@@ -74,4 +74,16 @@ async function deleteOne(collectionName, deleteObject) {
 //     return result;
 // }
 
-module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, findOne, deleteOne}
+async function checkUserRole(nameIn, passIn){
+    const dbo = await getdbo();
+    const user = await dbo.collection('Users').findOne({userName:nameIn, password:passIn})
+    if (user == null) {
+        return '-1'
+    }
+    else {
+        console.log(user)
+        return user.role
+    }
+}
+
+module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, findOne, deleteOne, checkUserRole}

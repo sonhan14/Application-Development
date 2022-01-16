@@ -6,6 +6,16 @@ app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+app.post('/login', async (req, res) => {
+    const name = req.body.txtName
+    const pass = req.body.txtPass
+    const role = await checkUserRole(name, pass)
+    if (role == -1){ req.render('login')}
+    else { res.render('index')}
+})
+
+
+
 
 
 //cac request co chua /admin se di den controller customer
@@ -22,6 +32,7 @@ const loginControler = require('./controllers/login');
 app.use("/login", loginControler)
 
 const manageController= require("./controllers/manageCustomerOrder");
+const async = require("hbs/lib/async");
 app.use("/manageCustomerOrder", manageController);
 
 
