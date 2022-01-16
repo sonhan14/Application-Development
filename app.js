@@ -1,17 +1,28 @@
 const express = require("express");
 const app = express();
 const dbHandler = require("./databaseHandler");
+const session = require ('express-session')
 
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(session({
+    secret: 'huong123@@##&&',
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+    saveUninitialized: false,
+    resave: false
+}))
+
 
 app.post('/login', async (req, res) => {
     const name = req.body.txtName
     const pass = req.body.txtPass
     const role = await checkUserRole(name, pass)
     if (role == -1){ req.render('login')}
-    else { res.render('index')}
+    else { 
+        req.session.role == 'user'
+    }
+    //I'll continue because I'm so sleepy now
 })
 
 
@@ -33,6 +44,7 @@ app.use("/login", loginControler)
 
 const manageController= require("./controllers/manageCustomerOrder");
 const async = require("hbs/lib/async");
+const { cookie } = require("express/lib/response");
 app.use("/manageCustomerOrder", manageController);
 
 
