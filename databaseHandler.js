@@ -86,4 +86,17 @@ async function checkUserRole(nameIn, passIn){
     }
 }
 
-module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, findOne, deleteOne, checkUserRole}
+async function checkUser(nameIn,passwordIn){
+    const dbo = await getDbo();
+    const results = await dbo.collection("users").
+        findOne({$and:[{username:nameIn},{password:passwordIn}]});
+    if(results !=null)
+        return true;
+    else
+        return false;
+}
+
+module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, 
+    getAll, deleteDocumentById, getDocumentById, 
+    updateDocument, findOne, deleteOne, 
+    checkUserRole, checkUser}
