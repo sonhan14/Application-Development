@@ -2,8 +2,7 @@ const express = require("express");
 const app = express();
 const dbHandler = require("./databaseHandler");
 const session = require ('express-session')
-const { checkUserRole } = require('./databaseHandler')
-const { requiresLogin } = require('./databaseHandler')
+// const { checkUserRole } = require('./databaseHandler')
 
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
@@ -15,20 +14,15 @@ app.use(session({
     resave: false
 }))
 
+const userController = require("./controllers/customer");
+app.use("/", userController)
 
-app.post('/login', async (req, res) => {
-    const name = req.body.txtName
-    const pass = req.body.txtPass
-    const role = await checkUserRole(name, pass)
-    if (role == -1){ req.render('login')}
-    else { 
-        req.session.role ['user'] = {
-            name : name,
-            role : role
-        }
-        res.redirect('/')
-    }
-})
+const adminController = require("./controllers/admin");
+app.use("/admin", adminController);
+
+const async = require("hbs/lib/async");
+const { cookie } = require("express/lib/response");
+const res = require("express/lib/response");
 
 // app.get('/', requiresLogin, (req, res) => {
 //     const user = req.session['user']
@@ -39,29 +33,38 @@ app.get('/login', (req, res) => {
     res.render('login')
 })
 
+app.post('/login', async (req, res) => {
+    const name = req.body.txtName
+    const pass = req.body.txtPass
+    const role = await dbHandler.checkUserRole(name, pass);
+    // const user = await dbHandler.checkUser(name, pass)
+    // if (user == null) { res.render('login', { errorMsg: "Login failed!" }) }
+    if (role == -1){ res.render('login')}
+    else { 
+        req.session.user = {
+            name : name,
+            role : role
+        }
+        res.redirect('/')
+    }
+})
 
+app.post('/doRegister', async (req, res) => {
+    const nameIn = req.body.name;
+    const passIn = req.body.password;
+    const role = await checkUserRole(nameIn, passIn);
+    const found = await dbHandler.checkUserRegister(nameInput);
+    if (found) {
+        res.render('register', { passError: 'Username already exists!!!' })
+    }
 
-
-
-//cac request co chua /admin se di den controller customer
-const userController = require("./controllers/customer");
-app.use("/", userController)
-
-//cac request co chua /admin se di den controller admin
-const adminController = require("./controllers/admin");
-app.use("/admin", adminController);
-
-
-//cac request co chua /admin se di den controller admin
-// const loginControler = require('./controllers/login');
-// app.use("/login", loginControler)
-
-const manageController= require("./controllers/manageCustomerOrder");
-const async = require("hbs/lib/async");
-const { cookie } = require("express/lib/response");
-const res = require("express/lib/response");
-app.use("/manageCustomerOrder", manageController);
-
+    if (passInput.length < 10) {
+        res.render('register', { passError: 'Password must  more than 10 characters' })
+    }
+    const newUser = { username: nameIn, password: passIn };
+    await dbHandler.insertOneIntoCollection("users", newUser);
+    res.render('login');
+})
 
 
 

@@ -15,9 +15,6 @@ router.get('/', async (req, res) => {
 
 })
 
-module.exports = router;
-
-
 async function SearchObject(searchInput, res, truyen, ITbook, dbFunction, collectionName, searchInput, mess) {
     const resultSearch = await dbFunction(collectionName, searchInput)
     if (searchInput == null) {
@@ -32,3 +29,5 @@ async function SearchObject(searchInput, res, truyen, ITbook, dbFunction, collec
         }
     }
 }
+
+module.exports = router;
