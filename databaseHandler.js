@@ -28,6 +28,12 @@ async function searchObjectbyPrice(collectionName, price) {
     return result
 }
 
+async function searchObjectbyCategory(collectionName, category) {
+    const dbo = await getdbo();
+    const result = await dbo.collection(collectionName).find({ category: ObjectId(category) }).toArray()
+    return result
+}
+
 async function getAll(collectionName) {
     const dbo = await getdbo();
     const result = await dbo.collection(collectionName).find({ }).sort({time : -1}).toArray()
@@ -99,4 +105,4 @@ async function checkUser(nameIn,passwordIn){
 module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, 
     getAll, deleteDocumentById, getDocumentById, 
     updateDocument, findOne, deleteOne, 
-    checkUserRole, checkUser}
+    checkUserRole, checkUser,searchObjectbyCategory}
