@@ -37,18 +37,22 @@ app.use("/", userController);
 const adminController = require("./controllers/admin");
 app.use("/admin", adminController);
 
-
 //cac request co chua /admin se di den controller admin
-const loginControler = require('./controllers/login');
-app.use("/login", loginControler)
+const loginControler = require("./controllers/login");
+app.use("/login", loginControler);
 
+<<<<<<< Updated upstream
 const manageController= require("./controllers/manageCustomerOrder");
 const async = require("hbs/lib/async");
 const { cookie } = require("express/lib/response");
+=======
+const manageController = require("./controllers/manageCustomerOrder");
+>>>>>>> Stashed changes
 app.use("/manageCustomerOrder", manageController);
 
-
-
+// app.get("/home", (req, res) => {
+//   res.render("home");
+// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
