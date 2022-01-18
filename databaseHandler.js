@@ -82,22 +82,13 @@ async function deleteOne(collectionName, deleteObject) {
 
 async function checkUserRole(nameIn, passIn){
     const dbo = await getdbo();
-    dbo.collection('Users').findOne({userName:nameIn, password:passIn}, (result) => {
-        if(!result) {
-            return -1;
-        } else {
-            return result.role;
-        }
-    })
-    // console.log("Database execute")
-    // if (user == null) {
-    //     console.log("Database null")
-    //     return -1;
-    // }
-    // else {
-    //     console.log("Check database:" + user)
-    //     return user.role;
-    // }
+    const user = await dbo.collection('Users').findOne({userName:nameIn, password:passIn});
+    if (user == null) {
+        return -1;
+    }
+    else {
+        return user.role;
+    }
 }
 
 async function checkUser(nameIn,passwordIn){
