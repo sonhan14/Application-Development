@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const dbHandler = require("./databaseHandler");
 const session = require ('express-session')
-// const { checkUserRole } = require('./databaseHandler')
 
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
@@ -15,7 +14,9 @@ app.use(session({
 }))
 
 const userController = require("./controllers/customer");
-app.use("/", userController)
+app.use("/customer", userController);
+app.use("/", userController); 
+
 
 const adminController = require("./controllers/admin");
 app.use("/admin", adminController);
@@ -29,6 +30,33 @@ const res = require("express/lib/response");
 //     res.render('index', {userInfo : user})
 // })
 
+
+app.get('/', async (req, res) => {
+    const truyen = await dbHandler.searchObjectbyCategory("Book","61e570c7ba41b21dee1346b3")
+    const ITbook = await dbHandler.searchObjectbyCategory("Book", "61e570ddba41b21dee1346b4")
+    const searchInput = req.query.search
+    if (isNaN(Number.parseFloat(searchInput)) == false) {
+        await SearchObject(searchInput, res, truyen, ITbook,dbHandler.searchObjectbyPrice, "Book", Number.parseFloat(searchInput), " VND")
+    } else {
+        await SearchObject(searchInput, res, truyen, ITbook,dbHandler.searchObjectbyName, "Book", searchInput, "")
+    }
+
+})
+async function SearchObject(searchInput, res, truyen, ITbook, dbFunction, collectionName, searchInput, mess) {
+    const resultSearch = await dbFunction(collectionName, searchInput)
+    if (searchInput == null) {
+        res.render('home', { truyens: truyen, ITbooks: ITbook })
+    }
+    else {
+        if (resultSearch.length != 0) {
+            res.render('home', { truyens: truyen, ITbooks: ITbook })
+        } else {
+            const message = ("Not found " + searchInput + mess)
+            res.render('home', { truyens: truyen, ITbooks: ITbook, errorSearch: message })
+        }
+    }
+}
+
 app.get('/login', (req, res) => {
     res.render('login')
 })
@@ -39,6 +67,7 @@ app.post('/login', async (req, res) => {
     const role = await dbHandler.checkUserRole(name, pass);
     // const user = await dbHandler.checkUser(name, pass)
     // if (user == null) { res.render('login', { errorMsg: "Login failed!" }) }
+    console.log(role)
     if (role == -1){ res.render('login')}
     else { 
         req.session.user = {
