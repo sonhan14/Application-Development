@@ -7,11 +7,11 @@ app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(session({
-        secret: "huong123@@##&&",
-        cookie: { maxAge: 1000 * 60 * 60 * 24 },
-        saveUninitialized: false,
-        resave: false,
-    })
+    secret: "huong123@@##&&",
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+    saveUninitialized: false,
+    resave: false,
+})
 );
 
 // app.get('/', requiresLogin, (req, res) => {
@@ -88,11 +88,15 @@ app.post("/login", async (req, res) => {
     if (role == -1) {
         res.render("login");
     } else {
-        req.session.user = {
-            name: name,
-            role: role,
-        };
-        res.redirect("/");
+        console.log(role)
+        if (role == -1) { res.render('login', { errorMsg: "Login failed!" }) }
+        else {
+            req.session.user = {
+                name: name,
+                role: role,
+            };
+            res.redirect("/");
+        }
     }
 });
 
