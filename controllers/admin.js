@@ -2,17 +2,31 @@ const express = require('express')
 const { insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, } = require('../databaseHandler')
 const router = express.Router()
 const dbHandler = require("../databaseHandler");
-const {ObjectID} = require("mongodb");
+const { ObjectID } = require("mongodb");
+
+//middleware
+router.use((req, res, next) => {
+    const { user } = req.session; //same as: user = req.session.user
+    if (user) {
+        if (user.role == "admin") {
+            next("route");//chay xuong router cung URL
+        } else { res.sendStatus (404); }
+    } else {
+        res.redirect('/login');
+    }
+})
 
 
 //neu request la: /admin
-router.get('/', (req, res) => {
-    res.render('adminIndex')
+router.get('/', (req, res, next) => {
+    res.send("This is admin page")
 })
 
 //neu request la: /admin/addUser
 router.get('/addUser', (req, res) => {
-    res.render('addUser')
+    res.send("This is add user page!")
+    // res.render('addUser')
+    //thế thì e sẽ phải tạo thêm 2 trang là admnii và admin adduser a nhỉ
 })
 
 //Submit add User

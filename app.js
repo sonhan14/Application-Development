@@ -80,38 +80,39 @@ async function SearchObject(
     }
 }
 
-app.post("/login", async (req, res) => {
-    const name = req.body.txtName;
-    const pass = req.body.txtPass;
-    const role = await dbHandler.checkUserRole(name, pass);
-    console.log(role);
-    if (role == -1) {
-        res.render("login");
-    } else {
-        console.log(role)
-        if (role == -1) { res.render('login', { errorMsg: "Login failed!" }) }
-        else {
-            req.session.user = {
-                name: name,
-                role: role,
-            };
-            res.redirect("/");
-        }
-    }
-});
-
 app.get("/login", (req, res) => {
     res.render("login");
 });
 
+app.post("/login", async (req, res) => {
+    const name = req.body.txtName;
+    const pass = req.body.txtPass;
+    const role = await dbHandler.checkUserRole(name, pass);
+    console.log("Username: " + name);
+    console.log("Password: " + pass);
+    console.log("Role: " + req.body.Role);
+    if (role == -1) { res.render('login', { errorMsg: "Login failed!" }) }
+    else {
+        if(req.body.Role == role) {
+            req.session.user = {
+                name: name,
+                role: role,
+            };
+            console.log(req.session.user);
+            res.redirect("/");
+        } else {
+            res.render('login', { errorMsg: "not auth!!" })
+        }
+    }
+});
+
 //cac request co chua /admin se di den controller customer
 const userController = require("./controllers/customer");
-app.use("/", userController);
+app.use("/customer", userController);
 
 //cac request co chua /admin se di den controller admin
 const adminController = require("./controllers/admin");
 app.use("/admin", adminController);
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
