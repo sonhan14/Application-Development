@@ -14,9 +14,10 @@ app.use(session({
 }))
 
 const userController = require("./controllers/customer");
-app.use("/customer", userController);
 app.use("/", userController); 
 
+const cartController = require('./controllers/cart');
+app.use("/cart", cartController)
 
 const adminController = require("./controllers/admin");
 app.use("/admin", adminController);
@@ -45,14 +46,14 @@ app.get('/', async (req, res) => {
 async function SearchObject(searchInput, res, truyen, ITbook, dbFunction, collectionName, searchInput, mess) {
     const resultSearch = await dbFunction(collectionName, searchInput)
     if (searchInput == null) {
-        res.render('home', { truyens: truyen, ITbooks: ITbook })
+        res.render('index', { truyens: truyen, ITbooks: ITbook })
     }
     else {
         if (resultSearch.length != 0) {
-            res.render('home', { truyens: truyen, ITbooks: ITbook })
+            res.render('index', { truyens: truyen, ITbooks: ITbook })
         } else {
             const message = ("Not found " + searchInput + mess)
-            res.render('home', { truyens: truyen, ITbooks: ITbook, errorSearch: message })
+            res.render('index', { truyens: truyen, ITbooks: ITbook, errorSearch: message })
         }
     }
 }
@@ -76,6 +77,10 @@ app.post('/login', async (req, res) => {
         }
         res.redirect('/')
     }
+})
+
+app.get('/doRegister', (req,res)=>{
+    res.render('register')
 })
 
 app.post('/doRegister', async (req, res) => {

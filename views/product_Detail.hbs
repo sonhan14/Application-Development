@@ -18,7 +18,7 @@
             <div class="product-imgs">
                 <div class="img-display">
                     <div class="img-showcase">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCVIbq6_HZMOmNZN89tIEkutJf3_dRtXxDMA&usqp=CAU"
+                        <img src="{{details.pic}}"
                             alt="">
                     </div>
                 </div>
@@ -60,30 +60,29 @@
 
                 <div class="product-price">
                     <p class="last-price">Old Price: <span>$257.00</span></p>
-                    <p class="new-price">New Price: <span>$249.00 (5%)</span></p>
+                    <p class="new-price">New Price: <span>{{details.price}} VND</span></p>
                 </div>
 
                 <div class="product-detail">
                     <h2>about this item: </h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo eveniet veniam tempora fuga tenetur
-                        placeat sapiente architecto illum soluta consequuntur, aspernatur quidem at sequi ipsa!</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, perferendis eius.
-                        Dignissimos, labore suscipit. Unde.</p>
+                    <p>{{details.des}}</p>
                     <ul>
-                        <li>Color: <span>green</span></li>
                         <li>Available: <span>in stock</span></li>
-                        <li>Category: <span>book</span></li>
+                        <li>Category: <span>{{category.name}}</span></li>
                         <li>Shipping Area: <span>All over the world</span></li>
                         <li>Shipping Fee: <span>Free</span></li>
                     </ul>
                 </div>
 
                 <div class="purchase-info">
-                    <input type="number" min="0" value="1">
-                    <button type="button" class="btn">
+                    <form action="/cart" method="POST">
+                    <input type="number" name="qty" min="0" value="1">
+                    <input type="hidden" name="bookID" id="bookID" value="{{details._id}}">
+                    <button type="submit" class="btn">
                         Add to Cart <i class="fas fa-shopping-cart"></i>
                     </button>
                     <button type="button" class="btn">Compare</button>
+                    </form>
                 </div>
 
                 <div class="social-links">

@@ -1,5 +1,33 @@
 const async = require('hbs/lib/async');
 const { MongoClient, ObjectId } = require('mongodb');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema({
+    userName: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    cart: {
+        items: [{
+            productId: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Book',
+                required: true
+            },
+            qty: {
+                type: Number,
+                required: true
+            }
+        }],
+        totalPrice: Number
+    }
+});
 
 const URL = 'mongodb+srv://sonhan14:trinhquocanh011@cluster0.dhmh6.mongodb.net/test';
 const DATABASE_NAME = "FPTBook-ApplicationDev-Group2"
@@ -55,6 +83,7 @@ async function updateDocument(id, updateValues, collectionName) {
     const dbo = await getdbo();
     await dbo.collection(collectionName).updateOne({ _id: ObjectId(id) }, updateValues)
 }
+
 
 async function findOne(collectionName, findObject) {
     const dbo = await getdbo();
