@@ -1,5 +1,33 @@
 const async = require('hbs/lib/async');
 const { MongoClient, ObjectId } = require('mongodb');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema({
+    userName: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    cart: {
+        items: [{
+            productId: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Book',
+                required: true
+            },
+            qty: {
+                type: Number,
+                required: true
+            }
+        }],
+        totalPrice: Number
+    }
+});
 
 const URL = 'mongodb+srv://sonhan14:trinhquocanh011@cluster0.dhmh6.mongodb.net/test';
 const DATABASE_NAME = "FPTBook-ApplicationDev-Group2"
@@ -28,6 +56,12 @@ async function searchObjectbyPrice(collectionName, price) {
     return result
 }
 
+async function searchObjectbyCategory(collectionName, category) {
+    const dbo = await getdbo();
+    const result = await dbo.collection(collectionName).find({ category: ObjectId(category) }).toArray()
+    return result
+}
+
 async function getAll(collectionName) {
     const dbo = await getdbo();
     const result = await dbo.collection(collectionName).find({ }).sort({time : -1}).toArray()
@@ -49,6 +83,7 @@ async function updateDocument(id, updateValues, collectionName) {
     const dbo = await getdbo();
     await dbo.collection(collectionName).updateOne({ _id: ObjectId(id) }, updateValues)
 }
+
 
 async function findOne(collectionName, findObject) {
     const dbo = await getdbo();
@@ -76,14 +111,26 @@ async function deleteOne(collectionName, deleteObject) {
 
 async function checkUserRole(nameIn, passIn){
     const dbo = await getdbo();
-    const user = await dbo.collection('Users').findOne({userName:nameIn, password:passIn})
+    const user = await dbo.collection('Users').findOne({userName:nameIn, password:passIn});
     if (user == null) {
-        return '-1'
+        return -1;
     }
     else {
-        console.log(user)
-        return user.role
+        return user.role;
     }
 }
 
-module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, findOne, deleteOne, checkUserRole}
+async function checkUser(nameIn,passwordIn){
+    const dbo = await getDbo();
+    const results = await dbo.collection("Users").
+        findOne({$and:[{username:nameIn},{password:passwordIn}]});
+    if(results !=null)
+        return true;
+    else
+        return false;
+}
+
+module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, 
+    getAll, deleteDocumentById, getDocumentById, 
+    updateDocument, findOne, deleteOne, 
+    checkUserRole, checkUser,searchObjectbyCategory}
