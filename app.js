@@ -6,27 +6,13 @@ const session = require("express-session");
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-app.use(
-  session({
-    secret: "huong123@@##&&",
-    cookie: { maxAge: 1000 * 60 * 60 * 24 },
-    saveUninitialized: false,
-    resave: false,
-  })
+app.use(session({
+        secret: "huong123@@##&&",
+        cookie: { maxAge: 1000 * 60 * 60 * 24 },
+        saveUninitialized: false,
+        resave: false,
+    })
 );
-
-const userController = require("./controllers/customer");
-app.use("/", userController);
-
-const cartController = require("./controllers/cart");
-app.use("/cart", cartController);
-
-const adminController = require("./controllers/admin");
-app.use("/admin", adminController);
-
-const async = require("hbs/lib/async");
-const { cookie } = require("express/lib/response");
-const res = require("express/lib/response");
 
 // app.get('/', requiresLogin, (req, res) => {
 //     const user = req.session['user']
@@ -34,134 +20,94 @@ const res = require("express/lib/response");
 // })
 
 app.get("/", async (req, res) => {
-  const truyen = await dbHandler.searchObjectbyCategory(
-    "Book",
-    "61e570c7ba41b21dee1346b3"
-  );
-  const ITbook = await dbHandler.searchObjectbyCategory(
-    "Book",
-    "61e570ddba41b21dee1346b4"
-  );
-  const searchInput = req.query.search;
-  if (isNaN(Number.parseFloat(searchInput)) == false) {
-    await SearchObject(
-      searchInput,
-      res,
-      truyen,
-      ITbook,
-      dbHandler.searchObjectbyPrice,
-      "Book",
-      Number.parseFloat(searchInput),
-      " VND"
+    const truyen = await dbHandler.searchObjectbyCategory(
+        "Book",
+        "61e570c7ba41b21dee1346b3"
     );
-  } else {
-    await SearchObject(
-      searchInput,
-      res,
-      truyen,
-      ITbook,
-      dbHandler.searchObjectbyName,
-      "Book",
-      searchInput,
-      ""
+    const ITbook = await dbHandler.searchObjectbyCategory(
+        "Book",
+        "61e570ddba41b21dee1346b4"
     );
-  }
+    const searchInput = req.query.search;
+    if (isNaN(Number.parseFloat(searchInput)) == false) {
+        await SearchObject(
+            searchInput,
+            res,
+            truyen,
+            ITbook,
+            dbHandler.searchObjectbyPrice,
+            "Book",
+            Number.parseFloat(searchInput),
+            " VND"
+        );
+    } else {
+        await SearchObject(
+            searchInput,
+            res,
+            truyen,
+            ITbook,
+            dbHandler.searchObjectbyName,
+            "Book",
+            searchInput,
+            ""
+        );
+    }
 });
 async function SearchObject(
-  searchInput,
-  res,
-  truyen,
-  ITbook,
-  dbFunction,
-  collectionName,
-  searchInput,
-  mess
+    searchInput,
+    res,
+    truyen,
+    ITbook,
+    dbFunction,
+    collectionName,
+    searchInput,
+    mess
 ) {
-  const resultSearch = await dbFunction(collectionName, searchInput);
-  if (searchInput == null) {
-    res.render("index", { truyens: truyen, ITbooks: ITbook });
-  } else {
-    if (resultSearch.length != 0) {
-      res.render("index", { truyens: truyen, ITbooks: ITbook });
+    const resultSearch = await dbFunction(collectionName, searchInput);
+    if (searchInput == null) {
+        res.render("index", { truyens: truyen, ITbooks: ITbook });
     } else {
-      const message = "Not found " + searchInput + mess;
-      res.render("index", {
-        truyens: truyen,
-        ITbooks: ITbook,
-        errorSearch: message,
-      });
+        if (resultSearch.length != 0) {
+            res.render("index", { truyens: truyen, ITbooks: ITbook });
+        } else {
+            const message = "Not found " + searchInput + mess;
+            res.render("index", {
+                truyens: truyen,
+                ITbooks: ITbook,
+                errorSearch: message,
+            });
+        }
     }
-  }
 }
 
-app.get("/login", (req, res) => {
-  res.render("login");
-});
-
 app.post("/login", async (req, res) => {
-  const name = req.body.txtName;
-  const pass = req.body.txtPass;
-  const role = await dbHandler.checkUserRole(name, pass);
-  // const user = await dbHandler.checkUser(name, pass)
-  // if (user == null) { res.render('login', { errorMsg: "Login failed!" }) }
-  console.log(role);
-  if (role == -1) {
+    const name = req.body.txtName;
+    const pass = req.body.txtPass;
+    const role = await dbHandler.checkUserRole(name, pass);
+    console.log(role);
+    if (role == -1) {
+        res.render("login");
+    } else {
+        req.session.user = {
+            name: name,
+            role: role,
+        };
+        res.redirect("/");
+    }
+});
+
+app.get("/login", (req, res) => {
     res.render("login");
-  } else {
-    req.session.user = {
-      name: name,
-      role: role,
-    };
-    res.redirect("/");
-  }
 });
 
-app.get("/doRegister", (req, res) => {
-  res.render("register");
-});
+//cac request co chua /admin se di den controller customer
+const userController = require("./controllers/customer");
+app.use("/", userController);
 
-app.post("/doRegister", async (req, res) => {
-  const nameIn = req.body.name;
-  const passIn = req.body.password;
-  const role = await checkUserRole(nameIn, passIn);
-  const found = await dbHandler.checkUserRegister(nameInput);
-  if (found) {
-    res.render("register", { passError: "Username already exists!!!" });
-  }
+//cac request co chua /admin se di den controller admin
+const adminController = require("./controllers/admin");
+app.use("/admin", adminController);
 
-  //cac request co chua /admin se di den controller customer
-  const userController = require("./controllers/customer");
-  app.use("/", userController);
-
-  //cac request co chua /admin se di den controller admin
-  const adminController = require("./controllers/admin");
-  app.use("/admin", adminController);
-
-  //cac request co chua /admin se di den controller admin
-  const loginControler = require("./controllers/login");
-  app.use("/login", loginControler);
-
-  const manageController = require("./controllers/manageCustomerOrder");
-  const async = require("hbs/lib/async");
-  const { cookie } = require("express/lib/response");
-
-  const manageController = require("./controllers/manageCustomerOrder");
-
-  app.use("/manageCustomerOrder", manageController);
-
-  // app.get("/home", (req, res) => {
-  //   res.render("home");
-  // });
-
-  if (passInput.length < 10) {
-    res.render("register", {
-      passError: "Password must  more than 10 characters",
-    });
-  }
-  const newUser = { username: nameIn, password: passIn };
-  await dbHandler.insertOneIntoCollection("users", newUser);
-  res.render("login");
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
