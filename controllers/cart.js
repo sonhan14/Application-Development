@@ -4,15 +4,7 @@ const dbHandler = require('../databaseHandler')
 const router = express.Router()
 router.use(express.static("public"));
 
-const session = require("express-session");
 
-router.use(session({
-    secret: "huong123@@##&&",
-    cookie: { maxAge: 1000 * 60 * 60 * 24 },
-    saveUninitialized: false,
-    resave: false,
-})
-);
 
 // router.use((req, res, next) => {
 //     console.log(req.session);
@@ -30,51 +22,74 @@ router.use(session({
 //     res.send("This is customer page!")
 // });
 
+// router.post('/',(req,res)=>{
+//     //xem nguoi dung mua gi: Milk hay Coffee
+//     const product = req.body.bookID
+//     //lay gio hang trong session
+//     let cart = req.session["cart"]
+//     //chua co gio hang trong session, day se la sp dau tien
+//     if(!cart){
+//         let dict = {}
+//         dict[product] = 1
+//         req.session["cart"] = dict
+//         console.log("Ban da mua:" + product + ", so luong: " + dict[product])
+//     }else{
+//         dict = req.session["cart"]
+//         //co lay product trong dict
+//         var oldProduct = dict[product]
+//         //kiem tra xem product da co trong Dict
+//         if(!oldProduct)
+//             dict[product] = 1
+//         else{
+//             dict[product] = parseInt(oldProduct) +1
+//         }
+//         req.session["cart"] = dict
+//         console.log("Ban da mua:" + product + ", so luong: " + dict[product])
+//     }
+//     res.redirect('/details?id=' + product)
+// }
+// )
+
 router.post("/", async (req, res) => {
     const bookID = req.body.bookID
     const book = await dbHandler.getDocumentById(bookID, "Book")
     let cart = req.session["cart"]
     //chua co gio hang trong session, day se la sp dau tien
     if (!cart) {
-        console.log("first book")
-        let dict = { books: [], totalPrice: 0 };
+        let dict = { books: [], totalPrice: book.price };
         book.qty = 1;
+        book.money = book.price * book.qty
         dict.books.push(book);
         req.session["cart"] = dict
         console.log(dict)
     } else {
-        console.log("old book")
         dict = req.session["cart"]
-
         var oldBookIndex = dict.books.findIndex(b => b._id == book._id)
 
         if (oldBookIndex == -1) {
             book.qty = 1;
+            book.money = book.price * book.qty
             dict.books.push(book);
         }
-        else {
+        else { 
             const oldBook = dict.books[oldBookIndex];
             oldBook.qty += 1;
+            oldBook.money = oldBook.price * oldBook.qty
         }
+        dict.totalPrice += book.price;
         req.session["cart"] = dict
-        console.log("cap nhat thanh cong")
         console.log(dict)
 
     }
+    res.redirect('/details?id=' + bookID)
 })
 
 router.get('/viewCart', (req, res) => {
     const cart = req.session["cart"]
-    //Mot array chua cac san pham trong gio hang
-    let spDaMua = []
-    //neu khach hang da mua it nhat 1 sp
     if (cart) {
-        const dict = req.session["cart"]
-        for (var key in dict) {
-            spDaMua.push({ tensp: key, soLuong: dict[key] })
-        }
+        res.render('ShoppingCart', { order: cart})
     }
-    res.render('ShoppingCart', { books: spDaMua })
+    
 })
 
 
