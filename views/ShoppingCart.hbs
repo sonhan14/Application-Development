@@ -66,13 +66,14 @@
         <th>Quantity</th>
         <th>Subtotal</th>
       </tr>
+      {{#each books}}
       <tr>
         <td>
           <div class="card-infor">
-            <img src="./img/p.jpeg" alt="">
+            <img src="{{pic}}" alt="">
             <div class="description">
-              <p>connan tap 1000 tuyet voi</p>
-              <small>price: 150$</small><br>
+              <p>{{name}}</p>
+              <small>price: {{price}}</small><br>
               <a href="">remove</a>
             </div>
           </div>
@@ -80,35 +81,7 @@
         <td> <input type="number" value="1"></td>
         <td>150$</td>
       </tr>
-      <tr>
-        <td>
-          <div class="card-infor">
-            <img src="./img/2.jpeg" alt="">
-            <div class="description">
-              <p>connan tap 1000 tuyet voi</p>
-              <small>price: 150$</small><br>
-              <a href="">remove</a>
-            </div>
-          </div>
-        </td>
-        <td> <input type="number" value="1"></td>
-        <td>150$</td>
-      </tr>
-      <tr>
-        <td>
-          <div class="card-infor">
-            <img src="./img/3.jpeg" alt="">
-            <div class="description">
-              <p>connan tap 1000 tuyet voi</p>
-              <small>price: 150$</small><br>
-              <a href="">remove</a>
-            </div>
-          </div>
-        </td>
-        <td> <input type="number" value="1"></td>
-        <td>150$</td>
-      </tr>
-
+      {{/each}}
     </table>
     <div class="total-price">
       <table class="table-striped ">
