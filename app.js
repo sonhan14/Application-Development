@@ -14,11 +14,6 @@ app.use(session({
 })
 );
 
-// app.get('/', requiresLogin, (req, res) => {
-//     const user = req.session['user']
-//     res.render('index', {userInfo : user})
-// })
-
 app.get("/", async (req, res) => {
     const truyen = await dbHandler.searchObjectbyCategory(
         "Book",
@@ -80,6 +75,16 @@ async function SearchObject(
     }
 }
 
+// app.get('/', requiresLogin, (req, res) => {
+//     const user = req.session['user']
+//     res.render('index', {userInfo : user})
+// })
+
+const shoppingCart = require("./controllers/cart");
+app.use("/shoppingCart", shoppingCart);
+
+
+
 app.get("/login", (req, res) => {
     res.render("login");
 });
@@ -113,6 +118,7 @@ app.use("/customer", userController);
 //cac request co chua /admin se di den controller admin
 const adminController = require("./controllers/admin");
 app.use("/admin", adminController);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
