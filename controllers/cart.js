@@ -32,24 +32,24 @@ router.use(session({
 
 router.post("/", async (req, res) => {
     const bookID = req.body.bookID
-    const book = await dbHandler.getDocumentById(bookID,"Book")
+    const book = await dbHandler.getDocumentById(bookID, "Book")
     let cart = req.session["cart"]
     //chua co gio hang trong session, day se la sp dau tien
     if (!cart) {
+        console.log("first book")
         let dict = { books: [], totalPrice: 0 };
         book.qty = 1;
         dict.books.push(book);
         req.session["cart"] = dict
         console.log(dict)
     } else {
+        console.log("old book")
         dict = req.session["cart"]
-        //co lay product trong dict
+
         var oldBookIndex = dict.books.findIndex(b => b._id == book._id)
-        //kiem tra xem product da co trong Dict
-        if (oldBookIndex == -1)
-        {
+
+        if (oldBookIndex == -1) {
             book.qty = 1;
-            // dict[book] = 1
             dict.books.push(book);
         }
         else {
@@ -59,7 +59,7 @@ router.post("/", async (req, res) => {
         req.session["cart"] = dict
         console.log("cap nhat thanh cong")
         console.log(dict)
-    
+
     }
 })
 
