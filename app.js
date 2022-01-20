@@ -151,10 +151,6 @@ app.use("/", userController);
 const adminController = require("./controllers/admin");
 app.use("/admin", adminController);
 
-app.get("/manageCustomerOrder", (req, res) => {
-  res.render("manageCustomerOrder");
-});
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
-      console.log("Server is running! " + PORT)
+console.log("Server is running! " + PORT);
