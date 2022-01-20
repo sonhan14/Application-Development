@@ -75,9 +75,8 @@
                 </div>
 
                 <div class="purchase-info">
-                    <form action="/cart" method="POST">
-                    <input type="number" name="qty" min="0" value="1">
-                    <input type="hidden" name="bookID" id="bookID" value="{{details._id}}">
+                    <form action="/shoppingCart" method="POST">
+                    <input type="hidden" name="bookID" value="{{details._id}}">
                     <button type="submit" class="btn">
                         Add to Cart <i class="fas fa-shopping-cart"></i>
                     </button>
