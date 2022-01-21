@@ -26,17 +26,18 @@
 
         <div class="header-1">
 
-            <a href="#" class="logo"> <i class="fas fa-book"></i> FPTBook </a>
+            <a href="/" class="logo"> <i class="fas fa-book"></i> FPTBook </a>
 
-            <form action="" class="search-form">
-                <input type="search" name="" placeholder="search here..." id="search-box">
+            <form action="/search?name=" method="get" class="search-form">
+                <input type="search" name="searchInput" placeholder="search here..." id="search-box">
                 <label for="search-box" class="fas fa-search"></label>
+                <input type="submit">
             </form>
 
             <div class="icons">
                 <div id="search-btn" class="fas fa-search"></div>
                 <a href="#" class="fas fa-heart"></a>
-                <a href="#" class="fas fa-shopping-cart"></a>
+                <a href="/shoppingCart/viewCart" class="fas fa-shopping-cart"></a>
                 <div id="login-btn" class="fas fa-user">
                     <span class="header__navbar-user-name">hoai nam</span>
 
@@ -80,43 +81,13 @@
 
 
         <div class="products-container">
-
+            {{#each searchBook}}
             <div class="product" data-name="p-1">
-                <img src="/img/1.jpeg" alt="">
-                <h3>conan 1</h3>
-                <div class="price">$2.00</div>
+                <img src="{{pic}}" alt="">
+                <h3>{{name}}</h3>
+                <div class="price">{{price}}</div>
             </div>
-
-            <div class="product" data-name="p-2">
-                <img src="/img/2.jpeg" alt="">
-                <h3>conan 2</h3>
-                <div class="price">$2.00</div>
-            </div>
-
-            <div class="product" data-name="p-3">
-                <img src="/img/3.jpeg" alt="">
-                <h3>conan 3</h3>
-                <div class="price">$2.00</div>
-            </div>
-
-            <div class="product" data-name="p-4">
-                <img src="/img/4.jpeg" alt="">
-                <h3>conan 4</h3>
-                <div class="price">$2.00</div>
-            </div>
-
-            <div class="product" data-name="p-5">
-                <img src="/img/4.jpeg" alt="">
-                <h3>conan 5</h3>
-                <div class="price">$2.00</div>
-            </div>
-
-            <div class="product" data-name="p-6">
-                <img src="/img/6.jpeg" alt="">
-                <h3>conan 6</h3>
-                <div class="price">$2.00</div>
-            </div>
-
+            {{/each}}
         </div>
 
     </div>

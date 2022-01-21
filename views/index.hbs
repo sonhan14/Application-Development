@@ -25,17 +25,18 @@
 
         <div class="header-1">
 
-            <a href="#" class="logo"> <i class="fas fa-book"></i> FPTBook </a>
+            <a href="/" class="logo"> <i class="fas fa-book"></i> FPTBook </a>
 
-            <form action="" class="search-form">
-                <input type="search" name="" placeholder="search here..." id="search-box">
+            <form action="/search?name=" method="get" class="search-form">
+                <input type="search" name="searchInput" placeholder="search here..." id="search-box">
                 <label for="search-box" class="fas fa-search"></label>
+                <input type="submit">
             </form>
 
             <div class="icons">
                 <div id="search-btn" class="fas fa-search"></div>
                 <a href="#" class="fas fa-heart"></a>
-                <a href="#" class="fas fa-shopping-cart"></a>
+                <a href="/shoppingCart/viewCart" class="fas fa-shopping-cart"></a>
                 <div id="login-btn" class="fas fa-user">
                     <span class="header__navbar-user-name">hoai nam</span>
 

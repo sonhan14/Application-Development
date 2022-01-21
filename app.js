@@ -29,7 +29,9 @@ app.use("/", customerController);
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
 
-
+app.get('/search', (req,res)=>{
+  res.render('search')
+})
 
 app.get("/login", (req, res) => {
     res.render("login");

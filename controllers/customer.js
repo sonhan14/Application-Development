@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const res = require('express/lib/response');
 const async = require('hbs/lib/async')
 
 const dbHandler = require('../databaseHandler')
@@ -14,7 +15,20 @@ router.get("/", async (req, res) => {
         "Book",
         "61e570ddba41b21dee1346b4"
     );
-    const searchInput = req.query.search;
+    res.render("index", { truyens: truyen, ITbooks: ITbook });
+})
+
+
+router.get("/search", async (req, res) => {
+    const truyen = await dbHandler.searchObjectbyCategory(
+        "Book",
+        "61e570c7ba41b21dee1346b3"
+    );
+    const ITbook = await dbHandler.searchObjectbyCategory(
+        "Book",
+        "61e570ddba41b21dee1346b4"
+    );
+    const searchInput = req.query.searchInput;
     if (isNaN(Number.parseFloat(searchInput)) == false) {
         await SearchObject(
             searchInput,
@@ -39,6 +53,10 @@ router.get("/", async (req, res) => {
         );
     }
 });
+
+
+
+
 async function SearchObject(
     searchInput,
     res,
@@ -50,27 +68,25 @@ async function SearchObject(
     mess
 ) {
     const resultSearch = await dbFunction(collectionName, searchInput);
-    if (searchInput == null) {
-        res.render("index", { truyens: truyen, ITbooks: ITbook });
+    if (resultSearch.length != 0) {
+        res.render("search", {searchBook: resultSearch, truyens: truyen, ITbooks: ITbook });
     } else {
-        if (resultSearch.length != 0) {
-            res.render("index", { truyens: truyen, ITbooks: ITbook });
-        } else {
-            const message = "Not found " + searchInput + mess;
-            res.render("index", {
-                truyens: truyen,
-                ITbooks: ITbook,
-                errorSearch: message,
-            });
-        }
+        const message = "Not found " + searchInput + mess;
+        res.render("search", {
+            truyens: truyen,
+            ITbooks: ITbook,
+            errorSearch: message,
+        });
     }
+
 }
 
-router.get('/details',async(req, res) => {
+
+router.get('/details', async (req, res) => {
     const id = req.query.id
-    const result = await dbHandler.getDocumentById(id,"Book")
-    const category = await dbHandler.getDocumentById(result.category,"Category")
-    res.render('product_Detail', {details: result, category: category})
+    const result = await dbHandler.getDocumentById(id, "Book")
+    const category = await dbHandler.getDocumentById(result.category, "Category")
+    res.render('product_Detail', { details: result, category: category })
 })
 
 module.exports = router;
