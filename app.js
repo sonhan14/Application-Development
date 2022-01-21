@@ -60,30 +60,6 @@ app.post("/login", async (req, res) => {
     })
 
 
-
-app.post("/login", async (req, res) => {
-  const name = req.body.txtName;
-  const pass = req.body.txtPass;
-  const role = await dbHandler.checkUserRole(name, pass);
-  console.log(role);
-  if (role == -1) {
-    res.render("login");
-  } else {
-    console.log(role);
-    if (role == -1) {
-      res.render("login", { errorMsg: "Login failed!" });
-    } else {
-      req.session.user = {
-        name: name,
-        role: role,
-      };
-      res.redirect("/");
-
-    }
-  }
-})
-
-
 app.get("/login", (req, res) => {
   res.render("login");
 })

@@ -130,7 +130,12 @@ async function checkUser(nameIn,passwordIn){
         return false;
 }
 
-module.exports = { searchObjectbyPrice, searchObjectbyName, insertObject, 
+async function saveDocument(collectionName, id, newValue) {
+    const dbo = await getDbo();
+    await dbo.collection(collectionName).save({_id: ObjectId(id), newValue})
+}
+
+module.exports = {saveDocument, searchObjectbyPrice, searchObjectbyName, insertObject, 
     getAll, deleteDocumentById, getDocumentById, 
     updateDocument, findOne, deleteOne, 
     checkUserRole, checkUser,searchObjectbyCategory}

@@ -18,38 +18,6 @@ router.use(express.static("public"));
 //     }
 // })
 
-// router.get("/", (req, res) => {
-//     res.send("This is customer page!")
-// });
-
-// router.post('/',(req,res)=>{
-//     //xem nguoi dung mua gi: Milk hay Coffee
-//     const product = req.body.bookID
-//     //lay gio hang trong session
-//     let cart = req.session["cart"]
-//     //chua co gio hang trong session, day se la sp dau tien
-//     if(!cart){
-//         let dict = {}
-//         dict[product] = 1
-//         req.session["cart"] = dict
-//         console.log("Ban da mua:" + product + ", so luong: " + dict[product])
-//     }else{
-//         dict = req.session["cart"]
-//         //co lay product trong dict
-//         var oldProduct = dict[product]
-//         //kiem tra xem product da co trong Dict
-//         if(!oldProduct)
-//             dict[product] = 1
-//         else{
-//             dict[product] = parseInt(oldProduct) +1
-//         }
-//         req.session["cart"] = dict
-//         console.log("Ban da mua:" + product + ", so luong: " + dict[product])
-//     }
-//     res.redirect('/details?id=' + product)
-// }
-// )
-
 router.post("/", async (req, res) => {
     const bookID = req.body.bookID
     const book = await dbHandler.getDocumentById(bookID, "Book")
@@ -65,7 +33,6 @@ router.post("/", async (req, res) => {
     } else {
         dict = req.session["cart"]
         var oldBookIndex = dict.books.findIndex(b => b._id == book._id)
-
         if (oldBookIndex == -1) {
             book.qty = 1;
             book.money = book.price * book.qty
