@@ -15,7 +15,13 @@ router.get("/", async (req, res) => {
         "Book",
         "61e570ddba41b21dee1346b4"
     );
-    res.render("index", { truyens: truyen, ITbooks: ITbook });
+    if (!req.session.user) {
+        res.render("index", { truyens: truyen, ITbooks: ITbook });
+    }
+    else {
+        res.render("index", { truyens: truyen, ITbooks: ITbook, user: req.session.user });
+    }
+
 })
 
 
@@ -31,6 +37,7 @@ router.get("/search", async (req, res) => {
     const searchInput = req.query.searchInput;
     if (isNaN(Number.parseFloat(searchInput)) == false) {
         await SearchObject(
+            req,
             searchInput,
             res,
             truyen,
@@ -42,6 +49,7 @@ router.get("/search", async (req, res) => {
         );
     } else {
         await SearchObject(
+            req,
             searchInput,
             res,
             truyen,
@@ -58,6 +66,7 @@ router.get("/search", async (req, res) => {
 
 
 async function SearchObject(
+    req,
     searchInput,
     res,
     truyen,
@@ -69,14 +78,31 @@ async function SearchObject(
 ) {
     const resultSearch = await dbFunction(collectionName, searchInput);
     if (resultSearch.length != 0) {
-        res.render("search", {searchBook: resultSearch, truyens: truyen, ITbooks: ITbook });
+        if (!req.session.user) {
+            res.render("search", { searchBook: resultSearch, truyens: truyen, ITbooks: ITbook });
+        }
+        else {
+            res.render("search", { searchBook: resultSearch, truyens: truyen, ITbooks: ITbook, user: req.session.user });
+        }
     } else {
-        const message = "Not found " + searchInput + mess;
-        res.render("search", {
-            truyens: truyen,
-            ITbooks: ITbook,
-            errorSearch: message,
-        });
+        if (!req.session.user) {
+            const message = "Not found " + searchInput + mess;
+            res.render("search", {
+                truyens: truyen,
+                ITbooks: ITbook,
+                errorSearch: message,
+            });
+        }
+        else {
+            const message = "Not found " + searchInput + mess;
+            res.render("search", {
+                truyens: truyen,
+                ITbooks: ITbook,
+                errorSearch: message, 
+                user: req.session.user,
+            });
+        }
+
     }
 
 }
@@ -86,7 +112,13 @@ router.get('/details', async (req, res) => {
     const id = req.query.id
     const result = await dbHandler.getDocumentById(id, "Book")
     const category = await dbHandler.getDocumentById(result.category, "Category")
-    res.render('product_Detail', { details: result, category: category })
+    if(!req.session.user)
+    {
+        res.render('product_Detail', { details: result, category: category })
+    }
+    else{
+        res.render('product_Detail', { details: result, category: category, user: req.session.user })
+    }
 })
 
 module.exports = router;

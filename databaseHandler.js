@@ -3,31 +3,6 @@ const { MongoClient, ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-    userName: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    cart: {
-        items: [{
-            productId: {
-                type: mongoose.Types.ObjectId,
-                ref: 'Book',
-                required: true
-            },
-            qty: {
-                type: Number,
-                required: true
-            }
-        }],
-        totalPrice: Number
-    }
-});
 
 const URL = 'mongodb+srv://sonhan14:trinhquocanh011@cluster0.dhmh6.mongodb.net/test';
 const DATABASE_NAME = "FPTBook-ApplicationDev-Group2"
@@ -84,6 +59,16 @@ async function updateDocument(id, updateValues, collectionName) {
     await dbo.collection(collectionName).updateOne({ _id: ObjectId(id) }, updateValues)
 }
 
+async function updateCart(userName, updateDict) {
+    const dbo = await getdbo();
+    await dbo.collection("Order").replaceOne({user: userName}, updateDict, {upsert: true})
+}
+
+async function getCart(userName) {
+    const dbo = await getdbo();
+    const result = await dbo.collection("Order").findOne({ user: userName })
+    return result;
+}
 
 async function findOne(collectionName, findObject) {
     const dbo = await getdbo();
@@ -138,4 +123,4 @@ async function saveDocument(collectionName, id, newValue) {
 module.exports = {saveDocument, searchObjectbyPrice, searchObjectbyName, insertObject, 
     getAll, deleteDocumentById, getDocumentById, 
     updateDocument, findOne, deleteOne, 
-    checkUserRole, checkUser,searchObjectbyCategory}
+    checkUserRole, checkUser,searchObjectbyCategory, updateCart, getCart}
