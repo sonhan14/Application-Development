@@ -17,25 +17,20 @@ app.use(
 
 
 
-const customerController = require("./controllers/customer");
-app.use("/", customerController);
+
 
 // app.get('/', requiresLogin, (req, res) => {
 //     const user = req.session['user']
 //     res.render('index', {userInfo : user})
 // })
 
-
-const shoppingCart = require("./controllers/cart");
-app.use("/shoppingCart", shoppingCart);
-
-app.get('/search', (req,res)=>{
-  res.render('search')
+app.get('logout', (req, res) => {
+  req.session.user = null;
+  res.render('login');
 })
 
-app.get("/login", (req, res) => {
-    res.render("login");
-});
+
+
 
 app.post("/login", async (req, res) => {
     const name = req.body.txtName;
@@ -59,6 +54,15 @@ app.post("/login", async (req, res) => {
       }
     })
 
+const shoppingCart = require("./controllers/cart");
+app.use("/shoppingCart", shoppingCart);
+
+app.get('/search', (req,res)=>{
+  res.render('search')
+})
+
+const customerController = require("./controllers/customer");
+app.use("/", customerController);
 
 app.get("/login", (req, res) => {
   res.render("login");
