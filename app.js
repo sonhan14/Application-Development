@@ -24,7 +24,7 @@ app.use(
 //     res.render('index', {userInfo : user})
 // })
 
-app.get('logout', (req, res) => {
+app.get('/logout', (req, res) => {
   req.session.user = null;
   res.render('login');
 })
@@ -47,6 +47,7 @@ app.post("/login", async (req, res) => {
                 role: role,
             };
             console.log(req.session.user);
+            req.session["cart"] = null;
             res.redirect("/");
         } else {
             res.render('login', { errorMsg: "not auth!!" })
