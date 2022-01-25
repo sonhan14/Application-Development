@@ -86,6 +86,7 @@ router.post("/", async (req, res) => {
                 oldBook.money = oldBook.price * oldBook.qty
             }
             dict.totalPrice += book.price;
+            delete dict._id;
             req.session["cart"] = dict
             console.log(dict)
         }
