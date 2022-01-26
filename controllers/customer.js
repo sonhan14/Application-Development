@@ -1,12 +1,12 @@
 const express = require('express');
-const res = require('express/lib/response');
-const async = require('hbs/lib/async')
 
 const dbHandler = require('../databaseHandler')
 const router = express.Router()
 router.use(express.static("public"));
 
-router.get("/", async (req, res) => {
+let cache = {};
+
+(async function cacheDb() {
     const truyen = await dbHandler.searchObjectbyCategory(
         "Book",
         "61e570c7ba41b21dee1346b3"
@@ -15,11 +15,29 @@ router.get("/", async (req, res) => {
         "Book",
         "61e570ddba41b21dee1346b4"
     );
+    cache = {
+        truyen: truyen,
+        ITbooks: ITbook
+    };
+    console.log("Cache DB successful!");
+})();
+
+router.get("/", async (req, res) => {
+    // const truyen = await dbHandler.searchObjectbyCategory(
+    //     "Book",
+    //     "61e570c7ba41b21dee1346b3"
+    // );
+    // const ITbook = await dbHandler.searchObjectbyCategory(
+    //     "Book",
+    //     "61e570ddba41b21dee1346b4"
+    // );
     if (!req.session.user) {
-        res.render("index", { truyens: truyen, ITbooks: ITbook });
+        res.render("index", {truyens: cache.truyen, ITbooks: cache.ITbooks});
+    //     res.render("index", { truyens: truyen, ITbooks: ITbook });
     }
     else {
-        res.render("index", { truyens: truyen, ITbooks: ITbook, user: req.session.user });
+        res.render("index", {truyens: cache.truyen, ITbooks: cache.ITbooks, user: req.session.user});
+    //     res.render("index", { truyens: truyen, ITbooks: ITbook, user: req.session.user });
     }
 
 })

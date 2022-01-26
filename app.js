@@ -24,10 +24,12 @@ app.use(
 //     res.render('index', {userInfo : user})
 // })
 
-app.get('logout', (req, res) => {
+app.get('/logout', (req, res) => {
   req.session.user = null;
-  res.render('login');
+  res.redirect('/');
+  
 })
+
 
 
 
