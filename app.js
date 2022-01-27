@@ -19,10 +19,10 @@ app.use(
 
 
 
-// app.get('/', requiresLogin, (req, res) => {
-//     const user = req.session['user']
-//     res.render('index', {userInfo : user})
-// })
+app.get('/', requiresLogin, (req, res) => {
+    const user = req.session['user']
+    res.render('index', {userInfo : user})
+})
 
 app.get('/logout', (req, res) => {
   req.session.user = null;
