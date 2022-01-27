@@ -19,10 +19,10 @@ app.use(
 
 
 
-app.get('/', requiresLogin, (req, res) => {
-    const user = req.session['user']
-    res.render('index', {userInfo : user})
-})
+// app.get('/', requiresLogin, (req, res) => {
+//     const user = req.session['user']
+//     res.render('index', {userInfo : user})
+// })
 
 app.get('/logout', (req, res) => {
   req.session.user = null;
@@ -77,7 +77,29 @@ app.use("/", userController);
 
 //cac request co chua /admin se di den controller admin
 const adminController = require("./controllers/admin");
+const { ObjectId } = require("mongodb");
 app.use("/admin", adminController);
+
+app.get("/feedback", (req, res) => {
+  res.render("feedback", {query: req.query.id});
+})
+app.post("/feedback", (req,res) => {
+  console.log(req.body);
+  dbHandler.insertObject("Feedback", req.body);
+  res.send("Ok");
+})
+
+app.get("/feedbackManage", async (req,res) => {
+  const result = await dbHandler.getAll("Feedback");
+  const product = await dbHandler.getAll("Book");
+
+  result.forEach(e => {
+    if(ObjectId(e._id).toString() === result[0].id) {
+      console.log("Ok")
+    }
+  })
+  res.render("feedbackManagement", {result});
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT)
