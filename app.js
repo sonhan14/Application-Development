@@ -95,7 +95,7 @@ app.get("/feedbackManage", async (req,res) => {
 
   result.forEach(e => {
     if(ObjectId(e._id).toString() === result[0].id) {
-      console.log("Ok")
+      console.log("fb Ok")
     }
   })
   res.render("feedbackManagement", {result});
