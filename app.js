@@ -31,9 +31,6 @@ app.get('/logout', (req, res) => {
 })
 
 
-
-
-
 app.post("/login", async (req, res) => {
     const name = req.body.txtName;
     const pass = req.body.txtPass;
@@ -50,7 +47,14 @@ app.post("/login", async (req, res) => {
             };
             console.log(req.session.user);
             req.session["cart"] = null;
-            res.redirect("/");
+            if(role == 'Customer')
+            {
+              res.redirect("/");
+            }
+            else
+            {
+              res.redirect("/admin");
+            }
         } else {
             res.render('login', { errorMsg: "not auth!!" })
         }

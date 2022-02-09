@@ -3,6 +3,7 @@ const { insertObject, getAll, deleteDocumentById, getDocumentById, updateDocumen
 const router = express.Router()
 const dbHandler = require("../databaseHandler");
 const { ObjectID } = require("mongodb");
+const async = require('hbs/lib/async');
 
 //middleware
 router.use((req, res, next) => {
@@ -18,8 +19,9 @@ router.use((req, res, next) => {
 
 
 //neu request la: /admin
-router.get('/', (req, res, next) => {
-    res.send("This is admin page")
+router.get('/', async (req, res) => {
+    const product = await dbHandler.getAll("Book")
+    res.render('adminPage', {books : product, user : req.session.user})
 })
 
 //neu request la: /admin/addUser
@@ -41,6 +43,14 @@ router.post('/addUser', (req, res) => {
     }
     insertObject("Users", objectToInsert)
     res.render('adminIndex')
+})
+
+router.get('/customer', (req,res)=>{
+    res.render("Admin_Customer")
+})
+
+router.get('/product', (req,res)=>{
+    res.render("Admin_Product")
 })
 
 router.get("/manageCustomerOrder", async (req, res) => {
