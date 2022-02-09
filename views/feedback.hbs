@@ -1,0 +1,21 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <title>Feedback</title>
+</head>
+
+<body style="margin: 0;">
+  <form method="POST">
+    {{!-- query dung de nhan feedback cho tung sach rieng biet --}}
+    {{!-- Get feedback query for specify book --}}
+    <input type="text" name="id" value="{{query}}">
+    <input type="text" name="feedback">
+    <input type="submit" value="Submit">
+  </form>
+</body>
+
+</html>

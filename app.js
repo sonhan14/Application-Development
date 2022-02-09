@@ -27,44 +27,42 @@ app.use(
 app.get('/logout', (req, res) => {
   req.session.user = null;
   res.redirect('/');
-  
+
 })
 
 
 app.post("/login", async (req, res) => {
-    const name = req.body.txtName;
-    const pass = req.body.txtPass;
-    const role = await dbHandler.checkUserRole(name, pass);
-    console.log("Username: " + name);
-    console.log("Password: " + pass);
-    console.log("Role: " + req.body.Role);
-    if (role == -1) { res.render('login', { errorMsg: "Login failed!" }) }
-    else {
-        if(req.body.Role == role) {
-            req.session.user = {
-                name: name,
-                role: role,
-            };
-            console.log(req.session.user);
-            req.session["cart"] = null;
-            if(role == 'Customer')
-            {
-              res.redirect("/");
-            }
-            else
-            {
-              res.redirect("/admin");
-            }
-        } else {
-            res.render('login', { errorMsg: "not auth!!" })
-        }
+  const name = req.body.txtName;
+  const pass = req.body.txtPass;
+  const role = await dbHandler.checkUserRole(name, pass);
+  console.log("Username: " + name);
+  console.log("Password: " + pass);
+  console.log("Role: " + req.body.Role);
+  if (role == -1) { res.render('login', { errorMsg: "Login failed!" }) }
+  else {
+    if (req.body.Role == role) {
+      req.session.user = {
+        name: name,
+        role: role,
+      };
+      console.log(req.session.user);
+      req.session["cart"] = null;
+      if (role == 'Customer') {
+        res.redirect("/");
       }
-    })
+      else {
+        res.redirect("/admin");
+      }
+    } else {
+      res.render('login', { errorMsg: "not auth!!" })
+    }
+  }
+})
 
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
 
-app.get('/search', (req,res)=>{
+app.get('/search', (req, res) => {
   res.render('search')
 })
 
@@ -85,24 +83,26 @@ const { ObjectId } = require("mongodb");
 app.use("/admin", adminController);
 
 app.get("/feedback", (req, res) => {
-  res.render("feedback", {query: req.query.id});
+  res.render("feedback", { query: req.query.name });//lay id cua sach truyen vao form 
 })
-app.post("/feedback", (req,res) => {
-  console.log(req.body);
+app.post("/feedback", (req, res) => {
   dbHandler.insertObject("Feedback", req.body);
-  res.send("Ok");
+  res.redirect('/');
 })
 
-app.get("/feedbackManage", async (req,res) => {
+app.get("/feedbackManage", async (req, res) => {
   const result = await dbHandler.getAll("Feedback");
   const product = await dbHandler.getAll("Book");
-
+  const arr = [...product];
+  // console.log(product);
   result.forEach(e => {
-    if(ObjectId(e._id).toString() === result[0].id) {
-      console.log("fb Ok")
-    }
+    arr.filter(e1 => e.id === ObjectId(e1._id).toString())
+    console.log(arr);
+    // if(e.id === ObjectId(product[0]._id).toString()) {
+    //   console.log(product[0].name);
+    // }
   })
-  res.render("feedbackManagement", {result});
+  res.render("feedbackManagement", { result });
 })
 
 const PORT = process.env.PORT || 5000;
