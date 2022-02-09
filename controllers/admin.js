@@ -9,7 +9,7 @@ router.use((req, res, next) => {
     const { user } = req.session; //same as: user = req.session.user
     if (user) {
         if (user.role == "admin") {
-            next("route");//chay xuong router cung URL
+            next("route");
         } else { res.sendStatus (404); }
     } else {
         res.redirect('/login');
@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
 router.get('/addUser', (req, res) => {
     res.send("This is add user page!")
     // res.render('addUser')
-    //thế thì e sẽ phải tạo thêm 2 trang là admnii và admin adduser a nhỉ
+    
 })
 
 //Submit add User
