@@ -85,31 +85,10 @@ app.use("/", userController);
 
 //cac request co chua /admin se di den controller admin
 const adminController = require("./controllers/admin");
-const { ObjectId } = require("mongodb");
 app.use("/admin", adminController);
 
-app.get("/feedback", (req, res) => {
-  res.render("feedback", { query: req.query.name }); //lay id cua sach truyen vao form
-});
-app.post("/feedback", (req, res) => {
-  dbHandler.insertObject("Feedback", req.body);
-  res.redirect("/");
-});
-
-app.get("/feedbackManage", async (req, res) => {
-  const result = await dbHandler.getAll("Feedback");
-  const product = await dbHandler.getAll("Book");
-  const arr = [...product];
-  // console.log(product);
-  result.forEach((e) => {
-    arr.filter((e1) => e.id === ObjectId(e1._id).toString());
-    console.log(arr);
-    // if(e.id === ObjectId(product[0]._id).toString()) {
-    //   console.log(product[0].name);
-    // }
-  });
-  res.render("feedbackManagement", { result });
-});
+const feedbackController = require("./controllers/feedback");
+app.use("/feedback", feedbackController);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
