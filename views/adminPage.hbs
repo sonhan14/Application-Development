@@ -48,6 +48,9 @@
                         <a href="#" class="nav-link"><img src="./images/shopping-bag.svg" alt="dashboard">Orders</a>
                     </li>
                     <li class="nav-item">
+                        <a href="/admin/feedbackManage" class="nav-link">Feedback</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link"><img src="./images/user.svg" alt="dashboard">Customers</a>
                     </li>
 
@@ -91,7 +94,7 @@
                     <div class="title_oder">
 
                         <h2 class="page-title">Dashboard</h2>
-                        <h4><a href="/ProductPurchased.html"> 7day ago <i class="fas fa-chevron-right"></i></a>
+                        <h4><a href="/admin/week"> 7day ago <i class="fas fa-chevron-right"></i></a>
                         </h4>
                     </div>
                     <div class="row">
@@ -101,7 +104,9 @@
                                     <img src="./images/cart.svg" alt="cart" />
                                 </div>
                                 <div class="dash-content">
-                                    <a href="/admin"><h4>Orders</h4></a>
+                                    <a href="/admin">
+                                        <h4>Orders</h4>
+                                    </a>
                                     <p>1000+</p>
                                 </div>
                             </div>
@@ -112,8 +117,10 @@
                                     <img src="./images/customers.svg" alt="customers" />
                                 </div>
                                 <div class="dash-content">
-                                    <a href="/admin/customer"><h4>Customers</h4></a>
-                                    
+                                    <a href="/admin/customer">
+                                        <h4>Customers</h4>
+                                    </a>
+
                                     <p>500+</p>
                                 </div>
                             </div>
@@ -124,8 +131,10 @@
                                     <img src="./images/product.svg" alt="cart" />
                                 </div>
                                 <div class="dash-content">
-                                    <a href="/admin/product"><h4>Products</h4></a>
-                                    
+                                    <a href="/admin/product">
+                                        <h4>Products</h4>
+                                    </a>
+
                                     <p>700+</p>
                                 </div>
                             </div>
@@ -133,67 +142,31 @@
                     </div>
 
 
+                    {{#if feedback}}
                     <div class="row">
                         <div class="container-fluid">
                             <div class="dash-card">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h4>Orders</h4>
+                                    <h4>Feedback</h4>
                                     <img src="./images/more.svg" alt="more" />
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>S.No</th>
-                                                <th>Order Id</th>
-                                                <th>Product Name</th>
-                                                <th>Status</th>
-                                                <th>Operation</th>
+                                                <th>Username</th>
+                                                <th>Product</th>
+                                                <th>Feedback</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {{#each feedback}}
                                             <tr>
-                                                <td>1</td>
-                                                <td>Ord001</td>
-                                                <td>Womens bags</td>
-                                                <td class="pending">Pending</td>
-                                                <td>cancel</td>
+                                                <td>{{username}}</td>
+                                                <td>{{name}}</td>
+                                                <td>{{feedback}}</td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Ord003</td>
-                                                <td>Mens Jeans</td>
-                                                <td class="pending">Pending</td>
-                                                <td>cancel</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Ord004</td>
-                                                <td>kids dress</td>
-                                                <td class="pending">pending</td>
-                                                <td>cancel</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Ord008</td>
-                                                <td>Mobile Phone</td>
-                                                <td class="completed">completed</td>
-                                                <td>cancel</td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Ord008</td>
-                                                <td>Mobile Phone</td>
-                                                <td class="pending">pending</td>
-                                                <td>cancel</td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>Ord012</td>
-                                                <td>Gaming accessories</td>
-                                                <td class="pending">pending</td>
-                                                <td>cancel</td>
-                                            </tr>
+                                            {{/each}}
                                         </tbody>
                                     </table>
                                 </div>
@@ -201,7 +174,59 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="dash-card">
+                {{else}}
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="dash-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4>Orders</h4>
+                                <form action="/admin">
+                                    <select name="sortBy">
+                                        <option value="">Choose</option>
+                                        <option value="today">Today</option>
+                                        <option value="week">Week</option>
+                                    </select>
+                                    <button type="submit">Find</button>
+                                </form>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>name</th>
+                                            <th>Order</th>
+                                            <th>Time</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each customerOrder}}
+                                        <tr>
+                                            <td>{{name}}</td>
+                                            <td>{{item}}</td>
+                                            <td>{{time}}</td>
+                                            {{#if cancel}}
+                                            <td>Cancel</td>
+                                            <td><a href="/admin/delete?id={{_id}}">Cancel order</a></td>
+                                            {{else}}
+                                            <td>Pending</td>
+                                            {{/if}}
+                                            {{!-- {{#if status}}
+                                            <td><a href="/admin/delete?id={{_id}}">Cancel order</a>
+                                            </td> --}}
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            <!-- <div class="dash-card">
                             <div class="d-flex justify-content-between align-items-center ">
                                 <h4>Users</h4>
                                 <img src="./images/more.svg" alt="more" />
@@ -232,8 +257,8 @@
                                 </table>
                             </div>
                         </div> -->
-            </div>
         </div>
+    </div>
 
 
     </div>
@@ -247,6 +272,10 @@
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script>
+
+        function onClickSort() {
+            console.log("A")
+        }
 
         function toggle() {
             $('.sidebar').toggleClass('active');

@@ -2,8 +2,9 @@ const express = require('express')
 const { insertObject, getAll, deleteDocumentById, getDocumentById, updateDocument, } = require('../databaseHandler')
 const router = express.Router()
 const dbHandler = require("../databaseHandler");
-const { ObjectID } = require("mongodb");
+const { ObjectId } = require("mongodb");
 const async = require('hbs/lib/async');
+const e = require('express');
 router.use(express.static("public"));
 
 //middleware
@@ -21,8 +22,18 @@ router.use((req, res, next) => {
 
 //neu request la: /admin
 router.get('/', async (req, res) => {
-    const product = await dbHandler.getAll("Book")
-    res.render('adminPage', {books : product, user : req.session.user})
+    if (req.query.sortBy == "today") {
+        res.redirect("/admin/today");
+    }else if (req.query.sortBy == 'week'){
+        res.redirect("/admin/week");
+    }else {
+        const customerOrder = await dbHandler.getAll("Customer Order")
+        customerOrder.forEach((element) => (element.time = element.time.toLocaleString("vi")));
+        res.render('adminPage',  { customerOrder: customerOrder, user : req.session.user})
+        
+    }
+
+    
 })
 
 //neu request la: /admin/addUser
@@ -31,6 +42,13 @@ router.get('/addUser', (req, res) => {
     // res.render('addUser')
     
 })
+
+router.get("/feedbackManage", async (req, res) => {
+    const result = await dbHandler.getAll("Feedback");
+
+    // res.render("feedbackManagement", { result });
+    res.render('adminPage', {feedback: result, user : req.session.user})
+  });
 
 //Submit add User
 router.post('/addUser', (req, res) => {
@@ -54,16 +72,15 @@ router.get('/product', (req,res)=>{
     res.render("Admin_Product")
 });
 
-router.get("/admin", async (req, res) => {
-    let result = await dbHandler.getAll("Customer Order");
-    result.forEach((element) => (element.time = element.time.toLocaleString("vi")));
-    res.render("adminPage", { demo: result, next: true });
-});
+// router.get("/admin", async (req, res) => {
+//     let result = await dbHandler.getAll("Customer Order");
+//     result.forEach((element) => (element.time = element.time.toLocaleString("vi")));
+//     res.render("adminPage", { demo: result, next: true });
+// });
 
 
-router.get("/admin/:sortBy", async (req, res) => {
+router.get("/:sortBy", async (req, res) => {
     let result = await dbHandler.getAll("Customer Order");
-    console.log(req.params)
     if (req.params.sortBy === "today") {
         let today = new Date().toLocaleDateString("vi");
         result = result.filter((item) => {
@@ -72,17 +89,17 @@ router.get("/admin/:sortBy", async (req, res) => {
         result.forEach((element) => {
             element.time = element.time.toLocaleString("vi");
         });
-        res.render("adminPage", { demo: result });
+        res.render("adminPage", { customerOrder: result });
     } else if (req.params.sortBy === "week") {
         let today = new Date();
         let week = new Date(today.setDate(today.getDate() - 7));
         result = result.filter((item) => item.time > week);
         result.forEach((element) => (element.time = element.time.toLocaleString("vi")));
-        res.render("adminPage", { demo: result });
+        res.render("adminPage", { customerOrder: result });
     }
     else if (req.params.sortBy === "delete") {
         let { id } = req.query; // same as: let id = req.query.id;
-        let result = await dbHandler.deleteOne("Customer Order", { _id: ObjectID(id) });
+        let result = await dbHandler.deleteOne("Customer Order", { _id: ObjectId(id) });
         if (result) {
             res.redirect("/admin");
         } else {

@@ -12,11 +12,27 @@
   <form method="POST">
     {{!-- query dung de nhan feedback cho tung sach rieng biet --}}
     {{!-- Get feedback query for specify book --}}
-    <input type="text" name="id" value="{{query}}">
-    <input type="text" name="'id" value="{{query}}" hidden>
+    
+    <input type="text" name="name" value="{{query}}" hidden>
     <input type="text" name="feedback">
     <input type="submit" value="Submit">
   </form>
+  <table>
+    <thead>
+      <th>Username</th>
+      <th>Product</th>
+      <th>Feedback</th>
+    </thead>
+    <tbody>
+      {{#each list}}
+      <tr>
+        <td>{{username}}</td>
+        <td>{{name}}</td>
+        <td>{{feedback}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
 </body>
 
 </html>

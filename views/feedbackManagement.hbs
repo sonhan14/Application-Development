@@ -29,16 +29,17 @@
 <body style="margin: 0;">
   <table>
   <tr>
+    <th>Username</th>
     <th>Product</th>
     <th>Feedback</th>
-    <th>Username</th>
+    
   </tr>
   {{#each result}}
     <tr>
-      <td>{{id}}</td>
-      <td>{{feedback}}</td>
-      <td>Demo</td>
       <td>{{username}}</td>
+      <td>{{name}}</td>
+      <td>{{feedback}}</td>
+      
     </tr>
   {{/each}}
 </table>
