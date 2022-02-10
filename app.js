@@ -67,6 +67,18 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
+
+
+app.get("/adp", (req, res) => {
+  res.render("Admin_Product");
+});
+app.get("/adc", (req, res) => {
+  res.render("Admin_Customer");
+});
+app.get("/Pushase", (req, res) => {
+  res.render("Pushase");
+});
+
 //cac request co chua /admin se di den controller customer
 const userController = require("./controllers/customer");
 app.use("/", userController);

@@ -54,14 +54,14 @@ router.get('/product', (req,res)=>{
     res.render("Admin_Product")
 });
 
-router.get("/manageCustomerOrder", async (req, res) => {
+router.get("/admin", async (req, res) => {
     let result = await dbHandler.getAll("Customer Order");
     result.forEach((element) => (element.time = element.time.toLocaleString("vi")));
-    res.render("manageCustomerOrder", { demo: result, next: true });
+    res.render("adminPage", { demo: result, next: true });
 });
 
 
-router.get("/manageCustomerOrder/:sortBy", async (req, res) => {
+router.get("/admin/:sortBy", async (req, res) => {
     let result = await dbHandler.getAll("Customer Order");
     console.log(req.params)
     if (req.params.sortBy === "today") {
@@ -72,25 +72,25 @@ router.get("/manageCustomerOrder/:sortBy", async (req, res) => {
         result.forEach((element) => {
             element.time = element.time.toLocaleString("vi");
         });
-        res.render("manageCustomerOrder", { demo: result });
+        res.render("adminPage", { demo: result });
     } else if (req.params.sortBy === "week") {
         let today = new Date();
         let week = new Date(today.setDate(today.getDate() - 7));
         result = result.filter((item) => item.time > week);
         result.forEach((element) => (element.time = element.time.toLocaleString("vi")));
-        res.render("manageCustomerOrder", { demo: result });
+        res.render("adminPage", { demo: result });
     }
     else if (req.params.sortBy === "delete") {
         let { id } = req.query; // same as: let id = req.query.id;
         let result = await dbHandler.deleteOne("Customer Order", { _id: ObjectID(id) });
         if (result) {
-            res.redirect("/admin/manageCustomerOrder");
+            res.redirect("/admin");
         } else {
             res.send("Cancel error!");
         }
     }
     else {
-        res.redirect("/admin/manageCustomerOrder");
+        res.redirect("/admin");
     }
 });
 
