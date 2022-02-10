@@ -4,6 +4,7 @@ const router = express.Router()
 const dbHandler = require("../databaseHandler");
 const { ObjectID } = require("mongodb");
 const async = require('hbs/lib/async');
+router.use(express.static("public"));
 
 //middleware
 router.use((req, res, next) => {
@@ -47,11 +48,11 @@ router.post('/addUser', (req, res) => {
 
 router.get('/customer', (req,res)=>{
     res.render("Admin_Customer")
-})
+});
 
 router.get('/product', (req,res)=>{
     res.render("Admin_Product")
-})
+});
 
 router.get("/manageCustomerOrder", async (req, res) => {
     let result = await dbHandler.getAll("Customer Order");
