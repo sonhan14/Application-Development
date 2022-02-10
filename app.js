@@ -15,21 +15,15 @@ app.use(
   })
 );
 
-
-
-
-
 // app.get('/', requiresLogin, (req, res) => {
 //     const user = req.session['user']
 //     res.render('index', {userInfo : user})
 // })
 
-app.get('/logout', (req, res) => {
+app.get("/logout", (req, res) => {
   req.session.user = null;
-  res.redirect('/');
-
-})
-
+  res.redirect("/");
+});
 
 app.post("/login", async (req, res) => {
   const name = req.body.txtName;
@@ -38,8 +32,9 @@ app.post("/login", async (req, res) => {
   console.log("Username: " + name);
   console.log("Password: " + pass);
   console.log("Role: " + req.body.Role);
-  if (role == -1) { res.render('login', { errorMsg: "Login failed!" }) }
-  else {
+  if (role == -1) {
+    res.render("login", { errorMsg: "Login failed!" });
+  } else {
     if (req.body.Role == role) {
       req.session.user = {
         name: name,
@@ -47,32 +42,36 @@ app.post("/login", async (req, res) => {
       };
       console.log(req.session.user);
       req.session["cart"] = null;
-      if (role == 'Customer') {
+      if (role == "Customer") {
         res.redirect("/");
-      }
-      else {
+      } else {
         res.redirect("/admin");
       }
     } else {
-      res.render('login', { errorMsg: "not auth!!" })
+      res.render("login", { errorMsg: "not auth!!" });
     }
   }
-})
+});
 
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
 
-app.get('/search', (req, res) => {
-  res.render('search')
-})
+app.get("/search", (req, res) => {
+  res.render("search");
+});
 
 const customerController = require("./controllers/customer");
 app.use("/", customerController);
 
 app.get("/login", (req, res) => {
   res.render("login");
-})
-
+});
+app.get("/adp", (req, res) => {
+  res.render("Admin_Product");
+});
+app.get("/adc", (req, res) => {
+  res.render("Admin_Customer");
+});
 //cac request co chua /admin se di den controller customer
 const userController = require("./controllers/customer");
 app.use("/", userController);
@@ -83,28 +82,28 @@ const { ObjectId } = require("mongodb");
 app.use("/admin", adminController);
 
 app.get("/feedback", (req, res) => {
-  res.render("feedback", { query: req.query.name });//lay id cua sach truyen vao form 
-})
+  res.render("feedback", { query: req.query.name }); //lay id cua sach truyen vao form
+});
 app.post("/feedback", (req, res) => {
   dbHandler.insertObject("Feedback", req.body);
-  res.redirect('/');
-})
+  res.redirect("/");
+});
 
 app.get("/feedbackManage", async (req, res) => {
   const result = await dbHandler.getAll("Feedback");
   const product = await dbHandler.getAll("Book");
   const arr = [...product];
   // console.log(product);
-  result.forEach(e => {
-    arr.filter(e1 => e.id === ObjectId(e1._id).toString())
+  result.forEach((e) => {
+    arr.filter((e1) => e.id === ObjectId(e1._id).toString());
     console.log(arr);
     // if(e.id === ObjectId(product[0]._id).toString()) {
     //   console.log(product[0].name);
     // }
-  })
+  });
   res.render("feedbackManagement", { result });
-})
+});
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT)
-console.log("Server is running! " + PORT)
+app.listen(PORT);
+console.log("Server is running! " + PORT);
