@@ -129,7 +129,28 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{#each truyens}}
                                 <tr>
+                                    <a href="   /details?id={{_id}}" style="display:none">
+                                        <th scope="row">2</th>
+                                        <td>
+                                            <div class="card-infor">
+                                                <img src="{{pic}}" alt="" style="width:100px; height:130px">
+                                                <div class="description">
+                                                    <p>{{name}}</p>
+                                                    <small>price: {{price}}$</small><br>
+                                                    <a href="">remove</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td> <input style="width:50px;" type="number" value="1"></td>
+                                        <td>{{price}}$</td>
+                                        <td>completed</td>
+                                        <td><button type="button" class="btn btn-primary">success</button></td>
+                                        <td><button type="button" class="btn btn-danger">Cancel</button></td>
+                                </tr>
+                                {{/each}}
+                                {{!-- <tr>
                                     <th scope="row">2</th>
                                     <td>
                                         <div class="card-infor">
@@ -164,25 +185,7 @@
                                     <td>completed</td>
                                     <td><button type="button" class="btn btn-primary">success</button></td>
                                     <td><button type="button" class="btn btn-danger">Cancel</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>
-                                        <div class="card-infor">
-                                            <img src="/3.jpeg" alt="" style="width:100px; height:130px">
-                                            <div class="description">
-                                                <p>connan tap 1000 tuyet voi</p>
-                                                <small>price: 150$</small><br>
-                                                <a href="">remove</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td> <input style="width:50px;" type="number" value="1"></td>
-                                    <td>150$</td>
-                                    <td>completed</td>
-                                    <td><button type="button" class="btn btn-primary">success</button></td>
-                                    <td><button type="button" class="btn btn-danger">Cancel</button></td>
-                                </tr>
+                                </tr> --}}
                             </tbody>
                         </table>
                     </div>
