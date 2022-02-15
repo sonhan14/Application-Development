@@ -111,4 +111,23 @@ router.get("/:sortBy", async (req, res) => {
     }
 });
 
+//view profile
+exports.getProfile = async(req,res)=>{
+    let aTrainee = await trainee.findOne({email : req.session.email})
+    res.render('traineeProfileUpdate',{ aTrainee: aTrainee, loginName : req.session.email});
+}
+
+//update profile
+exports.updateProfile = async(req,res)=>{
+    let id = req.body.id;
+    let aTrainee = await trainee.findById(id);
+    if (req.file) {
+        aTrainee.img = req.file.filename;
+    }
+    aTrainee.dateOfBirth = new Date(req.body.date);
+    aTrainee.education = req.body.education;
+    aTrainee = await aTrainee.save();
+    res.redirect('/trainee');
+}
+
 module.exports = router;
