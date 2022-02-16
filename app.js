@@ -56,9 +56,6 @@ app.post("/login", async (req, res) => {
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
 
-app.get("/search", (req, res) => {
-  res.render("search");
-});
 
 const customerController = require("./controllers/customer");
 app.use("/", customerController);
@@ -71,12 +68,6 @@ app.get("/register", (req,res)=>{
   res.render("register");
 })
 
-app.get("/adp", (req, res) => {
-  res.render("Admin_Product");
-});
-app.get("/adc", (req, res) => {
-  res.render("Admin_Customer");
-});
 app.get("/Pushase", (req, res) => {
   res.render("Pushase");
 });

@@ -35,75 +35,30 @@ router.get("/search", async (req, res) => {
   );
   const searchInput = req.query.searchInput;
   if (isNaN(Number.parseFloat(searchInput)) == false) {
-    await SearchObject(
-      req,
-      searchInput,
-      res,
-      truyen,
-      ITbook,
-      dbHandler.searchObjectbyPrice,
-      "Book",
-      Number.parseFloat(searchInput),
-      " VND"
-    );
+    await SearchObject(req, searchInput, res, truyen, ITbook, dbHandler.searchObjectbyPrice, "Book", Number.parseFloat(searchInput), " VND");
   } else {
-    await SearchObject(
-      req,
-      searchInput,
-      res,
-      truyen,
-      ITbook,
-      dbHandler.searchObjectbyName,
-      "Book",
-      searchInput,
-      ""
-    );
+    await SearchObject(req, searchInput, res, truyen, ITbook, dbHandler.searchObjectbyName, "Book", searchInput, "");
   }
 });
 
-async function SearchObject(
-  req,
-  searchInput,
-  res,
-  truyen,
-  ITbook,
-  dbFunction,
-  collectionName,
-  searchInput,
-  mess
+async function SearchObject(req, searchInput, res, truyen, ITbook, dbFunction, collectionName, searchInput, mess
 ) {
   const resultSearch = await dbFunction(collectionName, searchInput);
   if (resultSearch.length != 0) {
     if (!req.session.user) {
-      res.render("search", {
-        searchBook: resultSearch,
-        truyens: truyen,
-        ITbooks: ITbook,
-      });
+      res.render("search", { searchBook: resultSearch, truyens: truyen, ITbooks: ITbook, });
     } else {
       res.render("search", {
-        searchBook: resultSearch,
-        truyens: truyen,
-        ITbooks: ITbook,
-        user: req.session.user,
+        searchBook: resultSearch, truyens: truyen, ITbooks: ITbook, user: req.session.user,
       });
     }
   } else {
     if (!req.session.user) {
       const message = "Not found " + searchInput + mess;
-      res.render("search", {
-        truyens: truyen,
-        ITbooks: ITbook,
-        errorSearch: message,
-      });
+      res.render("search", { truyens: truyen, ITbooks: ITbook, errorSearch: message, });
     } else {
       const message = "Not found " + searchInput + mess;
-      res.render("search", {
-        truyens: truyen,
-        ITbooks: ITbook,
-        errorSearch: message,
-        user: req.session.user,
-      });
+      res.render("search", { truyens: truyen, ITbooks: ITbook, errorSearch: message, user: req.session.user, });
     }
   }
 }
