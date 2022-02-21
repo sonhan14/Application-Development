@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
     "hbs": "^4.2.0",

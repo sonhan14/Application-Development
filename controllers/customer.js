@@ -78,23 +78,4 @@ router.get("/details", async (req, res) => {
   }
 });
 
-router.get("/Pushase", async (req, res) => {
-  const truyen = await dbHandler.searchObjectbyCategory(
-    "Book",
-    "61e570c7ba41b21dee1346b3"
-  );
-  const ITbook = await dbHandler.searchObjectbyCategory(
-    "Book",
-    "61e570ddba41b21dee1346b4"
-  );
-  if (!req.session.user) {
-    res.render("index", { truyens: truyen, ITbooks: ITbook });
-  } else {
-    res.render("index", {
-      truyens: truyen,
-      ITbooks: ITbook,
-      user: req.session.user,
-    });
-  }
-});
 module.exports = router;

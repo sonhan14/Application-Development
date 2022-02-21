@@ -21,22 +21,23 @@
 
         <div id="close-login-btn" class="fas fa-times"></div>
 
-        <form action="">
+        <form action="/register" method="post">
+            <center><h2 style="color: red;">{{errorMsg}}</h2></center>
             <h3>Register</h3>
             <span>Username</span>
-            <input type="text" name="" class="box" placeholder="enter your Name" id="">
+            <input type="text" name="txtUser" class="box" placeholder="enter your Name" id="txtUser">
             <span>Email</span>
-            <input type="email" name="" class="box" placeholder="enter your Email" id="">
+            <input type="email" name="txtMail" class="box" placeholder="enter your Email" id="txtMail">
+            <span>Phone Number</span>
+            <input type="text" name="txtPhone" class="box" placeholder="enter your  Home Address" id="txtPhone">
             <span>Password</span>
-            <input type="password" name="" class="box" placeholder="enter your Password" id="">
+            <input type="password" name="txtPass" class="box" placeholder="enter your Password" id="txtPass">
             <span>Re-Password</span>
-            <input type="password" name="" class="box" placeholder="enter your  Re-Password" id="">
-            <span>Home Address</span>
-            <input type="text" name="" class="box" placeholder="enter your  Home Address" id="">
+            <input type="password" name="txtRePass" class="box" placeholder="enter your  Re-Password" id="txtRePass">
             <div class="login__decentralization">
-                <select name="Role" class="decentralization">
-                    <option value="admin">Admin</option>
-                    <option value="User">User</option>
+                <select name="Role" class="decentralization" id="Role">
+                    <option value="Admin">Admin</option>
+                    <option value="Customer">Customer</option>
                 </select>
             </div>
             <button type="submit" value="Register" class="btn"> <a href="/"></a> Register</button>
