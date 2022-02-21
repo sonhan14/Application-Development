@@ -51,7 +51,7 @@
 
         <div class="header-2">
             <nav class="navbar">
-                <a href="#home">home</a>
+                <a href="/">home</a>
                 <a href="#featured">Best Selling Book</a>
                 <a href="#arrivals">All book</a>
 
@@ -65,8 +65,8 @@
     <section class="deal">
 
         <div class="content">
-            <h1>Products can be found</h1>
-            <h3> Try and experience the book you are looking for here: 3 <i class="far fa-kiss-wink-heart"></i></h3>
+            <h1>{{errorSearch}}</h1>
+            {{!-- <h3> Try and experience the book you are looking for here: 3 <i class="far fa-kiss-wink-heart"></i></h3> --}}
 
         </div>
 
@@ -77,8 +77,6 @@
     </section>
 
     <div class="container">
-
-
 
         <div class="products-container">
             {{#each searchBook}}
@@ -91,13 +89,13 @@
         </div>
 
     </div>
-
+    {{#each searchBook}}
     <div class="products-preview">
 
         <div class="preview" data-target="p-1">
             <i class="fas fa-times"></i>
-            <img src="/img/1.jpeg" alt="">
-            <h3>Conan tap 1</h3>
+            <img src="{{pic}}" alt="">
+            <h3>{{name}}</h3>
             <div class="stars">
                 <i class="fas fa-star"></i>
                 <i class="fas fa-star"></i>
@@ -107,113 +105,14 @@
                 <span>( 250 )</span>
             </div>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, dolorem.</p>
-            <div class="price">$2.00</div>
+            <div class="price">{{price}}</div>
             <div class="buttons">
                 <a href="#" class="buy">buy now</a>
                 <a href="#" class="cart">add to cart</a>
             </div>
-        </div>
 
-        <div class="preview" data-target="p-2">
-            <i class="fas fa-times"></i>
-            <img src="/img/2.jpeg" alt="">
-            <h3>Conan tap 2</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <span>( 250 )</span>
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, dolorem.</p>
-            <div class="price">$2.00</div>
-            <div class="buttons">
-                <a href="#" class="buy">buy now</a>
-                <a href="#" class="cart">add to cart</a>
-            </div>
         </div>
-
-        <div class="preview" data-target="p-3">
-            <i class="fas fa-times"></i>
-            <img src="/img/3.jpeg" alt="">
-            <h3>Conan tap 3</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <span>( 250 )</span>
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, dolorem.</p>
-            <div class="price">$2.00</div>
-            <div class="buttons">
-                <a href="#" class="buy">buy now</a>
-                <a href="#" class="cart">add to cart</a>
-            </div>
-        </div>
-
-        <div class="preview" data-target="p-4">
-            <i class="fas fa-times"></i>
-            <img src="/img/4.jpeg" alt="">
-            <h3>Conan tap 4</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <span>( 250 )</span>
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, dolorem.</p>
-            <div class="price">$2.00</div>
-            <div class="buttons">
-                <a href="#" class="buy">buy now</a>
-                <a href="#" class="cart">add to cart</a>
-            </div>
-        </div>
-
-        <div class="preview" data-target="p-5">
-            <i class="fas fa-times"></i>
-            <img src="/img/5.jpeg" alt="">
-            <h3>Conan tap 5</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <span>( 250 )</span>
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, dolorem.</p>
-            <div class="price">$2.00</div>
-            <div class="buttons">
-                <a href="#" class="buy">buy now</a>
-                <a href="#" class="cart">add to cart</a>
-            </div>
-        </div>
-
-        <div class="preview" data-target="p-6">
-            <i class="fas fa-times"></i>
-            <img src="/img/6.jpeg" alt="">
-            <h3>Conan tap 6z </h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <span>( 250 )</span>
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, dolorem.</p>
-            <div class="price">$2.00</div>
-            <div class="buttons">
-                <a href="#" class="buy">buy now</a>
-                <a href="#" class="cart">add to cart</a>
-            </div>
-        </div>
-
+        {{/each}}
     </div>
 
     <section class="footer">

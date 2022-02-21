@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const dbHandler = require("./databaseHandler");
 const session = require("express-session");
+const bcrypt = require('bcrypt');
 
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
@@ -28,27 +29,37 @@ app.get("/logout", (req, res) => {
 app.post("/login", async (req, res) => {
   const name = req.body.txtName;
   const pass = req.body.txtPass;
-  const role = await dbHandler.checkUserRole(name, pass);
-  console.log("Username: " + name);
-  console.log("Password: " + pass);
-  console.log("Role: " + req.body.Role);
-  if (role == -1) {
-    res.render("login", { errorMsg: "Login failed!" });
-  } else {
-    if (req.body.Role == role) {
-      req.session.user = {
-        name: name,
-        role: role,
-      };
-      console.log(req.session.user);
-      req.session["cart"] = null;
-      if (role == "Customer") {
-        res.redirect("/");
+  const user = await dbHandler.checkUser(name)
+  if (user == -1) {
+    res.render("login", { errorMsg: "Not found UserName!!" });
+  }
+  else {
+    const validPass = await bcrypt.compare(pass, user.password)
+    if (validPass) {
+      const role = await dbHandler.checkUserRole(name);
+      if (role == -1) {
+        res.render("login", { errorMsg: "Login failed!" });
       } else {
-        res.redirect("/admin");
+        if (req.body.Role == role) {
+          req.session.user = {
+            name: name,
+            role: role,
+          };
+          console.log("Loged in with: ")
+          console.log(req.session.user);
+          req.session["cart"] = null;
+          if (role == "Customer") {
+            res.redirect("/");
+          } else {
+            res.redirect("/admin");
+          }
+        } else {
+          res.render("login", { errorMsg: "not auth!!" });
+        }
       }
-    } else {
-      res.render("login", { errorMsg: "not auth!!" });
+    }
+    else {
+      res.render("login", { errorMsg: "Incorrect password!!" });
     }
   }
 });
@@ -56,9 +67,6 @@ app.post("/login", async (req, res) => {
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
 
-app.get("/search", (req, res) => {
-  res.render("search");
-});
 
 const customerController = require("./controllers/customer");
 app.use("/", customerController);
@@ -67,12 +75,37 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.get("/adp", (req, res) => {
-  res.render("Admin_Product");
-});
-app.get("/adc", (req, res) => {
-  res.render("Admin_Customer");
-});
+app.get("/register", (req, res) => {
+  res.render("register");
+})
+
+app.post("/register", async (req, res) => {
+  const userName = req.body.txtUser
+  const mail = req.body.txtMail
+  const phone = req.body.txtPhone
+  const pass = req.body.txtPass
+  const rePass = req.body.txtRePass
+  const role = req.body.Role
+  const hashPass = await bcrypt.hash(pass, 10);
+  const existedUser = await dbHandler.checkUser(userName)
+  if (existedUser == -1) {
+    const validPass = await bcrypt.compare(rePass, hashPass)
+    if(validPass)
+    {
+      const newUser = { userName: userName, email: mail, phone: phone, role: role, password: hashPass }
+    await dbHandler.insertObject("Users", newUser)
+    res.render("register");
+    }
+    else
+    {
+      res.render("register", {errorMsg: "Password is not match"});
+    }
+  }
+  else{ 
+    res.render("register", {errorMsg: "Username already used"});
+  }
+})
+
 app.get("/Pushase", (req, res) => {
   res.render("Pushase");
 });
@@ -92,8 +125,10 @@ const adminController = require("./controllers/admin");
 app.use("/admin", adminController);
 
 const feedbackController = require("./controllers/feedback");
+const async = require("hbs/lib/async");
 app.use("/feedback", feedbackController);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT);
 console.log("Server is running! " + PORT);
+console.log()

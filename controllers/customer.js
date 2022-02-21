@@ -35,75 +35,30 @@ router.get("/search", async (req, res) => {
   );
   const searchInput = req.query.searchInput;
   if (isNaN(Number.parseFloat(searchInput)) == false) {
-    await SearchObject(
-      req,
-      searchInput,
-      res,
-      truyen,
-      ITbook,
-      dbHandler.searchObjectbyPrice,
-      "Book",
-      Number.parseFloat(searchInput),
-      " VND"
-    );
+    await SearchObject(req, searchInput, res, truyen, ITbook, dbHandler.searchObjectbyPrice, "Book", Number.parseFloat(searchInput), " VND");
   } else {
-    await SearchObject(
-      req,
-      searchInput,
-      res,
-      truyen,
-      ITbook,
-      dbHandler.searchObjectbyName,
-      "Book",
-      searchInput,
-      ""
-    );
+    await SearchObject(req, searchInput, res, truyen, ITbook, dbHandler.searchObjectbyName, "Book", searchInput, "");
   }
 });
 
-async function SearchObject(
-  req,
-  searchInput,
-  res,
-  truyen,
-  ITbook,
-  dbFunction,
-  collectionName,
-  searchInput,
-  mess
+async function SearchObject(req, searchInput, res, truyen, ITbook, dbFunction, collectionName, searchInput, mess
 ) {
   const resultSearch = await dbFunction(collectionName, searchInput);
   if (resultSearch.length != 0) {
     if (!req.session.user) {
-      res.render("search", {
-        searchBook: resultSearch,
-        truyens: truyen,
-        ITbooks: ITbook,
-      });
+      res.render("search", { searchBook: resultSearch, truyens: truyen, ITbooks: ITbook, });
     } else {
       res.render("search", {
-        searchBook: resultSearch,
-        truyens: truyen,
-        ITbooks: ITbook,
-        user: req.session.user,
+        searchBook: resultSearch, truyens: truyen, ITbooks: ITbook, user: req.session.user,
       });
     }
   } else {
     if (!req.session.user) {
       const message = "Not found " + searchInput + mess;
-      res.render("search", {
-        truyens: truyen,
-        ITbooks: ITbook,
-        errorSearch: message,
-      });
+      res.render("search", { truyens: truyen, ITbooks: ITbook, errorSearch: message, });
     } else {
       const message = "Not found " + searchInput + mess;
-      res.render("search", {
-        truyens: truyen,
-        ITbooks: ITbook,
-        errorSearch: message,
-        user: req.session.user,
-      });
+      res.render("search", { truyens: truyen, ITbooks: ITbook, errorSearch: message, user: req.session.user, });
     }
   }
 }
@@ -123,23 +78,4 @@ router.get("/details", async (req, res) => {
   }
 });
 
-router.get("/Pushase", async (req, res) => {
-  const truyen = await dbHandler.searchObjectbyCategory(
-    "Book",
-    "61e570c7ba41b21dee1346b3"
-  );
-  const ITbook = await dbHandler.searchObjectbyCategory(
-    "Book",
-    "61e570ddba41b21dee1346b4"
-  );
-  if (!req.session.user) {
-    res.render("index", { truyens: truyen, ITbooks: ITbook });
-  } else {
-    res.render("index", {
-      truyens: truyen,
-      ITbooks: ITbook,
-      user: req.session.user,
-    });
-  }
-});
 module.exports = router;

@@ -1,7 +1,9 @@
+const bcrypt = require('bcryptjs/dist/bcrypt');
 const async = require('hbs/lib/async');
 const { MongoClient, ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
 
 
 const URL = 'mongodb+srv://sonhan14:trinhquocanh011@cluster0.dhmh6.mongodb.net/test';
@@ -94,9 +96,9 @@ async function deleteOne(collectionName, deleteObject) {
 //     return result;
 // }
 
-async function checkUserRole(nameIn, passIn){
+async function checkUserRole(nameIn){
     const dbo = await getdbo();
-    const user = await dbo.collection('Users').findOne({userName:nameIn, password:passIn});
+    const user = await dbo.collection('Users').findOne({userName:nameIn});
     if (user == null) {
         return -1;
     }
@@ -105,14 +107,17 @@ async function checkUserRole(nameIn, passIn){
     }
 }
 
-async function checkUser(nameIn,passwordIn){
-    const dbo = await getDbo();
-    const results = await dbo.collection("Users").
-        findOne({$and:[{username:nameIn},{password:passwordIn}]});
-    if(results !=null)
-        return true;
+async function checkUser(nameIn){
+    const dbo = await getdbo();
+    const results = await dbo.collection("Users").findOne({userName:nameIn});
+    if(results)
+    {
+        return results;
+    }
     else
-        return false;
+    {
+        return -1;
+    }
 }
 
 async function saveDocument(collectionName, id, newValue) {

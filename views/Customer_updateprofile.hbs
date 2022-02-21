@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{> head}}
+
+<body class="sb-nav-fixed">
+    {{> traineehead}}
+    <div class="modal-dialog modal-lg" role="document" style="margin-top: 5%; margin-left: 20%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Update Profile For Customer </h2>
+            </div>
+            <div class="modal-body">
+                <div class="py-1">
+
+                    <form class="form" method="POST" action="/doUpdateProfileTrainee" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-3 border-right">
+                                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                                    <img class="rounded-circle mt-5" width="150px" height="200px"
+                                        src="/uploads/trainees/{{aTrainee.img}}">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+
+                                    <div class="col">
+                                        <input type="hidden" name="id" value="{{aTrainee.id}}">
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input class="form-control" type="text" name="name" 
+                                                value="{{aTrainee.name}}" disabled required />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input class="form-control" type="text" name="email" disabled
+                                                value="{{aTrainee.email}}" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Date of Birth</label>
+                                            <input class="form-control" type="date" name="date"
+                                                value="{{dateFormat aTrainee.dateOfBirth "YYYY-MM-DD"}}" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="col mb-3">
+                                        <div class="col form-group">
+                                            <label>Image</label>
+                                            <input type="file" name="picture" id="picture" accept="image/*" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <div class="form-group">
+                                            <label>Education</label>
+                                            <input class="form-control" type="text" name="education"
+                                                value="{{aTrainee.education}}" required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col d-flex justify-content-end">
+                                    <button class="btn btn-primary" type="submit">Save</button>
+                                    <a href="/trainee" class="btn btn-warning">Cancel</a>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
