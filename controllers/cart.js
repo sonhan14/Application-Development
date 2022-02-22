@@ -129,4 +129,19 @@ router.get('/delete', async (req, res) => {
     res.redirect('/shoppingCart/viewCart')
 })
 
+router.get('/payCart', async (req,res)=>{
+    const orderDB = await dbHandler.getCart(req.session.user.name)
+    const tax = orderDB.totalPrice / 100
+    const Total = orderDB.totalPrice + tax
+    res.render('CheckOut', {books : orderDB, tax: tax, Total: Total})
+})
+
+router.post('/pay', async (req, res)=>{
+    const id = req.body.userOrder
+    const orderDB = await dbHandler.getDocumentById(id, "Order")
+    await dbHandler.insertObject("Customer Order", orderDB)
+    await dbHandler.deleteDocumentById("Order", id)
+    res.redirect('/shoppingCart/viewCart')
+})
+
 module.exports = router;

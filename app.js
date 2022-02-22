@@ -116,6 +116,7 @@ app.get("/profile", (req, res) => {
 app.get("/UpDateProfile", (req, res) => {
   res.render("UpDateProfile");
 });
+
 //cac request co chua /admin se di den controller customer
 const userController = require("./controllers/customer");
 app.use("/", userController);

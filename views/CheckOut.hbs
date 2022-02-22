@@ -119,9 +119,12 @@
 
         </div>
 
+        <form action="/shoppingCart/pay" method="post">
+        <input type="hidden" name="userOrder" id="userOrder" value="{{books._id}}">
         <button class="btn btn-primary">
-          <b>Pay</b> $ <span id="payAmount">2.15</span>
+          <b>Pay</b> VND <span id="payAmount">{{Total}}</span>
         </button>
+        </form>
 
       </section>
 
@@ -133,19 +136,19 @@
 
         <div class="cart-item-box">
 
-          <h2 class="section-heading">Order Summery</h2>
+          <h2 class="section-heading">Order Summary</h2>
 
           <div class="product-card">
-
+            {{#each books.books}}
             <div class="card">
 
               <div class="img-box">
-                <img src="./images/3.jpeg" alt="Green tomatoes" width="80px" class="product-img">
+                <img src="{{pic}}" alt="Green tomatoes" width="80px" class="product-img">
               </div>
 
               <div class="detail">
 
-                <h4 class="product-name"> Connan tap 1</h4>
+                <h4 class="product-name">{{name}}</h4>
 
                 <div class="wrapper">
 
@@ -154,7 +157,7 @@
                       <ion-icon name="remove-outline"></ion-icon>
                     </button>
 
-                    <span id="quantity">1</span>
+                    <span id="quantity">{{qty}}</span>
 
                     <button id="increment">
                       <ion-icon name="add-outline"></ion-icon>
@@ -162,7 +165,7 @@
                   </div>
 
                   <div class="price">
-                    $ <span id="price">1.25</span>
+                    VND <span id="price">{{price}}</span>
                   </div>
 
                 </div>
@@ -176,50 +179,7 @@
             </div>
 
           </div>
-
-          <div class="product-card">
-
-            <div class="card">
-
-              <div class="img-box">
-                <img src="./images/3.jpeg" alt="Cabbage" width="80px" class="product-img">
-              </div>
-
-              <div class="detail">
-
-                <h4 class="product-name">Connan tap 2</h4>
-
-                <div class="wrapper">
-
-                  <div class="product-qty">
-                    <button id="decrement">
-                      <ion-icon name="remove-outline"></ion-icon>
-                    </button>
-
-                    <span id="quantity">1</span>
-
-                    <button id="increment">
-                      <ion-icon name="add-outline"></ion-icon>
-                    </button>
-                  </div>
-
-                  <div class="price">
-                    $ <span id="price">0.80</span>
-                  </div>
-
-                </div>
-
-              </div>
-
-              <button class="product-close-btn">
-                <ion-icon name="close-outline"></ion-icon>
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
+          {{/each}}
 
         <div class="wrapper">
 
@@ -240,19 +200,19 @@
           <div class="amount">
 
             <div class="subtotal">
-              <span>Subtotal</span> <span>$ <span id="subtotal">2.05</span></span>
+              <span>Subtotal</span> <span>VND <span id="subtotal">{{books.totalPrice}}</span></span>
             </div>
 
             <div class="tax">
-              <span>Tax</span> <span>$ <span id="tax">0.10</span></span>
+              <span>Tax</span> <span>VND <span id="tax">{{tax}}</span></span>
             </div>
 
             <div class="shipping">
-              <span>Shipping</span> <span>$ <span id="shipping">0.00</span></span>
+              <span>Shipping</span> <span>VND <span id="shipping">0.00</span></span>
             </div>
 
             <div class="total">
-              <span>Total</span> <span>$ <span id="total">2.15</span></span>
+              <span>Total</span> <span>VND <span id="total">{{Total}}</span></span>
             </div>
 
           </div>
