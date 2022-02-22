@@ -128,7 +128,7 @@ const feedbackController = require("./controllers/feedback");
 const async = require("hbs/lib/async");
 app.use("/feedback", feedbackController);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT);
 console.log("Server is running! " + PORT);
 console.log()
