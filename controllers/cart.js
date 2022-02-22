@@ -31,7 +31,6 @@ router.post("/", async (req, res) => {
             book.money = book.price * book.qty
             dict.books.push(book);
             req.session["cart"] = dict
-            console.log(dict)
         } else {
             dict = req.session["cart"]
             var oldBookIndex = dict.books.findIndex(b => b._id == book._id)
@@ -47,7 +46,6 @@ router.post("/", async (req, res) => {
             }
             dict.totalPrice += book.price;
             req.session["cart"] = dict
-            console.log(dict)
         }
         await dbHandler.updateCart(req.session.user.name, req.session["cart"])
         res.redirect('/details?id=' + bookID)
@@ -63,15 +61,13 @@ router.post("/", async (req, res) => {
                 book.money = book.price * book.qty
                 dict.books.push(book);
             }
-            else
-            {
+            else {
                 const oldBook = dict.books[oldBookIndex];
                 oldBook.qty += 1;
                 oldBook.money = oldBook.price * oldBook.qty
             }
             dict.totalPrice += book.price;
             req.session["cart"] = dict
-            console.log(dict)
         } else {
             dict = req.session["cart"]
             var oldBookIndex = dict.books.findIndex(b => b._id == book._id)
@@ -88,7 +84,6 @@ router.post("/", async (req, res) => {
             dict.totalPrice += book.price;
             delete dict._id;
             req.session["cart"] = dict
-            console.log(dict)
         }
         await dbHandler.updateCart(req.session.user.name, req.session["cart"])
         res.redirect('/details?id=' + bookID)
@@ -102,10 +97,36 @@ router.get('/viewCart', async (req, res) => {
     }
     else {
         const orderDB = await dbHandler.getCart(req.session.user.name)
-        console.log(orderDB);
         res.render('ShoppingCart', { order: orderDB, user: req.session.user })
     }
-//how?
-
 })
+
+router.get('/delete', async (req, res) => {
+    const id = req.query.id
+    console.log("id need delete: " + id)
+    const book = await dbHandler.getDocumentById(id, "Book")
+    const orderDB = await dbHandler.getCart(req.session.user.name)
+    let cart = req.session["cart"]
+    if (!cart) {
+        let dict = orderDB
+        var bookIndex = dict.books.findIndex(b => b._id == id)
+        console.log(bookIndex)
+        const bookDelete = dict.books[bookIndex];
+        console.log(bookDelete)
+        dict.totalPrice -= bookDelete.money
+        dict.books.splice(bookIndex, 1)
+        req.session["cart"] = dict
+    }
+    else {
+        dict = req.session["cart"]
+        var bookIndex = dict.books.findIndex(b => b._id == id)
+        const bookDelete = dict.books[bookIndex];
+        dict.totalPrice -= bookDelete.money
+        dict.books.splice(bookIndex, 1)
+        req.session["cart"] = dict
+    }
+    await dbHandler.updateCart(req.session.user.name, req.session["cart"])
+    res.redirect('/shoppingCart/viewCart')
+})
+
 module.exports = router;
