@@ -116,6 +116,7 @@ app.get("/profile", (req, res) => {
 app.get("/UpDateProfile", (req, res) => {
   res.render("UpDateProfile");
 });
+
 //cac request co chua /admin se di den controller customer
 const userController = require("./controllers/customer");
 app.use("/", userController);
@@ -128,7 +129,7 @@ const feedbackController = require("./controllers/feedback");
 const async = require("hbs/lib/async");
 app.use("/feedback", feedbackController);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT);
 console.log("Server is running! " + PORT);
 console.log()

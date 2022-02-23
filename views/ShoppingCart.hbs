@@ -26,9 +26,9 @@
 
       <a href="/" class="logo"> <i class="fas fa-book"></i> FPTBook </a>
 
-      <form action="" class="search-form">
-        <input type="search" name="" placeholder="search here..." id="search-box">
-        <label for="search-box" class="fas fa-search"></label>
+      <form action="/search?=" class="search-form" method="get">
+        <input type="search" name="searchInput" placeholder="search here..." id="searchInput">
+        <a href="/search"><button><i class="fas fa-search"></i></button></i></a>
       </form>
 
       <div class="icons">
@@ -39,7 +39,7 @@
           <span class="header__navbar-user-name">{{user.name}}</span>
 
         </div>
-        <a href=""><i class="fas fa-sign-out-alt"></i></a>
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i></a>
 
       </div>
 
@@ -49,8 +49,8 @@
     <div class="header-2">
       <nav class="navbar">
         <a href="/">home</a>
-        <a href="#featured">Best Selling Book</a>
-        <a href="#arrivals">All book</a>
+        <a href="/#featured">Best Selling Book</a>
+        <a href="/#arrivals">All book</a>
 
       </nav>
     </div>
@@ -74,7 +74,7 @@
             <div class="description">
               <p>{{name}}</p>
               <small>price: {{price}}</small><br>
-              <a href="">remove</a>
+              <a href="/shoppingCart/delete?id={{_id}}">remove</a>
             </div>
           </div>
         </td>
@@ -91,7 +91,7 @@
 
         </tr>
         <tr>
-          <td><button type="submit" class="btn"> Proceed to Pay</button></td>
+          <td><a href="/shoppingCart/payCart"><button type="submit" class="btn">Proceed to Pay</button></a></td>
 
         </tr>
       </table>
