@@ -22,7 +22,9 @@
         <div id="close-login-btn" class="fas fa-times"></div>
 
         <form method="POST" action="/login">
-            <center><h2 style="color: red;">{{errorMsg}}</h2></center>
+            <center>
+                <h2 style="color: red;">{{errorMsg}}</h2>
+            </center>
             <h3>sign in</h3>
             <span>username</span>
             <input type="name" name="txtName" class="box" placeholder="Enter your name" id="">
@@ -41,7 +43,7 @@
 
             <button type="submit" value="sign in" class="btn">Sign in</button>
             <p>forget password ? <a href="#">Click here</a></p>
-            <p>don't have an account ? <a href="#">Sign Up</a></p>
+            <p>don't have an account ? <a href="/register">Sign Up</a></p>
         </form>
 
     </div>
