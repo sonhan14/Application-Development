@@ -29,11 +29,10 @@ router.get('/', async (req, res) => {
     }else {
         const customerOrder = await dbHandler.getAll("Customer Order")
         customerOrder.forEach((element) => (element.time = element.time.toLocaleString("vi")));
-        res.render('adminPage',  { customerOrder: customerOrder, user : req.session.user})
-        
+        res.render('adminPage',  { 
+            customerOrder: customerOrder, 
+            user : req.session.user})
     }
-
-    
 })
 
 //neu request la: /admin/addUser
@@ -45,10 +44,13 @@ router.get('/addUser', (req, res) => {
 
 router.get("/feedbackManage", async (req, res) => {
     const result = await dbHandler.getAll("Feedback");
-
     // res.render("feedbackManagement", { result });
     res.render('adminPage', {feedback: result, user : req.session.user})
-  });
+});
+
+// router.get('/feedbackManage/delete', async(req,res) => {
+
+// })
 
 //Submit add User
 router.post('/addUser', (req, res) => {

@@ -29,10 +29,13 @@ router.get("/", async (req, res) => {
 router.post("/", (req, res) => {
     const obj = {
         ...req.body, //copy all element of req.body
-        username: req.session.user.name
-    }
+        username: req.session.user.name, 
+        time: new Date().toISOString(),
+    };
     dbHandler.insertObject("Feedback", obj);
     res.redirect("/");
 });
+
+
 
 module.exports = router;
