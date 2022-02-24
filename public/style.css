@@ -823,3 +823,6 @@ select.decentralization {
 .loader-container {
   display: none;
 }
+a.search-btn {
+  font-size: 25px;
+}
