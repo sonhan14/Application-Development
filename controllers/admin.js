@@ -7,16 +7,16 @@ const async = require('hbs/lib/async');
 router.use(express.static("public"));
 
 //middleware
-// router.use((req, res, next) => {
-//     const { user } = req.session; //same as: user = req.session.user
-//     if (user) {
-//         if (user.role == "admin") {
-//             next("route");
-//         } else { res.sendStatus(404); }
-//     } else {
-//         res.redirect('/login');
-//     }
-// })
+router.use((req, res, next) => {
+    const { user } = req.session; //same as: user = req.session.user
+    if (user) {
+        if (user.role == "admin") {
+            next("route");
+        } else { res.sendStatus(404); }
+    } else {
+        res.redirect('/login');
+    }
+})
 
 
 //neu request la: /admin
