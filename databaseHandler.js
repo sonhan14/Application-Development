@@ -110,13 +110,13 @@ async function checkUserRole(nameIn){
 async function checkUser(nameIn){
     const dbo = await getdbo();
     const results = await dbo.collection("Users").findOne({userName:nameIn});
-    if(results)
+    if(results != null)
     {
-        return results;
+        return true;
     }
     else
     {
-        return -1;
+        return false;
     }
 }
 

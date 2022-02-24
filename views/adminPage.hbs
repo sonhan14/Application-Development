@@ -223,40 +223,101 @@
                             </div>
                         </div>
                     </div>
+
+                    <label>Find by:</label>
+                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage">All</a>
+                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/today">Today</a>
+                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/2days">2 days</a>
+                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/2weeks">2 weeks</a>
+                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/2months">2 months</a>
+                    <span style="float: right;">
+                        <label for="date">Find by specify date:</label>
+                        <input type="date" name="date" id="date"
+                            onchange="window.location.href = '/admin/feedbackManage/specifyDay/' + event.target.value">
+                    </span>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Product</th>
+                                    <th>Feedback</th>
+                                    <th>Timestamp</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each feedback}}
+                                <tr>
+                                    <td>{{username}}</td>
+                                    <td>{{name}}</td>
+                                    <td>{{feedback}}</td>
+                                    <td>{{timeString}}</td>
+                                    <td><a href="/admin/feedbackManage/delete?id={{_id}}">Delete</a></td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+
+                    </div>
+
                 </div>
             </div>
-            {{/if}}
-            <!-- <div class="dash-card">
-                            <div class="d-flex justify-content-between align-items-center ">
-                                <h4>Users</h4>
-                                <img src="./images/more.svg" alt="more" />
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Users</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>M5 M5Micheal</td>
-                                            <td>active</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Son Han</td>
-                                            <td>active</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Thu Huong</td>
-                                            <td>active</td>
-                                        </tr>
+        </div>
+    </div>
+    {{else if customerOrder}}
+    <div class="row">
+        <div class="container-fluid">
+            <div class="dash-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4>Orders</h4>
+                    <form action="/admin">
+                        <select name="sortBy" required>
+                            <option value="">Choose</option>
+                            <option value="today">Today</option>
+                            <option value="week">Week</option>
+                        </select>
+                        {{#if search}}
+                        <a href="/admin">Clear</a>
+                        {{/if}}
+                        <button type="submit">Find</button>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>Order</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Action</th>
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each customerOrder}}
+                            <tr>
+                                <td>{{name}}</td>
+                                <td>{{item}}</td>
+                                <td>{{time}}</td>
+                                {{#if cancel}}
+                                <td>Cancel</td>
+                                <td><a href="/admin/delete?id={{_id}}">Cancel order</a></td>
+                                {{else}}
+                                <td>Pending</td>
+                                {{/if}}
+                                {{!-- {{#if status}}
+                                <td><a href="/admin/delete?id={{_id}}">Cancel order</a>
+                                </td> --}}
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            {{/if}}
         </div>
     </div>
 

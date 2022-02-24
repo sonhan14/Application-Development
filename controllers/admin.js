@@ -5,6 +5,7 @@ const dbHandler = require("../databaseHandler");
 const { ObjectId } = require("mongodb");
 const async = require('hbs/lib/async');
 const e = require('express');
+const { query } = require('express');
 router.use(express.static("public"));
 
 //middleware
@@ -48,9 +49,32 @@ router.get("/feedbackManage", async (req, res) => {
     res.render('adminPage', {feedback: result, user : req.session.user})
 });
 
-// router.get('/feedbackManage/delete', async(req,res) => {
+router.get('/feedbackManage/delete', async(req,res) => {
+    console.log(req.query);
+    await dbHandler.deleteDocumentById('Feedback', req.query.id);
+    res.redirect('/admin/feedbackManage');
+})
 
-// })
+router.get('feedbackManage/:day', async (req, res, next) => {
+    let result = await dbHandler.getAllFeedback();
+    const today = new Date().toDateString();
+    if (req.params.day === 'today') {
+        result = result.filter((e) => new Date(e.time).toDateString() === today);
+        res.render('adminPage', {
+            feedback : result,
+            user: req.session.user,
+        });
+    } else {
+        next('router');
+    }
+})
+
+router.get("/feedbackManage/specifyDay/:day", async (req, res) => {
+    let result = await dbHandler.getAllFeedback();
+    const specifyDay = new Date(req.params.day).toDateString();
+    result = result.filter((e) => new Date(e.time).toDateString() === specifyDay);
+    res.render("adminPage", { feedback: result, user: req.session.user });
+});
 
 //Submit add User
 router.post('/addUser', (req, res) => {
