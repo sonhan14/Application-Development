@@ -32,25 +32,6 @@ app.post("/login", async (req, res) => {
   const user = await dbHandler.checkUserLogin(name);
   if (user == -1) {
     res.render("login", { errorMsg: "Not found UserName!!" });
-<<<<<<< HEAD
-  }
-  else {
-
-    const role = await dbHandler.checkUserRole(name);
-    if (role == -1) {
-      res.render("login", { errorMsg: "Login failed!" });
-    } else {
-      if (req.body.Role == role) {
-        req.session.user = {
-          name: name,
-          role: role,
-        };
-        console.log("Loged in with: ")
-        console.log(req.session.user);
-        req.session["cart"] = null;
-        if (role == "Customer") {
-          res.redirect("/");
-=======
   } else {
     const validPass = await bcrypt.compare(pass, user.password);
     if (validPass) {
@@ -71,50 +52,16 @@ app.post("/login", async (req, res) => {
           } else {
             res.redirect("/admin");
           }
->>>>>>> 14020b14cc3558171f9fa0f7080f0a76b0c94199
         } else {
-          res.redirect("/admin");
+          res.render("login", { errorMsg: "not auth!!" });
         }
-      } else {
-        res.render("login", { errorMsg: "not auth!!" });
       }
-<<<<<<< HEAD
-    }
-
-    // const validPass = bcrypt.compareSync(pass, user.password)
-    // if (validPass) {
-    //   const role = await dbHandler.checkUserRole(name);
-    //   if (role == -1) {
-    //     res.render("login", { errorMsg: "Login failed!" });
-    //   } else {
-    //     if (req.body.Role == role) {
-    //       req.session.user = {
-    //         name: name,
-    //         role: role,
-    //       };
-    //       console.log("Loged in with: ")
-    //       console.log(req.session.user);
-    //       req.session["cart"] = null;
-    //       if (role == "Customer") {
-    //         res.redirect("/");
-    //       } else {
-    //         res.redirect("/admin");
-    //       }
-    //     } else {
-    //       res.render("login", { errorMsg: "not auth!!" });
-    //     }
-    //   }
-    // }
-    // else {
-    //   res.render("login", { errorMsg: "Incorrect password!!" });
-    // }
-=======
     } else {
       res.render("login", { errorMsg: "Incorrect password!!" });
     }
->>>>>>> 14020b14cc3558171f9fa0f7080f0a76b0c94199
   }
 });
+
 
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
@@ -144,15 +91,6 @@ app.post("/register", async (req, res) => {
   const hashPass = await bcrypt.hash(pass, 10);
   const existedUser = await dbHandler.checkUserLogin(userName);
   if (existedUser == -1) {
-<<<<<<< HEAD
-    const validPass = await bcrypt.compare(rePass, hashPass)
-    if (validPass) {
-      const newUser = { userName: userName, email: mail, phone: phone, role: role, password: hashPass }
-      await dbHandler.insertObject("Users", newUser)
-      res.render("register");
-    }
-    else {
-=======
     const validPass = await bcrypt.compare(rePass, hashPass);
     if (validPass) {
       const newUser = {
@@ -165,20 +103,14 @@ app.post("/register", async (req, res) => {
       await dbHandler.insertObject("Users", newUser);
       res.render("register");
     } else {
->>>>>>> 14020b14cc3558171f9fa0f7080f0a76b0c94199
       res.render("register", { errorMsg: "Password is not match" });
     }
   } else {
     res.render("register", { errorMsg: "Username already used" });
   }
-<<<<<<< HEAD
-  else {
-    res.render("register", { errorMsg: "Username already used" });
-  }
-})
-=======
 });
->>>>>>> 14020b14cc3558171f9fa0f7080f0a76b0c94199
+
+
 
 app.get("/Pushase", (req, res) => {
   res.render("Pushase");
@@ -206,4 +138,3 @@ app.use("/feedback", feedbackController);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
 console.log("Server is running! " + PORT);
-console.log();

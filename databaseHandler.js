@@ -41,8 +41,8 @@ async function searchObjectbyCategory(collectionName, category) {
 
 async function getAll(collectionName) {
     const dbo = await getdbo();
-    const result = await dbo.collection(collectionName).find({ }).sort({time : -1}).toArray()
-    return result 
+    const result = await dbo.collection(collectionName).find({}).sort({ time: -1 }).toArray()
+    return result
 }
 
 async function deleteDocumentById(collectionName, id) {
@@ -63,7 +63,7 @@ async function updateDocument(id, updateValues, collectionName) {
 
 async function updateCart(userName, updateDict) {
     const dbo = await getdbo();
-    await dbo.collection("Order").replaceOne({user: userName}, updateDict, {upsert: true})
+    await dbo.collection("Order").replaceOne({ user: userName }, updateDict, { upsert: true })
 }
 
 async function getCart(userName) {
@@ -96,9 +96,9 @@ async function deleteOne(collectionName, deleteObject) {
 //     return result;
 // }
 
-async function checkUserRole(nameIn){
+async function checkUserRole(nameIn) {
     const dbo = await getdbo();
-    const user = await dbo.collection('Users').findOne({userName:nameIn});
+    const user = await dbo.collection('Users').findOne({ userName: nameIn });
     if (user == null) {
         return -1;
     }
@@ -107,48 +107,44 @@ async function checkUserRole(nameIn){
     }
 }
 
-async function checkUserLogin(nameIn){
+async function checkUserLogin(nameIn) {
     const dbo = await getdbo();
-    const results = await dbo.collection("Users").findOne({userName:nameIn});
-    if(results)
-    {
+    const results = await dbo.collection("Users").findOne({ userName: nameIn });
+    if (results) {
         return results;
     }
-    else
-    {
+    else {
         return -1;
     }
 }
 
-async function checkUser(nameIn){
+async function checkUser(nameIn) {
     const dbo = await getdbo();
-    const results = await dbo.collection("Users").findOne({userName:nameIn});
-    if(results != null)
-    {
+    const results = await dbo.collection("Users").findOne({ userName: nameIn });
+    if (results != null) {
         return true;
     }
-    else
-    {
+    else {
         return false;
     }
 }
 
 async function saveDocument(collectionName, id, newValue) {
     const dbo = await getDbo();
-    await dbo.collection(collectionName).save({_id: ObjectId(id), newValue})
+    await dbo.collection(collectionName).save({ _id: ObjectId(id), newValue })
 }
 
 async function getAllFeedback() {
     const result = await getAll("Feedback");
     result.forEach((e) => (e.timeString = new Date(e.time).toLocaleString("vi-VN")));
     return result;
-  }
+}
 
-module.exports = {saveDocument, searchObjectbyPrice, searchObjectbyName, insertObject, 
-    getAll, deleteDocumentById, getDocumentById, 
-    updateDocument, findOne, deleteOne, 
-<<<<<<< HEAD
-    checkUserRole, checkUser,searchObjectbyCategory, updateCart, getCart, getAllFeedback}
-=======
-    checkUserRole, checkUser,searchObjectbyCategory, updateCart, getCart, checkUserLogin}
->>>>>>> 14020b14cc3558171f9fa0f7080f0a76b0c94199
+module.exports = {
+    saveDocument, searchObjectbyPrice, searchObjectbyName, insertObject,
+    getAll, deleteDocumentById, getDocumentById,
+    updateDocument, findOne, deleteOne,
+
+    checkUserRole, checkUser, searchObjectbyCategory, updateCart, getCart, getAllFeedback, checkUserRole, checkUser, searchObjectbyCategory, updateCart, getCart, checkUserLogin
+}
+
