@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const dbHandler = require("./databaseHandler");
 const session = require("express-session");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
@@ -29,12 +29,11 @@ app.get("/logout", (req, res) => {
 app.post("/login", async (req, res) => {
   const name = req.body.txtName;
   const pass = req.body.txtPass;
-  const user = await dbHandler.checkUser(name)
+  const user = await dbHandler.checkUser(name);
   if (user == -1) {
     res.render("login", { errorMsg: "Not found UserName!!" });
-  }
-  else {
-    const validPass = await bcrypt.compare(pass, user.password)
+  } else {
+    const validPass = await bcrypt.compare(pass, user.password);
     if (validPass) {
       const role = await dbHandler.checkUserRole(name);
       if (role == -1) {
@@ -45,7 +44,7 @@ app.post("/login", async (req, res) => {
             name: name,
             role: role,
           };
-          console.log("Loged in with: ")
+          console.log("Loged in with: ");
           console.log(req.session.user);
           req.session["cart"] = null;
           if (role == "Customer") {
@@ -57,8 +56,7 @@ app.post("/login", async (req, res) => {
           res.render("login", { errorMsg: "not auth!!" });
         }
       }
-    }
-    else {
+    } else {
       res.render("login", { errorMsg: "Incorrect password!!" });
     }
   }
@@ -66,7 +64,6 @@ app.post("/login", async (req, res) => {
 
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
-
 
 const customerController = require("./controllers/customer");
 app.use("/", customerController);
@@ -77,34 +74,40 @@ app.get("/login", (req, res) => {
 
 app.get("/register", (req, res) => {
   res.render("register");
-})
+});
+
+app.get("/search", (req, res) => {
+  res.render("search");
+});
 
 app.post("/register", async (req, res) => {
-  const userName = req.body.txtUser
-  const mail = req.body.txtMail
-  const phone = req.body.txtPhone
-  const pass = req.body.txtPass
-  const rePass = req.body.txtRePass
-  const role = req.body.Role
+  const userName = req.body.txtUser;
+  const mail = req.body.txtMail;
+  const phone = req.body.txtPhone;
+  const pass = req.body.txtPass;
+  const rePass = req.body.txtRePass;
+  const role = req.body.Role;
   const hashPass = await bcrypt.hash(pass, 10);
-  const existedUser = await dbHandler.checkUser(userName)
+  const existedUser = await dbHandler.checkUser(userName);
   if (existedUser == -1) {
-    const validPass = await bcrypt.compare(rePass, hashPass)
-    if(validPass)
-    {
-      const newUser = { userName: userName, email: mail, phone: phone, role: role, password: hashPass }
-    await dbHandler.insertObject("Users", newUser)
-    res.render("register");
+    const validPass = await bcrypt.compare(rePass, hashPass);
+    if (validPass) {
+      const newUser = {
+        userName: userName,
+        email: mail,
+        phone: phone,
+        role: role,
+        password: hashPass,
+      };
+      await dbHandler.insertObject("Users", newUser);
+      res.render("register");
+    } else {
+      res.render("register", { errorMsg: "Password is not match" });
     }
-    else
-    {
-      res.render("register", {errorMsg: "Password is not match"});
-    }
+  } else {
+    res.render("register", { errorMsg: "Username already used" });
   }
-  else{ 
-    res.render("register", {errorMsg: "Username already used"});
-  }
-})
+});
 
 app.get("/Pushase", (req, res) => {
   res.render("Pushase");
@@ -132,4 +135,4 @@ app.use("/feedback", feedbackController);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
 console.log("Server is running! " + PORT);
-console.log()
+console.log();
