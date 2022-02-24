@@ -34,33 +34,56 @@ app.post("/login", async (req, res) => {
     res.render("login", { errorMsg: "Not found UserName!!" });
   }
   else {
-    const validPass = await bcrypt.compare(pass, user.password)
-    if (validPass) {
-      const role = await dbHandler.checkUserRole(name);
-      if (role == -1) {
-        res.render("login", { errorMsg: "Login failed!" });
-      } else {
-        if (req.body.Role == role) {
-          req.session.user = {
-            name: name,
-            role: role,
-          };
-          console.log("Loged in with: ")
-          console.log(req.session.user);
-          req.session["cart"] = null;
-          if (role == "Customer") {
-            res.redirect("/");
-          } else {
-            res.redirect("/admin");
-          }
+
+    const role = await dbHandler.checkUserRole(name);
+    if (role == -1) {
+      res.render("login", { errorMsg: "Login failed!" });
+    } else {
+      if (req.body.Role == role) {
+        req.session.user = {
+          name: name,
+          role: role,
+        };
+        console.log("Loged in with: ")
+        console.log(req.session.user);
+        req.session["cart"] = null;
+        if (role == "Customer") {
+          res.redirect("/");
         } else {
-          res.render("login", { errorMsg: "not auth!!" });
+          res.redirect("/admin");
         }
+      } else {
+        res.render("login", { errorMsg: "not auth!!" });
       }
     }
-    else {
-      res.render("login", { errorMsg: "Incorrect password!!" });
-    }
+
+    // const validPass = bcrypt.compareSync(pass, user.password)
+    // if (validPass) {
+    //   const role = await dbHandler.checkUserRole(name);
+    //   if (role == -1) {
+    //     res.render("login", { errorMsg: "Login failed!" });
+    //   } else {
+    //     if (req.body.Role == role) {
+    //       req.session.user = {
+    //         name: name,
+    //         role: role,
+    //       };
+    //       console.log("Loged in with: ")
+    //       console.log(req.session.user);
+    //       req.session["cart"] = null;
+    //       if (role == "Customer") {
+    //         res.redirect("/");
+    //       } else {
+    //         res.redirect("/admin");
+    //       }
+    //     } else {
+    //       res.render("login", { errorMsg: "not auth!!" });
+    //     }
+    //   }
+    // }
+    // else {
+    //   res.render("login", { errorMsg: "Incorrect password!!" });
+    // }
   }
 });
 
@@ -90,19 +113,17 @@ app.post("/register", async (req, res) => {
   const existedUser = await dbHandler.checkUser(userName)
   if (existedUser == -1) {
     const validPass = await bcrypt.compare(rePass, hashPass)
-    if(validPass)
-    {
+    if (validPass) {
       const newUser = { userName: userName, email: mail, phone: phone, role: role, password: hashPass }
-    await dbHandler.insertObject("Users", newUser)
-    res.render("register");
+      await dbHandler.insertObject("Users", newUser)
+      res.render("register");
     }
-    else
-    {
-      res.render("register", {errorMsg: "Password is not match"});
+    else {
+      res.render("register", { errorMsg: "Password is not match" });
     }
   }
-  else{ 
-    res.render("register", {errorMsg: "Username already used"});
+  else {
+    res.render("register", { errorMsg: "Username already used" });
   }
 })
 

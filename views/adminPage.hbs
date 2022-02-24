@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="admin.css"> />
+    <link rel="stylesheet" href="/admin.css"> />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <!--fonts-->
@@ -45,13 +45,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link"><img src="./images/shopping-bag.svg" alt="dashboard">Orders</a>
+                        <a href="/admin" class="nav-link">Orders</a>
                     </li>
                     <li class="nav-item">
                         <a href="/admin/feedbackManage" class="nav-link">Feedback</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link"><img src="./images/user.svg" alt="dashboard">Customers</a>
+                        <a href="/admin/manageCustomer" class="nav-link">Customers</a>
                     </li>
 
                 </ul>
@@ -94,8 +94,6 @@
                     <div class="title_oder">
 
                         <h2 class="page-title">Dashboard</h2>
-                        <h4><a href="/admin/week"> 7day ago <i class="fas fa-chevron-right"></i></a>
-                        </h4>
                     </div>
                     <div class="row">
                         <div class="col-md-7 col-lg-7 col-xl-4 col-12">
@@ -148,8 +146,22 @@
                             <div class="dash-card">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h4>Feedback</h4>
-                                    <img src="./images/more.svg" alt="more" />
                                 </div>
+                                <label>Find by:</label>
+                                <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage">All</a>
+                                <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/today">Today</a>
+                                <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/2days">2 days</a>
+                                <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/2weeks">2 weeks</a>
+                                <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/2months">2 months</a>
+                                <span style="float: right;">
+                                    <label for="date">Find by specify date:</label>
+                                    <input type="date" name="date" id="date"
+                                        onchange="window.location.href = '/admin/feedbackManage/specifyDay/' + event.target.value">
+                                </span>
+                                <form action="/admin/feedbackManage/bookName" method="GET">
+                                    <input type="text" name="bookName">
+                                    <button type="submit">Find</button>
+                                </form>
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
@@ -157,6 +169,8 @@
                                                 <th>Username</th>
                                                 <th>Product</th>
                                                 <th>Feedback</th>
+                                                <th>Time</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -165,6 +179,8 @@
                                                 <td>{{username}}</td>
                                                 <td>{{name}}</td>
                                                 <td>{{feedback}}</td>
+                                                <td>{{timeString}}</td>
+                                                <td><a href="/admin/feedbackManage/delete?id={{_id}}">Delete</a></td>
                                             </tr>
                                             {{/each}}
                                         </tbody>
@@ -174,18 +190,21 @@
                         </div>
                     </div>
                 </div>
-                {{else}}
+                {{else if customerOrder}}
                 <div class="row">
                     <div class="container-fluid">
                         <div class="dash-card">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h4>Orders</h4>
                                 <form action="/admin">
-                                    <select name="sortBy">
+                                    <select name="sortBy" required>
                                         <option value="">Choose</option>
                                         <option value="today">Today</option>
                                         <option value="week">Week</option>
                                     </select>
+                                    {{#if search}}
+                                    <a href="/admin">Clear</a>
+                                    {{/if}}
                                     <button type="submit">Find</button>
                                 </form>
                             </div>
@@ -205,7 +224,7 @@
                                         {{#each customerOrder}}
                                         <tr>
                                             <td>{{name}}</td>
-                                            <td>{{item}}</td>
+                                            <td>{{itemString}}</td>
                                             <td>{{time}}</td>
                                             {{#if cancel}}
                                             <td>Cancel</td>
@@ -223,102 +242,49 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            {{else if Customer}}
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="dash-card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Customer ID</th>
+                                        <th>Customer Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each Customer}}
+                                    <tr>
+                                        <td>{{index}}</td>
+                                        <td>{{_id}}</td>
+                                        <td>{{userName}}</td>
+                                        <td>{{email}}</td>
+                                        <td>{{phone}}</td>
+                                        <td><a href="/admin/deleteCustomer/{{_id}}">Delete</a></td>
 
-                    <label>Find by:</label>
-                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage">All</a>
-                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/today">Today</a>
-                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/2days">2 days</a>
-                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/2weeks">2 weeks</a>
-                    <a style="margin: 0 2rem 0 2rem;" href="/admin/feedbackManage/2months">2 months</a>
-                    <span style="float: right;">
-                        <label for="date">Find by specify date:</label>
-                        <input type="date" name="date" id="date"
-                            onchange="window.location.href = '/admin/feedbackManage/specifyDay/' + event.target.value">
-                    </span>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Username</th>
-                                    <th>Product</th>
-                                    <th>Feedback</th>
-                                    <th>Timestamp</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#each feedback}}
-                                <tr>
-                                    <td>{{username}}</td>
-                                    <td>{{name}}</td>
-                                    <td>{{feedback}}</td>
-                                    <td>{{timeString}}</td>
-                                    <td><a href="/admin/feedbackManage/delete?id={{_id}}">Delete</a></td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
+
+        {{else}}
+        <h1 style="text-align: center; margin-top: 3rem;">No result!</h1>
+        {{/if}}
+
     </div>
-    {{else if customerOrder}}
-    <div class="row">
-        <div class="container-fluid">
-            <div class="dash-card">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h4>Orders</h4>
-                    <form action="/admin">
-                        <select name="sortBy" required>
-                            <option value="">Choose</option>
-                            <option value="today">Today</option>
-                            <option value="week">Week</option>
-                        </select>
-                        {{#if search}}
-                        <a href="/admin">Clear</a>
-                        {{/if}}
-                        <button type="submit">Find</button>
-                    </form>
-                </div>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>name</th>
-                                <th>Order</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                                <th>Action</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each customerOrder}}
-                            <tr>
-                                <td>{{name}}</td>
-                                <td>{{item}}</td>
-                                <td>{{time}}</td>
-                                {{#if cancel}}
-                                <td>Cancel</td>
-                                <td><a href="/admin/delete?id={{_id}}">Cancel order</a></td>
-                                {{else}}
-                                <td>Pending</td>
-                                {{/if}}
-                                {{!-- {{#if status}}
-                                <td><a href="/admin/delete?id={{_id}}">Cancel order</a>
-                                </td> --}}
-                            </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-            {{/if}}
-        </div>
     </div>
 
 

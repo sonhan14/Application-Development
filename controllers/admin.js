@@ -4,35 +4,40 @@ const router = express.Router()
 const dbHandler = require("../databaseHandler");
 const { ObjectId } = require("mongodb");
 const async = require('hbs/lib/async');
-const e = require('express');
-const { query } = require('express');
 router.use(express.static("public"));
 
 //middleware
-router.use((req, res, next) => {
-    const { user } = req.session; //same as: user = req.session.user
-    if (user) {
-        if (user.role == "admin") {
-            next("route");
-        } else { res.sendStatus (404); }
-    } else {
-        res.redirect('/login');
-    }
-})
+// router.use((req, res, next) => {
+//     const { user } = req.session; //same as: user = req.session.user
+//     if (user) {
+//         if (user.role == "admin") {
+//             next("route");
+//         } else { res.sendStatus(404); }
+//     } else {
+//         res.redirect('/login');
+//     }
+// })
 
 
 //neu request la: /admin
 router.get('/', async (req, res) => {
     if (req.query.sortBy == "today") {
         res.redirect("/admin/today");
-    }else if (req.query.sortBy == 'week'){
+    } else if (req.query.sortBy == 'week') {
         res.redirect("/admin/week");
-    }else {
+    } else {
         const customerOrder = await dbHandler.getAll("Customer Order")
-        customerOrder.forEach((element) => (element.time = element.time.toLocaleString("vi")));
-        res.render('adminPage',  { 
-            customerOrder: customerOrder, 
-            user : req.session.user})
+        customerOrder.forEach((element) => {
+            element.time = element.time.toLocaleString("vi");
+            element.itemString = "";
+            element.item.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
+                element.itemString += e.item + "x" + e.amount + " ";
+            })
+        });
+        res.render('adminPage', {
+            customerOrder: customerOrder,
+            user: req.session.user
+        })
     }
 })
 
@@ -40,34 +45,55 @@ router.get('/', async (req, res) => {
 router.get('/addUser', (req, res) => {
     res.send("This is add user page!")
     // res.render('addUser')
-    
+
 })
 
 router.get("/feedbackManage", async (req, res) => {
-    const result = await dbHandler.getAll("Feedback");
+    let result = await dbHandler.getAllFeedback();
     // res.render("feedbackManagement", { result });
-    res.render('adminPage', {feedback: result, user : req.session.user})
+    res.render('adminPage', { feedback: result, user: req.session.user })
 });
 
-router.get('/feedbackManage/delete', async(req,res) => {
+router.get('/feedbackManage/delete', async (req, res) => {
     console.log(req.query);
     await dbHandler.deleteDocumentById('Feedback', req.query.id);
     res.redirect('/admin/feedbackManage');
 })
 
-router.get('feedbackManage/:day', async (req, res, next) => {
+router.get("/feedbackManage/:day", async (req, res, next) => {
     let result = await dbHandler.getAllFeedback();
-    const today = new Date().toDateString();
-    if (req.params.day === 'today') {
-        result = result.filter((e) => new Date(e.time).toDateString() === today);
-        res.render('adminPage', {
-            feedback : result,
+    const today = new Date();
+    if (req.params.day === "today") {
+        result = result.filter((e) => new Date(e.time).toDateString() === today.toDateString());
+        res.render("adminPage", {
+            feedback: result,
+            user: req.session.user,
+        });
+    } else if (req.params.day === "2days") {
+        const queryDay = new Date(today.setDate(today.getDate() - 2));
+        result = result.filter((e) => new Date(e.time) > queryDay);
+        res.render("adminPage", {
+            feedback: result,
+            user: req.session.user,
+        });
+    } else if (req.params.day === "2weeks") {
+        const queryDay = new Date(today.setDate(today.getDate() - 14));
+        result = result.filter((e) => new Date(e.time) > queryDay);
+        res.render("adminPage", {
+            feedback: result,
+            user: req.session.user,
+        });
+    } else if (req.params.day === "2months") {
+        const queryDay = new Date(today.setMonth(today.getMonth() - 2));
+        result = result.filter((e) => new Date(e.time) > queryDay);
+        res.render("adminPage", {
+            feedback: result,
             user: req.session.user,
         });
     } else {
-        next('router');
+        next("route");
     }
-})
+});
 
 router.get("/feedbackManage/specifyDay/:day", async (req, res) => {
     let result = await dbHandler.getAllFeedback();
@@ -75,6 +101,14 @@ router.get("/feedbackManage/specifyDay/:day", async (req, res) => {
     result = result.filter((e) => new Date(e.time).toDateString() === specifyDay);
     res.render("adminPage", { feedback: result, user: req.session.user });
 });
+
+router.get('/feedbackManage/bookName', async (req, res) =>{
+    let result = await dbHandler.getAllFeedback();
+    const arr = result.filter(element => {
+        return element.name === req.query.bookName;
+    })
+    res.render('adminPage', {feedback: arr})
+})
 
 //Submit add User
 router.post('/addUser', (req, res) => {
@@ -90,11 +124,11 @@ router.post('/addUser', (req, res) => {
     res.render('adminIndex')
 })
 
-router.get('/customer', (req,res)=>{
+router.get('/customer', (req, res) => {
     res.render("Admin_Customer")
 });
 
-router.get('/product', (req,res)=>{
+router.get('/product', (req, res) => {
     res.render("Admin_Product")
 });
 
@@ -105,7 +139,7 @@ router.get('/product', (req,res)=>{
 // });
 
 
-router.get("/:sortBy", async (req, res) => {
+router.get("/:sortBy", async (req, res, next) => {
     let result = await dbHandler.getAll("Customer Order");
     if (req.params.sortBy === "today") {
         let today = new Date().toLocaleDateString("vi");
@@ -133,18 +167,43 @@ router.get("/:sortBy", async (req, res) => {
         }
     }
     else {
-        res.redirect("/admin");
+        next("route");
     }
 });
 
+router.get('/manageCustomer', async (req, res) => {
+    result = await dbHandler.getAll("Users");
+    const arr = result.filter((element) => {
+        return element.role === 'Customer'
+    });
+    arr.forEach((element, index) => {
+        element.index = index+1;
+        delete element.password;
+        delete element.role;
+    })
+    console.log(arr);
+    res.render('adminPage', { Customer: arr})
+    
+})
+
+router.get('/deleteCustomer/:id', async(req, res) => {
+    // console.log(req.params.id)
+    // await dbHandler.deleteDocumentById('Users', req.params.id);
+    // res.redirect('/admin/manageCustomer')
+    res.send("Delete customer by ID" + req.params.id)
+})
+router.get('/deleteCustomer', async(req, res) => {
+    res.send("deleteCustomer")
+})
+
 //view profile
-exports.getProfile = async(req,res)=>{
-    let aTrainee = await trainee.findOne({email : req.session.email})
-    res.render('traineeProfileUpdate',{ aTrainee: aTrainee, loginName : req.session.email});
+exports.getProfile = async (req, res) => {
+    let aTrainee = await trainee.findOne({ email: req.session.email })
+    res.render('traineeProfileUpdate', { aTrainee: aTrainee, loginName: req.session.email });
 }
 
 //update profile
-exports.updateProfile = async(req,res)=>{
+exports.updateProfile = async (req, res) => {
     let id = req.body.id;
     let aTrainee = await trainee.findById(id);
     if (req.file) {
@@ -155,5 +214,8 @@ exports.updateProfile = async(req,res)=>{
     aTrainee = await aTrainee.save();
     res.redirect('/trainee');
 }
+
+
+
 
 module.exports = router;

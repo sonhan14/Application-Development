@@ -125,7 +125,13 @@ async function saveDocument(collectionName, id, newValue) {
     await dbo.collection(collectionName).save({_id: ObjectId(id), newValue})
 }
 
+async function getAllFeedback() {
+    const result = await getAll("Feedback");
+    result.forEach((e) => (e.timeString = new Date(e.time).toLocaleString("vi-VN")));
+    return result;
+  }
+
 module.exports = {saveDocument, searchObjectbyPrice, searchObjectbyName, insertObject, 
     getAll, deleteDocumentById, getDocumentById, 
     updateDocument, findOne, deleteOne, 
-    checkUserRole, checkUser,searchObjectbyCategory, updateCart, getCart}
+    checkUserRole, checkUser,searchObjectbyCategory, updateCart, getCart, getAllFeedback}
