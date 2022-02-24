@@ -107,6 +107,19 @@ async function checkUserRole(nameIn){
     }
 }
 
+async function checkUserLogin(nameIn){
+    const dbo = await getdbo();
+    const results = await dbo.collection("Users").findOne({userName:nameIn});
+    if(results)
+    {
+        return results;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
 async function checkUser(nameIn){
     const dbo = await getdbo();
     const results = await dbo.collection("Users").findOne({userName:nameIn});
@@ -134,4 +147,8 @@ async function getAllFeedback() {
 module.exports = {saveDocument, searchObjectbyPrice, searchObjectbyName, insertObject, 
     getAll, deleteDocumentById, getDocumentById, 
     updateDocument, findOne, deleteOne, 
+<<<<<<< HEAD
     checkUserRole, checkUser,searchObjectbyCategory, updateCart, getCart, getAllFeedback}
+=======
+    checkUserRole, checkUser,searchObjectbyCategory, updateCart, getCart, checkUserLogin}
+>>>>>>> 14020b14cc3558171f9fa0f7080f0a76b0c94199
