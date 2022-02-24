@@ -29,7 +29,7 @@ app.get("/logout", (req, res) => {
 app.post("/login", async (req, res) => {
   const name = req.body.txtName;
   const pass = req.body.txtPass;
-  const user = await dbHandler.checkUser(name);
+  const user = await dbHandler.checkUserLogin(name);
   if (user == -1) {
     res.render("login", { errorMsg: "Not found UserName!!" });
   } else {
@@ -88,7 +88,7 @@ app.post("/register", async (req, res) => {
   const rePass = req.body.txtRePass;
   const role = req.body.Role;
   const hashPass = await bcrypt.hash(pass, 10);
-  const existedUser = await dbHandler.checkUser(userName);
+  const existedUser = await dbHandler.checkUserLogin(userName);
   if (existedUser == -1) {
     const validPass = await bcrypt.compare(rePass, hashPass);
     if (validPass) {
