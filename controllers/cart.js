@@ -138,10 +138,16 @@ router.get('/payCart', async (req,res)=>{
 
 router.post('/pay', async (req, res)=>{
     const id = req.body.userOrder
+    const newTotal = Number.parseFloat(req.body.totalPrice)
+    let date = new Date()
     const orderDB = await dbHandler.getDocumentById(id, "Order")
+    orderDB["time"] = date;
+    orderDB["totalPrice"] = newTotal;
     await dbHandler.insertObject("Customer Order", orderDB)
     await dbHandler.deleteDocumentById("Order", id)
+    req.session["cart"] = null;
     res.redirect('/shoppingCart/viewCart')
 })
 
 module.exports = router;
+

@@ -121,6 +121,7 @@
 
         <form action="/shoppingCart/pay" method="post">
         <input type="hidden" name="userOrder" id="userOrder" value="{{books._id}}">
+        <input type="hidden" name="totalPrice" id="totalPrice" value="{{Total}}">
         <button class="btn btn-primary">
           <b>Pay</b> VND <span id="payAmount">{{Total}}</span>
         </button>
