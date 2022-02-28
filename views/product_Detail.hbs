@@ -18,8 +18,7 @@
             <div class="product-imgs">
                 <div class="img-display">
                     <div class="img-showcase">
-                        <img src="{{details.pic}}"
-                            alt="">
+                        <img src="{{details.pic}}" alt="">
                     </div>
                 </div>
                 {{!-- <div class="img-select">
@@ -76,14 +75,15 @@
 
                 <div class="purchase-info">
                     <form action="/shoppingCart" method="POST">
-                    <input type="hidden" name="bookID" value="{{details._id}}">
-                    <button type="submit" class="btn">
-                        Add to Cart <i class="fas fa-shopping-cart"></i>
-                    </button>
-                    <a href="/shoppingCart/viewCart"><button type="button" class="btn">View Cart</button></a>
-                    <a href="/feedback?name={{details.name}}"><button type="button" class="btn">Feed back</button></a>
+                        <input type="hidden" name="bookID" value="{{details._id}}">
+                        <button type="submit" class="btn">
+                            Add to Cart <i class="fas fa-shopping-cart"></i>
+                        </button>
+                        <a href="/shoppingCart/viewCart"><button type="button" class="btn">View Cart</button></a>
+                        <a href="/feedback?name={{details.name}}"><button type="button" class="btn">Feed
+                                back</button></a>
                     </form>
-                    
+
                 </div>
 
                 <div class="social-links">
