@@ -170,10 +170,8 @@ router.get("/Pushase", async (req, res) => {
 });
 
 router.get("/productOder", async (req, res) => {
-    const orderP = await dbHandler.searchOderByUser(
-        "Customer Order",
-        req.session.user.name
-    );
+    const orderID = req.query.orderID
+    const orderP = await dbHandler.getDocumentById(orderID, "Customer Order")
     console.log(orderP, req.session.user);
     res.render("productOder", {
         user: req.session.user,
