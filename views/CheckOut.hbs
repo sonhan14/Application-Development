@@ -74,8 +74,6 @@
                   </option>
                 </select>
               </div>
-
-
             </button>
 
           </div>
@@ -120,11 +118,18 @@
         </div>
 
         <form action="/shoppingCart/pay" method="post">
+
         <input type="hidden" name="userOrder" id="userOrder" value="{{books._id}}">
         <input type="hidden" name="totalPrice" id="totalPrice" value="{{Total}}">
         <button class="btn btn-primary">
           <b>Pay</b> VND <span id="payAmount">{{Total}}</span>
         </button>
+
+          <input type="hidden" name="userOrder" id="userOrder" value="{{books._id}}">
+          <button class="btn btn-primary">
+            <b>Pay</b> VND <span id="payAmount">{{Total}}</span>
+          </button>
+
         </form>
 
       </section>
@@ -182,43 +187,43 @@
           </div>
           {{/each}}
 
-        <div class="wrapper">
+          <div class="wrapper">
 
-          <div class="discount-token">
+            <div class="discount-token">
 
-            <label for="discount-token" class="label-default">Gift card/Discount code</label>
+              <label for="discount-token" class="label-default">Gift card/Discount code</label>
 
-            <div class="wrapper-flex">
+              <div class="wrapper-flex">
 
-              <input type="text" name="discount-token" id="discount-token" class="input-default">
+                <input type="text" name="discount-token" id="discount-token" class="input-default">
 
-              <button class="btn btn-outline">Apply</button>
+                <button class="btn btn-outline">Apply</button>
+
+              </div>
+
+            </div>
+
+            <div class="amount">
+
+              <div class="subtotal">
+                <span>Subtotal</span> <span>VND <span id="subtotal">{{books.totalPrice}}</span></span>
+              </div>
+
+              <div class="tax">
+                <span>Tax</span> <span>VND <span id="tax">{{tax}}</span></span>
+              </div>
+
+              <div class="shipping">
+                <span>Shipping</span> <span>VND <span id="shipping">0.00</span></span>
+              </div>
+
+              <div class="total">
+                <span>Total</span> <span>VND <span id="total">{{Total}}</span></span>
+              </div>
 
             </div>
 
           </div>
-
-          <div class="amount">
-
-            <div class="subtotal">
-              <span>Subtotal</span> <span>VND <span id="subtotal">{{books.totalPrice}}</span></span>
-            </div>
-
-            <div class="tax">
-              <span>Tax</span> <span>VND <span id="tax">{{tax}}</span></span>
-            </div>
-
-            <div class="shipping">
-              <span>Shipping</span> <span>VND <span id="shipping">0.00</span></span>
-            </div>
-
-            <div class="total">
-              <span>Total</span> <span>VND <span id="total">{{Total}}</span></span>
-            </div>
-
-          </div>
-
-        </div>
 
       </section>
 

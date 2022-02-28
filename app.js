@@ -62,7 +62,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
 
@@ -108,12 +107,6 @@ app.post("/register", async (req, res) => {
   } else {
     res.render("register", { errorMsg: "Username already used" });
   }
-});
-
-
-
-app.get("/Pushase", (req, res) => {
-  res.render("Pushase");
 });
 
 app.get("/profile", (req, res) => {

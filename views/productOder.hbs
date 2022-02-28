@@ -63,75 +63,36 @@
             </nav>
 
             <div class="container-fluid px-4">
-                <!-- <div class="row g-3 my-2">
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">720</h3>
-                                <p class="fs-5">Products</p>
-                            </div>
-                            <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">4920</h3>
-                                <p class="fs-5">Sales</p>
-                            </div>
-                            <i
-                                class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">3899</h3>
-                                <p class="fs-5">Delivery</p>
-                            </div>
-                            <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
-                            <div>
-                                <h3 class="fs-2">%25</h3>
-                                <p class="fs-5">Increase</p>
-                            </div>
-                            <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
-                        </div>
-                    </div>
-                </div> -->
-
                 <div class="row my-5">
                     <h3 class="fs-4 mb-3">Recent Orders</h3>
                     <div class="col">
                         <table class="table bg-white rounded shadow-sm  table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col" width="50">#</th>
-                                    <th scope="col">Product</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Picher</th>
+                                    <th scope="col">price</th>
                                     <th scope="col">Quantity</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">confirmed</th>
+                                    <th scope="col">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each orderDB}}
+                                {{#each orderP.books}}
                                 <tr class="help">
-                                    <th scope="row">2</th>
+
                                     <td>
                                         {{_id}}
                                     </td>
                                     <td>
-                                        <a href="/shoppingCart/productOder">Book</a>
+                                        {{name}}
                                     </td>
-                                    <td>{{totalPrice}}$</td>
+                                    <td>{{pic}}</td>
+                                    <td>{{price}}</td>
+                                    <td>{{qty}}</td>
+                                    <td>{{money}}</td>
                                 </tr>
+
                                 {{/each}}
                             </tbody>
                         </table>
@@ -152,7 +113,6 @@
         toggleButton.onclick = function () {
             el.classList.toggle("toggled");
         };
-
     </script>
 </body>
 
