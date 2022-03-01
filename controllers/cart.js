@@ -152,6 +152,10 @@ router.get("/delete", async (req, res) => {
 
 router.get("/payCart", async (req, res) => {
     const orderDB = await dbHandler.getCart(req.session.user.name);
+    if(orderDB == null)
+    {
+        res.redirect('/')
+    }
     const tax = orderDB.totalPrice / 100;
     const Total = orderDB.totalPrice + tax;
     res.render("CheckOut", { books: orderDB, tax: tax, Total: Total });
