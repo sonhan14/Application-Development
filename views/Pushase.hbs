@@ -18,7 +18,7 @@
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
                     class="fas fa-user-secret me-2"></i>{{user.name}}</div>
             <div class="list-group list-group-flush my-3">
-                <a href="/index" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                <a href="/" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-shopping-cart me-2"></i>Home</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-gift me-2"></i>Products</a>
@@ -39,8 +39,9 @@
                                 <th scope="col">Product ID</th>
                                 <th scope="col">Quantity</th>
 
-                                <th scope="col">Tax</th>
+
                                 <th scope="col">Price</th>
+                                <th scope="col">Time</th>
 
                             </tr>
                         </thead>
@@ -54,8 +55,9 @@
                                 <td>
                                     <a href="/shoppingCart/productOder?orderID={{_id}}">Book</a>
                                 </td>
-                                <td>{{tax}}</td>
+
                                 <td>{{totalPrice}}$</td>
+                                <td>{{time}}</td>
                             </tr>
                             {{/each}}
                         </tbody>
