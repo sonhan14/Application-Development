@@ -95,7 +95,14 @@ router.get("/viewCart", async (req, res) => {
         res.render("ShoppingCart", { order: cart, user: req.session.user });
     } else {
         const orderDB = await dbHandler.getCart(req.session.user.name);
-        res.render("ShoppingCart", { order: orderDB, user: req.session.user });
+        if (orderDB == null)
+        {
+            res.redirect('/')
+        }
+        else
+        {
+            res.render("ShoppingCart", { order: orderDB, user: req.session.user });
+        }
     }
 });
 

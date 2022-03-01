@@ -29,7 +29,7 @@ async function searchObjectbyName(collectionName, name) {
   const dbo = await getdbo();
   const result = await dbo
     .collection(collectionName)
-    .find({ name: name })
+    .find({ name: {$regex : name, $options : "i"} })
     .toArray();
   return result;
 }
