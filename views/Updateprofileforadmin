@@ -19,8 +19,6 @@
             <span>Password</span>
             <input type="text" name="txtPassword" class="box" id="txtPassword" value="{{profile.password}}">
 
-            <div class="login__decentralization">
-            </div>
             <button type="submit" value="updateprofile" class="btn"> <a href="/"></a> Update </button>
         </form>
 </body>
