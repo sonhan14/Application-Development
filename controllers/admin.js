@@ -148,6 +148,31 @@ router.post('/addbook', async (req, res) => {
     await dbHandler.insertObject("Book", newBook)
     res.redirect('/admin/addbook')
 })
+router.get('/deletebook', async (req, res) => {
+    const id = req.query.id
+    console.log(id)
+    await dbHandler.deleteDocumentById("Book", id)
+    res.redirect('/admin/product')
+})
+router.get('/updatebook', async (req, res) => {
+    const id = req.query.id
+    const result = await getDocumentById(id,"Book")
+    res.render('updatebook', {book:result})
+})
+router.post('/updatebook', async (req, res) => {
+    const nameInput = req.body.txtName
+    const priceInput = req.body.txtPrice
+    const image = req.body.txtImage
+    const Description = req.body.txtDescription
+    const Category = req.body.Category
+    const CategoryID = await dbHandler.getDocumentByName("Category" , Category)
+    const UpdateValue = {$set: {name:nameInput, des:Description, price:Number.parseFloat(priceInput), pic:image, category:CategoryID._id}}
+    const id = req.body.txtid
+    console.log(UpdateValue)
+    console.log(id)
+    await dbHandler.updateDocument(id, UpdateValue,"Book")
+    res.redirect('/admin/product')
+})
 
 
 // router.get("/admin", async (req, res) => {
