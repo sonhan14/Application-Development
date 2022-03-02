@@ -10,7 +10,7 @@ router.use(express.static("public"));
 router.use((req, res, next) => {
     const { user } = req.session; //same as: user = req.session.user
     if (user) {
-        if (user.role == "admin") {
+        if (user.role == "Admin") {
             next("route");
         } else { res.sendStatus(404); }
     } else {
@@ -21,24 +21,24 @@ router.use((req, res, next) => {
 
 //neu request la: /admin
 router.get('/', async (req, res) => {
-    if (req.query.sortBy == "today") {
-        res.redirect("/admin/today");
-    } else if (req.query.sortBy == 'week') {
-        res.redirect("/admin/week");
-    } else {
-        const customerOrder = await dbHandler.getAll("Customer Order")
-        customerOrder.forEach((element) => {
-            element.time = element.time.toLocaleString("vi");
-            element.itemString = "";
-            element.item.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
-                element.itemString += e.item + "x" + e.amount + " ";
-            })
-        });
+    // if (req.query.sortBy == "today") {
+    //     res.redirect("/admin/today");
+    // } else if (req.query.sortBy == 'week') {
+    //     res.redirect("/admin/week");
+    // } else {
+    //     const customerOrder = await dbHandler.getAll("Customer Order")
+    //     customerOrder.forEach((element) => {
+    //         element.time = element.time.toLocaleString("vi");
+    //         element.itemString = "";
+    //         element.item.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
+    //             element.itemString += e.item + "x" + e.amount + " ";
+    //         })
+    //     });
         res.render('adminPage', {
-            customerOrder: customerOrder,
+            // customerOrder: customerOrder,
             user: req.session.user
         })
-    }
+    // }
 })
 
 //neu request la: /admin/addUser
