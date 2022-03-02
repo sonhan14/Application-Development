@@ -175,7 +175,7 @@ router.post('/updatebook', async (req, res) => {
 })
 router.get('/updateprofile', async (req, res)=>{
     const id = req.query.id
-    const request = await getDocumentById(id,"Profile")
+    const result = await getDocumentById(id,"Update")
     res.render('updateprofile', {updateprofile:result})
 })
 router.post('/updateprofile', async (req, res)=>{
