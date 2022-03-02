@@ -170,7 +170,13 @@ async function searchOderByUser(collectionName, user) {
     .toArray();
   return result;
 }
+async function getDocumentByName(collectionName, name) {
+  const dbo = await getdbo();
+  const result = await dbo.collection(collectionName).findOne({ name: name})
+  return result;
+}
 module.exports = {
+  getDocumentByName,
   saveDocument,
   searchObjectbyPrice,
   searchObjectbyName,

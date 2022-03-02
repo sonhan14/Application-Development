@@ -50,6 +50,9 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link"><img src="./images/user.svg" alt="dashboard">Customers</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="/admin/addbook" class="nav-link"><img src="./images/user.svg" alt="dashboard">Add Book</a>
+                    </li>
                     <!-- <li class="nav-item">
                                     <a href="#" class="nav-link"><img src="./images/cog.svg"
                                                 alt="dashboard">Settings</a>
@@ -139,63 +142,31 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>S.No</th>
                                                 <th>Products ID</th>
                                                 <th>Products Name</th>
+                                                <th>Price</th>
+                                                <th>Image</th>
+                                                <th>Description</th>
                                                 <!-- <th>Status</th> -->
                                                 <th>Operation</th>
                                                 <th>Operation</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {{#each book}}
                                             <tr>
-                                                <td>1</td>
-                                                <td>001</td>
-                                                <td>Book1</td>
+                                                <td>{{_id}}</td>
+                                                <td>{{name}}</td>
+                                                <td>{{price}}</td>
+                                                <td>
+                                                    <div class="image"><img style="width: 100px; height: 100px"  src="{{pic}}" alt=""></div>
+                                                </td>
+                                                <td>{{des}}</td>
                                                 <!-- <td class="Online">Online</td> -->
                                                 <td class="Upadte"> <a href="">Update</a> </td>
                                                 <td class=" Delete"><a href="">Delete</a> </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>003</td>
-                                                <td>Book2</td>
-                                                <!-- <td class="Online">Online</td> -->
-                                                <td class="Upadte"> <a href="">Update</a> </td>
-                                                <td class=" Delete"><a href="">Delete</a> </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>004</td>
-                                                <td>Book3</td>
-                                                <!-- <td class="Online">Online</td> -->
-                                                <td class="Upadte"> <a href="">Update</a> </td>
-                                                <td class=" Delete"><a href="">Delete</a> </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>008</td>
-                                                <td>Book4</td>
-                                                <!-- <td class="Online">Online</td> -->
-                                                <td class="Upadte"> <a href="">Update</a> </td>
-                                                <td class=" Delete"><a href="">Delete</a> </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>008</td>
-                                                <td>Book5</td>
-                                                <!-- <td class="Offline">Offline</td> -->
-                                                <td class="Upadte "> <a href="">Update</a> </td>
-                                                <td class=" Delete"><a href="">Delete</a> </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>012</td>
-                                                <td>Book6</td>
-                                                <!-- <td class="Offline">Offline</td> -->
-                                                <td class="Upadte"> <a href="">Update</a> </td>
-                                                <td class=" Delete"><a href="">Delete</a> </td>
-                                            </tr>
+                                            {{/each}}
                                         </tbody>
                                     </table>
                                 </div>

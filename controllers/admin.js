@@ -128,9 +128,27 @@ router.get('/customer', (req, res) => {
     res.render("Admin_Customer")
 });
 
-router.get('/product', (req, res) => {
-    res.render("Admin_Product")
+router.get('/product', async (req, res) => {
+    const book = await dbHandler.getAll("Book")
+
+    res.render("Admin_Product", {book:book})
+    
 });
+router.get('/addbook', async (req, res)=> {
+    res.render("AddBook")
+})
+router.post('/addbook', async (req, res) => {
+    const nameInput = req.body.txtName
+    const priceInput = req.body.txtPrice
+    const image = req.body.txtImage
+    const Description = req.body.txtDescription
+    const Category = req.body.Category
+    const CategoryID = await dbHandler.getDocumentByName("Category" , Category)
+    const newBook = {name:nameInput, des:Description, price:Number.parseFloat(priceInput), pic:image, category:CategoryID._id}
+    await dbHandler.insertObject("Book", newBook)
+    res.redirect('/admin/addbook')
+})
+
 
 // router.get("/admin", async (req, res) => {
 //     let result = await dbHandler.getAll("Customer Order");
