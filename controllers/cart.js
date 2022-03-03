@@ -106,21 +106,20 @@ router.get("/viewCart", async (req, res) => {
     }
 });
 
-
+//Thanh toan gio hang
 router.post('/pay', async (req, res) => {
     const id = req.body.userOrder
     const newTotal = Number.parseFloat(req.body.totalPrice)
     let date = new Date()
     const orderDB = await dbHandler.getDocumentById(id, "Order")
     orderDB["time"] = date;
+    orderDB["Status"] = "Confirming"
     orderDB["totalPrice"] = newTotal;
     await dbHandler.insertObject("Customer Order", orderDB)
     await dbHandler.deleteDocumentById("Order", id)
     req.session["cart"] = null;
     res.redirect('/shoppingCart/viewCart')
 })
-
-module.exports = router;
 
 
 router.get("/delete", async (req, res) => {
@@ -150,6 +149,7 @@ router.get("/delete", async (req, res) => {
     res.redirect("/shoppingCart/viewCart");
 });
 
+//Hien thi hoa don
 router.get("/payCart", async (req, res) => {
     const orderDB = await dbHandler.getCart(req.session.user.name);
     if(orderDB == null)
@@ -161,13 +161,7 @@ router.get("/payCart", async (req, res) => {
     res.render("CheckOut", { books: orderDB, tax: tax, Total: Total });
 });
 
-router.post("/pay", async (req, res) => {
-    const id = req.body.userOrder;
-    const orderDB = await dbHandler.getDocumentById(id, "Order");
-    await dbHandler.insertObject("Customer Order", orderDB);
-    await dbHandler.deleteDocumentById("Order", id);
-    res.redirect("/shoppingCart/viewCart");
-});
+
 router.get("/Pushase", async (req, res) => {
     const orderDB = await dbHandler.searchOderByUser(
         "Customer Order",
