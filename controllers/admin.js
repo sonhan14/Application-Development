@@ -27,13 +27,13 @@ router.get('/', async (req, res) => {
         res.redirect("/admin/week");
     } else {
         const customerOrder = await dbHandler.getAll("Customer Order")
-        customerOrder.forEach((element) => {
-            element.time = element.time.toLocaleString("vi");
-            element.itemString = "";
-            element.item.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
-                element.itemString += e.item + "x" + e.amount + " ";
-            })
-        });
+        // customerOrder.forEach((element) => {
+        //     element.time = element.time.toLocaleString("vi");
+        //     element.itemString = "";
+        //     element.item.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
+        //         element.itemString += e.item + "x" + e.amount + " ";
+        //     })
+        // });
         res.render('adminPage', {
             // customerOrder: customerOrder,
             user: req.session.user
@@ -146,14 +146,16 @@ router.post('/addbook', async (req, res) => {
     const CategoryID = await dbHandler.getDocumentByName("Category" , Category)
     const newBook = {name:nameInput, des:Description, price:Number.parseFloat(priceInput), pic:image, category:CategoryID._id}
     await dbHandler.insertObject("Book", newBook)
-    res.redirect('/admin/addbook')
+    res.redirect('/admin/product')
 })
+//delete book
 router.get('/deletebook', async (req, res) => {
     const id = req.query.id
     console.log(id)
     await dbHandler.deleteDocumentById("Book", id)
     res.redirect('/admin/product')
 })
+//update book in product
 router.get('/updatebook', async (req, res) => {
     const id = req.query.id
     const result = await getDocumentById(id,"Book")
@@ -173,6 +175,7 @@ router.post('/updatebook', async (req, res) => {
     await dbHandler.updateDocument(id, UpdateValue,"Book")
     res.redirect('/admin/product')
 })
+//update profile for trainer
 router.get('/updateprofile', async (req, res)=>{
     const id = req.query.id
     const result = await getDocumentById(id,"Update")
