@@ -184,5 +184,25 @@ router.get("/productOder", async (req, res) => {
     });
 });
 
+router.get("/viewProfile", async (req,res)=>{
+    const user = await dbHandler.getUser(req.session.user.name)
+    res.render('profile', {user : user})
+})
+
+router.get("/updateProfile", async (req,res)=>{
+    const user = await dbHandler.getUser(req.session.user.name)
+    res.render('UpDateProfile', {user : user})
+})
+
+router.post("/updateProfile", async (req,res)=>{
+    const phone = req.body.txtPhone
+    const fullName = req.body.txtName
+    const email = req.body.txtEmail
+    const user = await dbHandler.getUser(req.session.user.name)
+    const updateValue = {$set: {userName: user.userName, email: email, Name: fullName, phone: phone, role: user.role, password: user.password}}
+    await dbHandler.updateDocument(user._id, updateValue, "Users")
+    res.redirect('/shoppingCart/viewProfile')
+})
+
 module.exports = router;
 

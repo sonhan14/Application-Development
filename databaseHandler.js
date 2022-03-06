@@ -175,8 +175,16 @@ async function getDocumentByName(collectionName, name) {
   const result = await dbo.collection(collectionName).findOne({ name: name})
   return result;
 }
+
+async function getUser(name) {
+  const dbo = await getdbo();
+  const result = await dbo.collection("Users").findOne({ userName: name})
+  return result;
+}
+
 module.exports = {
   getDocumentByName,
+  getUser,
   saveDocument,
   searchObjectbyPrice,
   searchObjectbyName,

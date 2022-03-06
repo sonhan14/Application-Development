@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="input.css">
     {{!--
     <link rel="stylesheet" href="btn.css"> --}}
-    <title>Document</title>
+    <title>Update Profile</title>
 </head>
 
 <body>
@@ -19,66 +19,41 @@
         <div class="left">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTOkHm3_mPQ5PPRvGtU6Si7FJg8DVDtZ47rw&usqp=CAU"
                 alt="user" width="100">
-            <h4>Alex Manh ngao ng</h4>
-            <p>UI Developer</p>
+            <h4>{{user.userName}}</h4>
+            <p>{{user.role}}</p>
         </div>
         <div class="right">
+            <form action="/shoppingCart/updateProfile" method="post">
             <div class="info">
                 <h3>Information</h3>
                 <div class="info_data">
                     <div class="data">
                         <div class="input-data">
-                            <input type="text" required>
+                            <input type="text" required value="{{user.phone}}" name="txtPhone">
                             <div class="underline"></div>
-                            <label>phone</label>
+                            <label>Phone</label>
                         </div>
                         <div class="input-data">
-                            <input type="text" required>
+                            <input type="text" required value="{{user.Name}}" name="txtName">
                             <div class="underline"></div>
                             <label>Name</label>
                         </div>
                         <div class="input-data">
-                            <input type="text" required>
+                            <input type="text" required value="{{user.email}}" name="txtEmail">
                             <div class="underline"></div>
                             <label>Emai</label>
                         </div>
-                        <div class="input-data">
-                            <input type="PassWord" required>
-                            <div class="underline"></div>
-                            <label>PassWord</label>
-                        </div>
-                        <div class="input-data">
-                            <input type="text" required>
-                            <div class="underline"></div>
-                            <label>Home Address</label>
-                        </div>
-                        <div class="input-data">
-                            <input type="text" required>
-                            <div class="underline"></div>
-                            <label>Image</label>
-                        </div>
                     </div>
+                    
                 </div>
 
             </div>
-            <!-- 
-            <div class="projects">
-                <h3>Projects</h3>
-                <div class="projects_data">
-                    <div class="data">
-                        <h4>Recent</h4>
-                        <p>Lorem ipsum dolor sit amet.</p>
-                    </div>
-                    <div class="data">
-                        <h4>Most Viewed</h4>
-                        <p>dolor sit amet.</p>
-                    </div>
-                </div>
-            </div> -->
-            <button type="button" class="button">
+            <center>
+            <button type="submit" class="button">
                 <span class="button__text">Update</span>
-
             </button>
+            </center>
+            </form>
         </div>
     </div>
 </body>

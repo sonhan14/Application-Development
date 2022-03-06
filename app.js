@@ -87,6 +87,7 @@ app.post("/register", async (req, res) => {
   const pass = req.body.txtPass;
   const rePass = req.body.txtRePass;
   const role = req.body.Role;
+  const fullName = req.body.txtName
   const hashPass = await bcrypt.hash(pass, 10);
   const existedUser = await dbHandler.checkUserLogin(userName);
   if (existedUser == -1) {
@@ -95,6 +96,7 @@ app.post("/register", async (req, res) => {
       const newUser = {
         userName: userName,
         email: mail,
+        Name: fullName,
         phone: phone,
         role: role,
         password: hashPass,
