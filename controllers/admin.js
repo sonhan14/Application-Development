@@ -176,10 +176,10 @@ router.post('/updatebook', async (req, res) => {
     res.redirect('/admin/product')
 })
 //update profile for trainer
-router.get('/updateprofile', async (req, res)=>{
+router.get('/updateprofiletrainer', async (req, res)=>{
     const id = req.query.id
     const result = await getDocumentById(id,"Update")
-    res.render('updateprofile', {updateprofile:result})
+    res.render('updateprofiletrainer', {updateprofile:result})
 })
 router.post('/updateprofile', async (req, res)=>{
     const urernameInput = req.body.txtUsername
@@ -190,7 +190,7 @@ router.post('/updateprofile', async (req, res)=>{
     const UpdateValue = {$set: {username:usernameInput, email:Email, phone:Phone, password:Password}}
     console.log(UpdateValue)
     await dbHandler.updateDocument(id, UpdateValue,"Profile")
-    res.redirect('admin')
+    res.redirect('admin/updateprofiletrainer')
 })
 
 
