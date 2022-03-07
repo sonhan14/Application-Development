@@ -65,20 +65,6 @@ app.post("/login", async (req, res) => {
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
 
-const customerController = require("./controllers/customer");
-app.use("/", customerController);
-
-app.get("/login", (req, res) => {
-  res.render("login");
-});
-
-app.get("/register", (req, res) => {
-  res.render("register");
-});
-
-app.get("/search", (req, res) => {
-  res.render("search");
-});
 
 app.post("/register", async (req, res) => {
   const userName = req.body.txtUser;
@@ -111,12 +97,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.get("/profile", (req, res) => {
-  res.render("profile");
-});
-app.get("/UpDateProfile", (req, res) => {
-  res.render("UpDateProfile");
-});
 
 //cac request co chua /admin se di den controller customer
 const userController = require("./controllers/customer");
