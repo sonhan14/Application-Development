@@ -26,6 +26,7 @@ img {
   transition: all 0.5s ease;
 }
 .img-showcase img {
+  padding-top: 70px;
   width: 400px;
 }
 .img-select {
@@ -46,7 +47,7 @@ img {
   padding: 2rem 1rem;
 }
 .product-title {
-  font-size: 2rem;
+  padding-top: 46px;
   text-transform: capitalize;
   font-weight: 800;
   position: relative;

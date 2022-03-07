@@ -26,6 +26,14 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
 app.post("/login", async (req, res) => {
   const name = req.body.txtName;
   const pass = req.body.txtPass;
@@ -65,7 +73,6 @@ app.post("/login", async (req, res) => {
 const shoppingCart = require("./controllers/cart");
 app.use("/shoppingCart", shoppingCart);
 
-
 app.post("/register", async (req, res) => {
   const userName = req.body.txtUser;
   const mail = req.body.txtMail;
@@ -73,7 +80,7 @@ app.post("/register", async (req, res) => {
   const pass = req.body.txtPass;
   const rePass = req.body.txtRePass;
   const role = req.body.Role;
-  const fullName = req.body.txtName
+  const fullName = req.body.txtName;
   const hashPass = await bcrypt.hash(pass, 10);
   const existedUser = await dbHandler.checkUserLogin(userName);
   if (existedUser == -1) {
@@ -96,7 +103,6 @@ app.post("/register", async (req, res) => {
     res.render("register", { errorMsg: "Username already used" });
   }
 });
-
 
 //cac request co chua /admin se di den controller customer
 const userController = require("./controllers/customer");

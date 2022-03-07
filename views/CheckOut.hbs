@@ -11,6 +11,7 @@
     - custom css link
   -->
   <link rel="stylesheet" href="Check.css">
+  <link rel="stylesheet" href="header.css">
 
   <!--
     - google font link
@@ -23,15 +24,29 @@
 <body>
 
 
-  <!--
-    - main container
-  -->
+  <div class="wrapper">
+    <nav>
+      <input type="checkbox" id="show-search">
+      <input type="checkbox" id="show-menu">
+      <label for="show-menu" class="menu-icon"><i class="fas fa-bars"></i></label>
+      <div class="content">
+        <div class="logo"><a href="#">FPTBOOK</a></div>
+        <ul class="links">
+          <li><a href="/">Home</a></li>
+          <li><a href="#">best serllers</a></li>
+          <li><a href="#">All Products</a></li>
+        </ul>
+      </div>
+
+    </nav>
+  </div>
 
   <main class="container">
 
-    <h1 class="heading">
-      <ion-icon name="cart-outline"></ion-icon> Checkout Product
-    </h1>
+
+    <!-- {{!-- <h1 class="heading">
+            <ion-icon name="cart-outline"></ion-icon> Checkout Product
+        </h1> --}} -->
 
     <div class="item-flex">
 
@@ -119,10 +134,10 @@
 
         <form action="/shoppingCart/pay" method="post">
 
-        <input type="hidden" name="userOrder" id="userOrder" value="{{books._id}}">
-        <input type="hidden" name="totalPrice" id="totalPrice" value="{{Total}}">
-        <button class="btn btn-primary">
-          <b>Pay</b> VND <span id="payAmount">{{Total}}</span>
+          <input type="hidden" name="userOrder" id="userOrder" value="{{books._id}}">
+          <input type="hidden" name="totalPrice" id="totalPrice" value="{{Total}}">
+          <button class="btn btn-primary">
+            <b>Pay</b> VND <span id="payAmount">{{Total}}</span>
 
         </form>
 
@@ -224,11 +239,6 @@
     </div>
 
   </main>
-
-
-
-
-
 
   <!--
     - custom js link

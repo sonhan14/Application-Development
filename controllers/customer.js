@@ -14,8 +14,6 @@ router.get("/", async (req, res) => {
     "61e570ddba41b21dee1346b4"
   );
   const hotBook = await dbHandler.searchHotBooks();
-  console.log("casc quyen sach");
-  console.log(hotBook);
 
   if (!req.session.user) {
     res.render("index", { truyens: truyen, ITbooks: ITbook, hotBook: hotBook });

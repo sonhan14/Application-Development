@@ -168,7 +168,7 @@ input::-webkit-outer-spin-button {
 
 .checkout {
   width: 70%;
-  padding: 40px var(--px);
+  padding: 140px var(--px);
   background: var(--white);
   border-right: 1px solid var(--gainsboro);
 }
@@ -304,6 +304,7 @@ input::-webkit-outer-spin-button {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  padding-top: 100px;
 }
 
 .cart-item-box {
@@ -336,6 +337,7 @@ input::-webkit-outer-spin-button {
 .card .detail .wrapper {
   display: flex;
   gap: 20px;
+  background-color: white !important;
 }
 
 .product-qty {
@@ -379,6 +381,7 @@ input::-webkit-outer-spin-button {
 }
 
 .discount-token {
+  background-color: white !important;
   padding: 40px var(--px);
   border-top: 1px solid var(--gainsboro);
   border-bottom: 1px solid var(--gainsboro);
@@ -408,6 +411,7 @@ input::-webkit-outer-spin-button {
 }
 
 .amount {
+  background-color: white !important;
   padding: 40px var(--px);
 }
 
