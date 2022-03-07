@@ -29,7 +29,7 @@ async function searchObjectbyName(collectionName, name) {
   const dbo = await getdbo();
   const result = await dbo
     .collection(collectionName)
-    .find({ name: {$regex : name, $options : "i"} })
+    .find({ name: { $regex: name, $options: "i" } })
     .toArray();
   return result;
 }
@@ -172,13 +172,18 @@ async function searchOderByUser(collectionName, user) {
 }
 async function getDocumentByName(collectionName, name) {
   const dbo = await getdbo();
-  const result = await dbo.collection(collectionName).findOne({ name: name})
+  const result = await dbo.collection(collectionName).findOne({ name: name });
   return result;
 }
 
 async function getUser(name) {
   const dbo = await getdbo();
-  const result = await dbo.collection("Users").findOne({ userName: name})
+  const result = await dbo.collection("Users").findOne({ userName: name });
+  return result;
+}
+async function searchHotBooks() {
+  const dbo = await getdbo();
+  const result = await dbo.collection("Book").find({ hot: "true" }).toArray();
   return result;
 }
 
@@ -209,4 +214,5 @@ module.exports = {
   getCart,
   checkUserLogin,
   searchOderByUser,
+  searchHotBooks,
 };
