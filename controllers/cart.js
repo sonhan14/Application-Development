@@ -127,11 +127,9 @@ router.get("/delete", async (req, res) => {
     console.log("id need delete: " + id);
     const book = await dbHandler.getDocumentById(id, "Book");
     const orderDB = await dbHandler.getCart(req.session.user.name);
-    let cart = req.session["cart"];
-    if (!cart) {
+    if (!req.session["cart"]) {
         let dict = orderDB;
         var bookIndex = dict.books.findIndex((b) => b._id == id);
-        console.log(bookIndex);
         const bookDelete = dict.books[bookIndex];
         console.log(bookDelete);
         dict.totalPrice -= bookDelete.money;
@@ -143,6 +141,7 @@ router.get("/delete", async (req, res) => {
         const bookDelete = dict.books[bookIndex];
         dict.totalPrice -= bookDelete.money;
         dict.books.splice(bookIndex, 1);
+        delete dict._id;
         req.session["cart"] = dict;
     }
     await dbHandler.updateCart(req.session.user.name, req.session["cart"]);
