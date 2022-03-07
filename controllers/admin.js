@@ -134,6 +134,7 @@ router.get('/product', async (req, res) => {
     res.render("Admin_Product", {book:book})
     
 });
+//addbook
 router.get('/addbook', async (req, res)=> {
     res.render("AddBook")
 })
@@ -175,23 +176,21 @@ router.post('/updatebook', async (req, res) => {
     await dbHandler.updateDocument(id, UpdateValue,"Book")
     res.redirect('/admin/product')
 })
-//update profile for trainer
-router.get('/updateprofiletrainer', async (req, res)=>{
-    const id = req.query.id
-    const result = await getDocumentById(id,"Update")
-    res.render('updateprofiletrainer', {updateprofile:result})
+//update profile for admin
+router.get('/updateprofile', async (req, res)=>{
+    const result = await dbHandler.getUser(req.session.user.name)
+    res.render('Updateprofileadmin', {user:result})
 })
-router.post('/updateprofile', async (req, res)=>{
-    const urernameInput = req.body.txtUsername
-    const emailInput = req.body.txtEmail
-    const phoneInput = req.body.txtPhone
-    const passwordInput = req.body.txtPassword
-    const id = req.body.txtid
-    const UpdateValue = {$set: {username:usernameInput, email:Email, phone:Phone, password:Password}}
-    console.log(UpdateValue)
-    await dbHandler.updateDocument(id, UpdateValue,"Profile")
-    res.redirect('admin/updateprofiletrainer')
+router.post("/updateprofile", async (req,res)=>{
+    const phone = req.body.txtPhone
+    const fullName = req.body.txtName
+    const email = req.body.txtEmail
+    const user = await dbHandler.getUser(req.session.user.name)
+    const updateValue = {$set: {userName: user.userName, email: email, Name: fullName, phone: phone, role: user.role, password: user.password}}
+    await dbHandler.updateDocument(user._id, updateValue, "Users")
+    res.redirect('/admin')
 })
+
 
 
 // router.get("/admin", async (req, res) => {
