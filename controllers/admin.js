@@ -102,13 +102,20 @@ router.get("/feedbackManage/specifyDay/:day", async (req, res) => {
     res.render("adminPage", { feedback: result, user: req.session.user });
 });
 
-router.get('/feedbackManage/bookName', async (req, res) =>{
-    let result = await dbHandler.getAllFeedback();
-    const arr = result.filter(element => {
-        return element.name === req.query.bookName;
-    })
-    res.render('adminPage', {feedback: arr})
-})
+// router.get('/feedbackManage/bookName', async (req, res) =>{
+//     let result = await dbHandler.getAllFeedback();
+//     const arr = result.filter(element => {
+//         return element.name === req.query.bookName;
+//     })
+//     res.render('adminPage', {feedback: arr})
+// })
+
+router.get("/feedbackManage/searchFeedback", async (req, res) => {
+    const searchInput = req.query.bookName;
+    const result = await dbHandler.searchObjectbyName("Feedback", searchInput)
+    res.render('adminpage', {feedback: result})
+  });
+  
 
 //Submit add User
 router.post('/addUser', (req, res) => {
