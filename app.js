@@ -48,9 +48,11 @@ app.post("/login", async (req, res) => {
         res.render("login", { errorMsg: "Login failed!" });
       } else {
         if (req.body.Role == role) {
+          const customer = await dbHandler.getUser(name, user.email)
           req.session.user = {
             name: name,
             role: role,
+            email: customer.email,
           };
           console.log("Loged in with: ");
           console.log(req.session.user);

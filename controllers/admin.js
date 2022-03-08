@@ -27,15 +27,15 @@ router.get('/', async (req, res) => {
         res.redirect("/admin/week");
     } else {
         const customerOrder = await dbHandler.getAll("Customer Order")
-        // customerOrder.forEach((element) => {
-        //     element.time = element.time.toLocaleString("vi");
-        //     element.itemString = "";
-        //     element.item.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
-        //         element.itemString += e.item + "x" + e.amount + " ";
-        //     })
-        // });
+        customerOrder.forEach((element) => {
+            element.time = element.time.toLocaleString("vi");
+            element.itemString = "";
+            element.books.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
+                element.itemString += e.name + " - (" + e.qty + ")";
+            })
+        });
         res.render('adminPage', {
-            // customerOrder: customerOrder,
+            customerOrder: customerOrder,
             user: req.session.user
         })
     // }
