@@ -249,7 +249,6 @@ router.get('/manageCustomer', async (req, res) => {
         delete element.password;
         delete element.role;
     })
-    console.log(arr);
     res.render('adminPage', { Customer: arr})
     
 })
@@ -263,6 +262,8 @@ router.get('/deleteCustomer/:id', async(req, res) => {
 router.get('/deleteCustomer', async(req, res) => {
     res.send("deleteCustomer")
 })
+
+
 
 //view profile
 exports.getProfile = async (req, res) => {

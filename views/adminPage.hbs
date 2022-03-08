@@ -148,6 +148,7 @@
                     </div>
 
 
+
                     {{#if feedback}}
                     <div class="row">
                         <div class="container-fluid">
@@ -198,12 +199,19 @@
                         </div>
                     </div>
                 </div>
+
+
+
                 {{else if customerOrder}}
                 <div class="row">
                     <div class="container-fluid">
                         <div class="dash-card">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h4>Orders</h4>
+                                <form action="/admin/manageCustomer/searchCustomer" method="GET">
+                                    {{!-- <button type="submit">Search</button>
+                                     <input type="text" id="Username" name="Username" placeholder="User name..."> --}}
+                                </form>
                                 <form action="/admin">
                                     <select name="sortBy" required>
                                         <option value="">Choose</option>
@@ -215,6 +223,9 @@
                                     {{/if}}
                                     <button type="submit">Find</button>
                                 </form>
+
+                                
+
                             </div>
                             <div class="table-responsive">
                                 <table class="table">
@@ -240,9 +251,6 @@
                                             {{else}}
                                             <td>Pending</td>
                                             {{/if}}
-                                            {{!-- {{#if status}}
-                                            <td><a href="/admin/delete?id={{_id}}">Cancel order</a>
-                                            </td> --}}
                                         </tr>
                                         {{/each}}
                                     </tbody>
@@ -252,6 +260,9 @@
                     </div>
                 </div>
             </div>
+
+
+
             {{else if Customer}}
             <div class="row">
                 <div class="container-fluid">
