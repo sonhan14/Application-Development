@@ -255,6 +255,7 @@
                                             <th>Order</th>
                                             <th>Time</th>
                                             <th>Status</th>
+                                            <th>Update Status</th>
                                             <th>Action</th>
 
                                         </tr>
@@ -279,6 +280,9 @@
                                                     Update Status
                                                 </button>
                                             </td>
+                                            {{#ifeq Status "Cancel"}}
+                                            <td><button onclick="confirmDialog('/admin/delete?id={{_id}}')">Cancel order</button></td>
+                                            {{/ifeq}}
                                         </tr>
                                         </form>
                                         {{/each}}
