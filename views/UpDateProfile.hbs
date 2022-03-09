@@ -23,7 +23,7 @@
             <p>{{user.role}}</p>
         </div>
         <div class="right">
-            <form action="/shoppingCart/updateProfile" method="post">
+            <form action="/shoppingCart/updateProfile" onsubmit="return confirm('Are you sure?')" method="post">
             <div class="info">
                 <h3>Information</h3>
                 <div class="info_data">

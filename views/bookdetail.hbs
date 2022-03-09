@@ -53,9 +53,9 @@
                 </div>
 
                 <div class="purchase-info">
-                    <form action="/shoppingCart" method="POST">
+                    <form action="/shoppingCart" onsubmit="return confirm('Are you sure?')" method="post" >
                     <input type="hidden" name="bookID" value="{{details._id}}">
-                    <button type="submit" class="btn">
+                    <button type="submit" class="btn" >
                         Add to Cart <i class="fas fa-shopping-cart"></i>
                     </button>
                     <a href="/shoppingCart/viewCart"><button type="button" class="btn">View Cart</button></a>
