@@ -34,6 +34,15 @@ async function searchObjectbyName(collectionName, name) {
   return result;
 }
 
+async function searchObjectbyID(collectionName, id) {
+  const dbo = await getdbo();
+  const result = await dbo
+    .collection(collectionName)
+    .find({ id: { $regex: id, $options: "i" } })
+    .toArray();
+  return result;
+}
+
 async function searchObjectbyPrice(collectionName, price) {
   const dbo = await getdbo();
   const result = await dbo
@@ -167,7 +176,6 @@ async function getAllFeedback() {
   return result;
 }
 
-
 async function searchOderByUser(collectionName, user) {
   const dbo = await getdbo();
   const result = await dbo
@@ -188,7 +196,6 @@ async function getUser(name) {
   return result;
 }
 
-
 async function searchHotBooks() {
   const dbo = await getdbo();
   const result = await dbo.collection("Book").find({ hot: "true" }).toArray();
@@ -208,7 +215,7 @@ module.exports = {
   updateDocument,
   findOne,
   deleteOne,
-
+  searchObjectbyID,
   checkUserRole,
   checkUser,
   searchObjectbyCategory,

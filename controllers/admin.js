@@ -264,6 +264,86 @@ router.post("/updateprofile", async (req,res)=>{
     res.redirect('/admin')
 })
 
+//update status shopping cart
+router.post("/updatestatus", async (req,res)=>{
+    const id = req.body.id
+    const status = req.body.status
+    const order = await dbHandler.getDocumentById(id,"Customer Order")
+    order["Status"] = status
+    const neworder = {$set:{user:order.user, books:order.books, totalPrice:order.totalPrice, time:order.time, Status:order.Status}}
+    await dbHandler.updateDocument(id, neworder, "Customer Order")
+
+    res.redirect('/admin')
+})
+
+
+
+
+// router.get("/admin", async (req, res) => {
+//     let result = await dbHandler.getAll("Customer Order");
+//     result.forEach((element) => (element.time = element.time.toLocaleString("vi")));
+//     res.render("adminPage", { demo: result, next: true });
+// });
+
+
+router.get("/:sortBy", async (req, res, next) => {
+    let result = await dbHandler.getAll("Customer Order");
+    if (req.params.sortBy === "today") {
+        let today = new Date().toLocaleDateString("vi");
+        result = result.filter((item) => {
+            return item.time.toLocaleDateString("vi") === today
+        });
+        result.forEach((element) => {
+            element.time = element.time.toLocaleString("vi");
+        });
+        res.render("adminPage", { customerOrder: result });
+    } else if (req.params.sortBy === "week") {
+        let today = new Date();
+        let week = new Date(today.setDate(today.getDate() - 7));
+        result = result.filter((item) => item.time > week);
+        result.forEach((element) => (element.time = element.time.toLocaleString("vi")));
+        res.render("adminPage", { customerOrder: result });
+    }
+    else if (req.params.sortBy === "delete") {
+        let { id } = req.query; // same as: let id = req.query.id;
+        let result = await dbHandler.deleteOne("Customer Order", { _id: ObjectId(id) });
+        if (result) {
+            res.redirect("/admin");
+        } else {
+            res.send("Cancel error!");
+        }
+    }
+    else {
+        next("route");
+    }
+});
+
+router.get('/manageCustomer', async (req, res) => {
+    result = await dbHandler.getAll("Users");
+    const arr = result.filter((element) => {
+        return element.role === 'Customer'
+    });
+    arr.forEach((element, index) => {
+        element.index = index+1;
+        delete element.password;
+        delete element.role;
+    })
+    res.render('adminPage', { Customer: arr})
+    
+})
+
+router.get('/deleteCustomer/:id', async(req, res) => {
+    console.log(req.params.id)
+    await dbHandler.deleteDocumentById('Users', req.params.id);
+    res.redirect('/admin/manageCustomer')
+    
+})
+router.get('/deleteCustomer', async(req, res) => {
+    res.send("deleteCustomer")
+})
+
+
+
 //view profile
 exports.getProfile = async (req, res) => {
     let aTrainee = await trainee.findOne({ email: req.session.email })

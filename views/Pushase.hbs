@@ -44,7 +44,7 @@
 
 
                                 <th scope="col">Price</th>
-                                <th scope="col">Time</th>
+                                <th scope="col">Status</th>
 
                             </tr>
                         </thead>
@@ -62,7 +62,9 @@
                                 <td>{{time}}</td>
 
                                 <td>{{totalPrice}}$</td>
-                                <td>{{time}}</td>
+                                <td>{{Status}} <a href="/shoppingCart/UpdateSt?id={{_id}}"> <button type="sumbit">
+                                            Cancel</button> </a></td>
+
                             </tr>
                             {{/each}}
                         </tbody>
