@@ -27,15 +27,15 @@ router.get('/', async (req, res) => {
         res.redirect("/admin/week");
     } else {
         const customerOrder = await dbHandler.getAll("Customer Order")
-        // customerOrder.forEach((element) => {
-        //     element.time = element.time.toLocaleString("vi");
-        //     element.itemString = "";
-        //     element.item.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
-        //         element.itemString += e.item + "x" + e.amount + " ";
-        //     })
-        // });
+        customerOrder.forEach((element) => {
+            element.time = element.time.toLocaleString("vi");
+            element.itemString = "";
+            element.books.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
+                element.itemString += e.name + " - (" + e.qty + ")";
+            })
+        });
         res.render('adminPage', {
-            // customerOrder: customerOrder,
+            customerOrder: customerOrder,
             user: req.session.user
         })
     // }
@@ -102,13 +102,20 @@ router.get("/feedbackManage/specifyDay/:day", async (req, res) => {
     res.render("adminPage", { feedback: result, user: req.session.user });
 });
 
-router.get('/feedbackManage/bookName', async (req, res) =>{
-    let result = await dbHandler.getAllFeedback();
-    const arr = result.filter(element => {
-        return element.name === req.query.bookName;
-    })
-    res.render('adminPage', {feedback: arr})
-})
+// router.get('/feedbackManage/bookName', async (req, res) =>{
+//     let result = await dbHandler.getAllFeedback();
+//     const arr = result.filter(element => {
+//         return element.name === req.query.bookName;
+//     })
+//     res.render('adminPage', {feedback: arr})
+// })
+
+router.get("/feedbackManage/searchFeedback", async (req, res) => {
+    const searchInput = req.query.bookName;
+    const result = await dbHandler.searchObjectbyName("Feedback", searchInput)
+    res.render('adminpage', {feedback: result})
+  });
+  
 
 //Submit add User
 router.post('/addUser', (req, res) => {
@@ -242,20 +249,21 @@ router.get('/manageCustomer', async (req, res) => {
         delete element.password;
         delete element.role;
     })
-    console.log(arr);
     res.render('adminPage', { Customer: arr})
     
 })
 
 router.get('/deleteCustomer/:id', async(req, res) => {
-    // console.log(req.params.id)
-    // await dbHandler.deleteDocumentById('Users', req.params.id);
-    // res.redirect('/admin/manageCustomer')
-    res.send("Delete customer by ID" + req.params.id)
+    console.log(req.params.id)
+    await dbHandler.deleteDocumentById('Users', req.params.id);
+    res.redirect('/admin/manageCustomer')
+    
 })
 router.get('/deleteCustomer', async(req, res) => {
     res.send("deleteCustomer")
 })
+
+
 
 //view profile
 exports.getProfile = async (req, res) => {

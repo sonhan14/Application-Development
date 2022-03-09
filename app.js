@@ -3,6 +3,22 @@ const app = express();
 const dbHandler = require("./databaseHandler");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+const { create } = require('express-handlebars'); //
+
+
+//tao helpers de tao function ifeq su dung trong hbs
+const hbs = create({
+  helpers: {
+    ifeq: function (a, b, options) {
+      if (a === b) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    }
+  },
+  defaultLayout: false
+});
+app.engine('hbs', hbs.engine);
 
 app.set("view engine", "hbs");
 app.use(express.urlencoded({ extended: true }));
@@ -48,9 +64,11 @@ app.post("/login", async (req, res) => {
         res.render("login", { errorMsg: "Login failed!" });
       } else {
         if (req.body.Role == role) {
+          const customer = await dbHandler.getUser(name, user.email)
           req.session.user = {
             name: name,
             role: role,
+            email: customer.email,
           };
           console.log("Loged in with: ");
           console.log(req.session.user);
