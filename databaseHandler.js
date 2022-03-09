@@ -76,6 +76,11 @@ async function deleteDocumentById(collectionName, id) {
   await dbo.collection(collectionName).deleteOne({ _id: ObjectId(id) });
 }
 
+async function deleteDocument(collectionName, objectToDelete) {
+  const dbo = await getdbo();
+  await dbo.collection(collectionName).deleteOne(objectToDelete)
+}
+
 async function getDocumentById(id, collectionName) {
   const dbo = await getdbo();
   const result = await dbo
@@ -225,4 +230,5 @@ module.exports = {
   checkUserLogin,
   searchOderByUser,
   searchHotBooks,
+  deleteDocument,
 };

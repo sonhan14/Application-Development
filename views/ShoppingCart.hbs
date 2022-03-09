@@ -74,7 +74,8 @@
             <div class="description">
               <p>{{name}}</p>
               <small>price: {{price}}</small><br>
-              <a href="/shoppingCart/delete?id={{_id}}">remove</a>
+              <button type="button" onclick="return confirm('Are you sure to remove this book?')"><a href="/shoppingCart/delete?id={{_id}}">remove</a></button>
+              
             </div>
           </div>
         </td>
@@ -91,7 +92,7 @@
 
         </tr>
         <tr>
-          <td><a href="/shoppingCart/payCart"><button type="submit" class="btn">Proceed to Pay</button></a></td>
+          <td><a href="/shoppingCart/payCart"><button type="submit" class="btn" onclick="return confirm('Are you sure to pay cart?')">Proceed to Pay</button></a></td>
 
         </tr>
       </table>
