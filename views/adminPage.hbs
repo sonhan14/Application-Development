@@ -261,22 +261,29 @@
                                     </thead>
                                     <tbody>
                                         {{#each customerOrder}}
+                                        <form action="/admin/updatestatus" method="post">
+                                        <input type="hidden" name="id" value="{{_id}}">
                                         <tr>
                                             <td>{{user}}</td>
                                             <td>{{itemString}}</td>
                                             <td>{{time}}</td>
-                                            {{#ifeq Status "Cancel"}}
-                                            <td>Cancel</td>
-                                            {{!-- <td><a href="/admin/delete?id={{_id}}"
-                                                    onclick="window.confirm('Are you sure!')">Cancel order</a></td> --}}
-                                            <td><button onclick="confirmDialog('/admin/delete?id={{_id}}')">Cancel
-                                                    order</button></td>
-                                            {{else}}
-                                            <td>Confirmming</td>
-                                            {{/ifeq}}
+                                            <td>{{Status}}</td>
+                                            <td>
+                                                <select name="status" id="status">
+                                                    <option value="Delivery in progress">Delivery in progress</option>
+                                                    <option value="Receiving product">Receiving product</option>
+                                                    <option value="Delivery successful">Delivery successful</option>
+                                                    <option value="Delivery failed">Delivery failed</option>
+                                                </select>
+                                                <button type="submit">
+                                                    Update Status
+                                                </button>
+                                            </td>
                                         </tr>
+                                        </form>
                                         {{/each}}
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
