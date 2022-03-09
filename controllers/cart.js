@@ -208,18 +208,21 @@ router.post("/updateProfile", async (req, res) => {
 
 router.post("/UpdateSt", async (req, res) => {
   const id = req.query.id;
-  const UpdateSt = dbHandler.getDocumentById(_id, "Customer Order");
-  updateSt["Status"] = "";
-  updateSt = {
+  const status = req.body.status;
+  const UpdateSt = dbHandler.getDocumentById(id, status, "Customer Order");
+  UpdateSt["Status"] = status;
+  const newSt = {
     $set: {
-      user: user,
-      book: book,
-      totalPrice: totalPrice,
-      time: time,
-      status: "canceled",
+      user: UpdateSt.user,
+      books: UpdateSt.books,
+      totalPrice: UpdateSt.totalPrice,
+      time: UpdateSt.time,
+      Status: UpdateSt.Status,
     },
   };
-  await dbHandler.updateDocument(user._id, updateValue, " Customer Order");
+  console.log(newSt);
+  await dbHandler.updateDocument(id, newSt, " Customer Order");
   res.redirect("/shoppingCart/Pushase");
 });
+
 module.exports = router;
