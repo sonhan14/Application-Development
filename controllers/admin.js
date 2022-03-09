@@ -27,51 +27,58 @@ router.get('/', async (req, res) => {
         res.redirect("/admin/week");
     } else {
         const customerOrder = await dbHandler.getAll("Customer Order") //get all database in Customer order and set is customerOrder
-        customerOrder.forEach((element) => { //use loop to 
-            element.time = element.time.toLocaleString("vi");
-            element.itemString = "";
-            element.books.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
-                element.itemString += e.name + " - (" + e.qty + ")";
+        customerOrder.forEach((element) => { //use loop in Customer Order 
+            element.time = element.time.toLocaleString("vi"); //convert time to vietnam
+            element.itemString = ""; //tao bien itemString de hien thi cac phan tu trong element (them item va amount)
+            element.books.forEach(e => { //use loop in books in customerorder
+                element.itemString += e.name + " - (" + e.qty + ")"; //display name + qty 
             })
         });
         res.render('adminPage', {
-            customerOrder: customerOrder,
-            user: req.session.user
+            customerOrder: customerOrder,//truyen vao adminPage giá trị của customerorder
+            user: req.session.user//
         })
     // }
 }})
 
-router.get("/:sortBy", async (req, res, next) => {
+router.get("/:sortBy", async (req, res, next) => { //sortby same tham số
     let result = await dbHandler.getAll("Customer Order");
     if (req.params.sortBy === "today") {
-        let today = new Date().toLocaleDateString("vi");
-        result = result.filter((item) => {
+        let today = new Date().toLocaleDateString("vi");//lưu new Date.toLocaledatestring = today; today ở dạng stirng
+        result = result.filter((item) => { //dùng filter cho biến result lọc ra các phần từ có đk là dòng 53. sau đó gán lại vào result
             item.itemString = "";
             item.books.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
                 item.itemString += e.name + " - (" + e.qty + ")";
             })
             return item.time.toLocaleDateString("vi") === today
         });
-        result.forEach((element) => {
+        result.forEach((element) => { //dùng loop cho tất cả result để hiển thị time theo dang string
             element.time = element.time.toLocaleString("vi");
         });
-        res.render("adminPage", { customerOrder: result });
+        res.render("adminPage", { customerOrder: result }); //truyền vào tất cả các result vừa được xử lý
 
     } else if (req.params.sortBy === "week") {
-        let today = new Date();
-        let week = new Date(today.setDate(today.getDate() - 7));
-        result = result.filter((item) => item.time > week);
-        result.forEach((element) => 
-        (element.time = element.time.toLocaleString("vi")));
-        res.render("adminPage", { customerOrder: result });
+        let today = new Date(); //gán today bằng ngày hn
+        let week = new Date(today.setDate(today.getDate() - 7)); //week = lấy (today.getDate -7) là dạng số. sau đó setDate lại về dạng thời gian
+        result = result.filter((item) => { //item là 1 phần tử của result
+            item.itemString = "";
+            item.books.forEach(e => {//tao bien itemString de hien thi cac phan tu trong element (them item va amount)
+                item.itemString += e.name + " - (" + e.qty + ")";
+            })
+            return item.time > week //dk ptu có điều kiện item > week
+        });
+        result.forEach((element) => {//dùng loop cho result sau đó chuyển element.time về dạng string theo keieur vn
+            element.time = element.time.toLocaleString("vi");
+        });
+        res.render("adminPage", { customerOrder: result }); //truyền vào tất cả result vừa được xử lý
     }
-    else if (req.params.sortBy === "delete") {
+    else if (req.params.sortBy === "delete") {//tham số sortby là delete
         let { id } = req.query; // same as: let id = req.query.id;
-        let result = await dbHandler.deleteOne("Customer Order", { _id: ObjectId(id) });
-        if (result) {
-            res.redirect("/admin");
+        let result = await dbHandler.deleteOne("Customer Order", { _id: ObjectId(id) });//dùng hàm deOne để xóa 1 document trong collection customer order
+        if (result == null) { 
+           res.send("Cancel error!"); 
         } else {
-            res.send("Cancel error!");
+            res.redirect("/admin");
         }
     }
     else {
@@ -89,30 +96,25 @@ router.get('/manageCustomer', async (req, res) => {
         delete element.password;
         delete element.role;
     })
-    res.render('adminPage', { Customer: arr})
+    res.render('adminPage', { Customer: arr})//truyền vào property Customer với values =arr
     
 })
 
+// /deleteCustomer/abcxyz
 router.get('/deleteCustomer/:id', async(req, res) => {
-    console.log(req.params.id)
-    await dbHandler.deleteDocumentById('Users', req.params.id);
+    await dbHandler.deleteDocumentById('Users', req.params.id);//dugf dDBI để xóa 1 doc với tham số là req.pấm.id
     res.redirect('/admin/manageCustomer')
     
 })
-router.get('/deleteCustomer', async(req, res) => {
-    res.send("deleteCustomer")
-})
-
 
 router.get("/feedbackManage", async (req, res) => {
     let result = await dbHandler.getAllFeedback();
-    // res.render("feedbackManagement", { result });
-    res.render('adminPage', { feedback: result, user: req.session.user })
+    res.render('adminPage', { feedback: result, user: req.session.user })//truyền vào
 });
 
+// /feedbackManage/delete?id=abcxyz
 router.get('/feedbackManage/delete', async (req, res) => {
-    console.log(req.query);
-    await dbHandler.deleteDocumentById('Feedback', req.query.id);
+    await dbHandler.deleteDocumentById('Feedback', req.query.id);//dùng req.id để nhận id của doc truyền vào hàm delete
     res.redirect('/admin/feedbackManage');
 })
 
@@ -120,13 +122,15 @@ router.get("/feedbackManage/:day", async (req, res, next) => {
     let result = await dbHandler.getAllFeedback();
     const today = new Date();
     if (req.params.day === "today") {
-        result = result.filter((e) => new Date(e.time).toDateString() === today.toDateString());
+        result = result.filter((e) => {
+            return new Date(e.time).toDateString() === today.toDateString();//chuyển e.time về string dạng ngày 
+        });
         res.render("adminPage", {
             feedback: result,
             user: req.session.user,
         });
     } else if (req.params.day === "2days") {
-        const queryDay = new Date(today.setDate(today.getDate() - 2));
+        const queryDay = new Date(today.setDate(today.getDate() - 2));//setdate = getdate -2 
         result = result.filter((e) => new Date(e.time) > queryDay);
         res.render("adminPage", {
             feedback: result,
@@ -153,7 +157,7 @@ router.get("/feedbackManage/:day", async (req, res, next) => {
 
 router.get("/feedbackManage/specifyDay/:day", async (req, res) => {
     let result = await dbHandler.getAllFeedback();
-    const specifyDay = new Date(req.params.day).toDateString();
+    const specifyDay = new Date(req.params.day).toDateString();//chuyển tham số day về dáng tring
     result = result.filter((e) => new Date(e.time).toDateString() === specifyDay);
     res.render("adminPage", { feedback: result, user: req.session.user });
 });
