@@ -198,6 +198,19 @@ router.post("/updateprofile", async (req,res)=>{
     res.redirect('/admin')
 })
 
+//update status shopping cart
+router.post("/updatestatus", async (req,res)=>{
+    const id = req.body.id
+    const status = req.body.status
+    const order = await dbHandler.getDocumentById(id,"Customer Order")
+    order["Status"] = status
+    const neworder = {$set:{user:order.user, books:order.books, totalPrice:order.totalPrice, time:order.time, Status:order.Status}}
+    await dbHandler.updateDocument(id, neworder, "Customer Order")
+
+    res.redirect('/admin')
+})
+
+
 
 
 // router.get("/admin", async (req, res) => {
