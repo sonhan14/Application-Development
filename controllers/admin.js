@@ -254,10 +254,10 @@ router.get('/manageCustomer', async (req, res) => {
 })
 
 router.get('/deleteCustomer/:id', async(req, res) => {
-    // console.log(req.params.id)
-    // await dbHandler.deleteDocumentById('Users', req.params.id);
-    // res.redirect('/admin/manageCustomer')
-    res.send("Delete customer by ID" + req.params.id)
+    console.log(req.params.id)
+    await dbHandler.deleteDocumentById('Users', req.params.id);
+    res.redirect('/admin/manageCustomer')
+    
 })
 router.get('/deleteCustomer', async(req, res) => {
     res.send("deleteCustomer")
