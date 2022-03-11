@@ -281,7 +281,7 @@
                                                 </button>
                                             </td>
                                             {{#ifeq Status "Cancel"}}
-                                            <td><button onclick="confirmDialog('/admin/delete?id={{_id}}')">Accept Cancel</button></td>
+                                            <td><button onclick="confirmCustomer('/admin/delete?id={{_id}}', 'Are you sure?')">Accept Cancel</button></td>
                                             {{/ifeq}}
                                         </tr>
                                         </form>
@@ -352,12 +352,10 @@
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script>
-        function confirmDialog(url) {
-            if (confirm("Are you sure?") == true) { //cofirm == true
+        function confirmDialog(url, mess) {
+            if (confirm(mess) == true) { //cofirm == true
                 window.location.replace(url);
-            } else {//cofirm ==false
-                alert("Cancel successful!")
-            }
+            } 
         }
 
         function confirmCustomer(url, mess) {
